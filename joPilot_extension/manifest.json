@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+    "name": "JoPilot",
+    "version": "1.0",
+    "description": "Companion for Job Applications",
+    "browser_action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "default_popup": {
+        "width": 400,
+        "height": 300
+    }
+}
