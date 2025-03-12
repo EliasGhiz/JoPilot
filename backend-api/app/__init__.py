@@ -5,6 +5,6 @@ def create_app():
     app = Flask(__name__)
     
     from . import routes
-    routes.init_app(app)
+    routes.initialize_app_endpoints(app)
     
     return app

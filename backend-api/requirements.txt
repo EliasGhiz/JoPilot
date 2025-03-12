@@ -1,0 +1,3 @@
+#Temporary use, should find longer term solution instead.
+
+Flask==2.0.1
