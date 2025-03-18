@@ -6,9 +6,9 @@ function App() {
   const [error, setError] = useState(null);
 
   const fetchData = (event) => {
-    event.preventDefault(); // Prevent the default link behavior
+    event.preventDefault();
     console.log('Fetching data from /test');
-    fetch('http://localhost:5000/test')
+    fetch('http://localhost:5000/test') //flask API address for test function. Should receive json data via console
       .then(res => {
         console.log('Response status:', res.status);
         if (!res.ok) {
@@ -33,6 +33,7 @@ function App() {
         <nav>
           <ul>
             <li><a href="/">Home</a></li>
+            {/*/test is used to test backend connection to flask server */}
             <li><a href="/test" onClick={fetchData}>Test</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
