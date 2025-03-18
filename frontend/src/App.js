@@ -29,11 +29,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>JoPilot</h1>
+        <h1 className="App-title">JoPilot</h1>
         <nav>
           <ul>
             <li><a href="/">Home</a></li>
-            {/*/test is used to test backend connection to flask server */}
             <li><a href="/test" onClick={fetchData}>Test</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
@@ -41,7 +40,7 @@ function App() {
       </header>
       <main>
         <h2>Main Content</h2>
-        {error ? <p>Error: {error}</p> : <p>{message}</p>}
+        {error ? <p className="error">Error: {error}</p> : <p className="message">{message}</p>}
       </main>
       <footer>
         <p>&copy; JoPilot 2025</p>
