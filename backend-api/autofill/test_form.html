@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .section-title {
+            margin-top: 30px;
+            font-size: 1.2em;
+            color: #444;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group-inline {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .form-group-inline div {
+            flex: 1;
+        }
+        .form-group-inline div:last-child {
+            flex: 2;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+            margin: 0 auto;
+            display: block;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Job Application Form</h2>
+<form action="/submit_application" method="post">
+    <!-- Personal Information -->
+    <div class="form-group">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required>
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+
+    <!-- Address Information -->
+    <div class="section-title">Address Information</div>
+    <div class="form-group">
+        <label for="address">Street Address:</label>
+        <input type="text" id="address" name="address" required>
+    </div>
+    <div class="form-group-inline">
+        <div>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+        </div>
+        <div>
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" required>
+        </div>
+    </div>
+    <div class="form-group-inline">
+        <div>
+            <label for="zip">ZIP Code:</label>
+            <input type="text" id="zip" name="zip" required>
+        </div>
+        <div>
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" required>
+        </div>
+    </div>
+
+    <!-- Education Information -->
+    <div class="section-title">Education Information</div>
+    <div class="form-group">
+        <label for="degree">Highest Degree Obtained:</label>
+        <input type="text" id="degree" name="degree" required>
+    </div>
+    <div class="form-group">
+        <label for="major">Major/Field of Study:</label>
+        <input type="text" id="major" name="major" required>
+    </div>
+    <div class="form-group">
+        <label for="school">School Name:</label>
+        <input type="text" id="school" name="school" required>
+    </div>
+    <div class="form-group">
+        <label for="grad_year">Graduation Year:</label>
+        <input type="number" id="grad_year" name="grad_year" required>
+    </div>
+
+    <!-- Employment History -->
+    <div class="section-title">Employment History</div>
+    <div class="form-group">
+        <label for="employer">Previous Employer Name:</label>
+        <input type="text" id="employer" name="employer" required>
+    </div>
+    <div class="form-group">
+        <label for="job_title">Job Title:</label>
+        <input type="text" id="job_title" name="job_title" required>
+    </div>
+    <div class="form-group">
+        <label for="employment_dates">Employment Dates:</label>
+        <input type="text" id="employment_dates" name="employment_dates" required>
+    </div>
+    <div class="form-group">
+        <label for="responsibilities">Key Responsibilities:</label>
+        <textarea id="responsibilities" name="responsibilities" rows="4" required></textarea>
+    </div>
+
+    <!-- Additional Questions -->
+    <div class="section-title">Additional Questions</div>
+    <div class="form-group">
+        <label for="why_join">Why do you want to work for our company?</label>
+        <textarea id="why_join" name="why_join" rows="4" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="skills">What skills and qualifications do you possess that make you a good fit for this position?</label>
+        <textarea id="skills" name="skills" rows="4" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="availability">What is your availability to start?</label>
+        <input type="text" id="availability" name="availability" required>
+    </div>
+    <div class="form-group">
+        <label for="salary_expectations">What are your salary expectations?</label>
+        <input type="text" id="salary_expectations" name="salary_expectations" required>
+    </div>
+    <div class
+::contentReference[oaicite:0]{index=0}
+ 
+
