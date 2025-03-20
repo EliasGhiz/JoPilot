@@ -71,9 +71,11 @@ export default function Sidebar({ open, themeIcon, colorMode }: SidebarProps) {
   const baseShade = colorMode === "dark" ? "#2e2e2e" : "#e0e0e0";
   const iconSelectedColor = getSidebarIconColor(colorMode, themeIcon);
 
-  // Define navigation items
-  const navItems = [
-    { label: "Dashboard", route: "/dashboard", icon: <DashboardIcon /> },
+  // Define navigation items split into top and bottom groups.
+  const topNavItems = [
+    { label: "Dashboard", route: "/dashboard", icon: <DashboardIcon /> }
+  ];
+  const bottomNavItems = [
     { label: "Settings", route: "/settings", icon: <SettingsIcon /> },
     { label: "Test", route: "/test", icon: <PestControlRodentIcon /> }
   ];
@@ -103,8 +105,9 @@ export default function Sidebar({ open, themeIcon, colorMode }: SidebarProps) {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <List sx={{ flexGrow: 1 }}>
-          {navItems.map(item => (
+        {/* Top navigation items */}
+        <List>
+          {topNavItems.map(item => (
             <SidebarItem
               key={item.route}
               icon={item.icon}
@@ -117,11 +120,31 @@ export default function Sidebar({ open, themeIcon, colorMode }: SidebarProps) {
             />
           ))}
         </List>
-        <Divider sx={{ my: 0, bgcolor: "#424242" }} />
-        <Box sx={{ textAlign: "center", p: 1 }}>
-          <Typography variant="caption" sx={{ color: colorMode === "dark" ? "#FFFFFF" : "inherit", whiteSpace: "nowrap" }}>
-            {open ? `Version ${appVersion}` : `v${appVersion}`}
-          </Typography>
+        {/* Push bottom items to the bottom */}
+        <Box sx={{ mt: "auto" }}>
+          <List>
+            {bottomNavItems.map(item => (
+              <SidebarItem
+                key={item.route}
+                icon={item.icon}
+                label={item.label}
+                route={item.route}
+                open={open}
+                colorMode={colorMode}
+                baseShade={baseShade}
+                iconSelectedColor={iconSelectedColor}
+              />
+            ))}
+          </List>
+          <Divider sx={{ my: 0, bgcolor: "#424242" }} />
+          <Box sx={{ textAlign: "center", p: 1 }}>
+            <Typography variant="caption" sx={{ 
+                color: colorMode === "dark" ? "#AAAAAA" : "#888888",
+                whiteSpace: "nowrap"
+              }}>
+              {open ? `Version ${appVersion}` : `v${appVersion}`}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Drawer>
