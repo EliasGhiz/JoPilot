@@ -89,30 +89,6 @@ JoPilot is a web application designed to assist with job applications. It consis
 
     The extension will be available in your browser.
 
-## Project Structure
-
-### Backend API
-
-- **`backend-api/app/__init__.py`**: Initializes the Flask application and sets up the routes.
-- **`backend-api/app/routes.py`**: Defines the API endpoints.
-- **`backend-api/app/models.py`**: Contains data models (currently a sample `User` model).
-- **`backend-api/requirements.txt`**: Lists the Python dependencies.
-- **`backend-api/run.py`**: Entry point to run the Flask application.
-
-### Frontend
-
-- **`frontend/src/App.js`**: Main React component.
-- **`frontend/src/index.js`**: Entry point for the React application.
-- **`frontend/public/index.html`**: HTML template for the React application.
-- **`frontend/package.json`**: Lists the JavaScript dependencies and scripts.
-
-### JoPilot Extension
-
-- **`joPilot_extension/index.html`**: HTML file for the extension popup.
-- **`joPilot_extension/manifest.json`**: Configuration file for the extension.
-- **`joPilot_extension/popup.js`**: JavaScript file for the extension's functionality.
-- **`joPilot_extension/style.css`**: CSS file for the extension's styling.
-
 ## Testing
 
 To test the entire setup:
