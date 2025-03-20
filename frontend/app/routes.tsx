@@ -1,4 +1,3 @@
-import React from 'react';
 import DashboardLayout from "./dashboard/DashboardLayout";
 import Dashboard from "./dashboard/Dashboard";
 import Settings from "./dashboard/Settings";
