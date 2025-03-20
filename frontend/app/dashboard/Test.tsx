@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box, Toolbar, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
 
 export default function Test() {
   const [data, setData] = useState("");
@@ -18,8 +18,7 @@ export default function Test() {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1, p: 3 }}>
-      <Toolbar />
+    <Box sx={{ flexGrow: 1 }}> {/* Removed padding */}
       <Typography variant="h4">Test</Typography>
       {error ? (
         <Typography color="error">Error: {error}</Typography>

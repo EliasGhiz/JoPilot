@@ -2,42 +2,66 @@
 
 ## Overview
 
-This project is built using Vite, React, and React Router v7 along with Material UI for styling. This README focuses on the key files that define the structure and routing for the frontend application.
+This project is built using Vite, React, and React Router v7 along with Material UI for styling.
 
-## Frontend File Structure
+## Application Structure
 
-### public/index.html
+### Source Code Organization
 
-This is the HTML template for the application.  
-- It contains the root div where the React application is mounted.
-- It also links to the favicon and sets up meta tags required for responsive design.
+```
+frontend/
+├── app/                     # Main application code
+│   ├── components/          # Reusable UI components
+│   │   ├── Sidebar.tsx      # Application sidebar navigation
+│   │   └── TopBar.tsx       # Top application bar
+│   │
+│   ├── constants/           # Application-wide constants
+│   │   └── layout.ts        # Layout dimensions and settings
+│   │
+│   ├── dashboard/           # Dashboard feature
+│   │   ├── Dashboard.tsx    # Dashboard page component
+│   │   ├── DashboardLayout.tsx  # Layout wrapper for the app
+│   │   ├── Settings.tsx     # Settings page
+│   │   └── Test.tsx         # Test API connection page
+│   │
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useSidebarState.ts  # Manages sidebar open/closed state
+│   │   └── useThemeState.ts # Manages theme and color mode
+│   │
+│   ├── root.tsx             # Root component that renders routes
+│   └── routes.tsx           # Application route definitions
+│
+├── src/                     # Supporting source code
+│   ├── index.tsx            # Application entry point
+│   └── version.ts           # App version information
+│
+└── public/                  # Static assets
+    ├── favicon.svg          # App favicon
+    └── index.html           # HTML template
+```
 
-### src/index.tsx
+### Key Architectural Components
 
-This is the entry point for the React application.  
-- It initializes the application by creating the React root and wrapping the app in a `<BrowserRouter>` for routing support.
-- It imports the main application component from `app/root.tsx`.
+#### Component Organization
 
-### app/root.tsx
+1. **Layout Components**:
+   - `DashboardLayout.tsx`: Main layout wrapper that includes the sidebar, topbar, and content area
+   - Handles theme switching, sidebar state, and navigation
 
-The main application component responsible for rendering the routes.  
-- It uses React Router's `useRoutes` hook to load the UI based on the route configuration.
-- This file is the central container for the dashboard layout and other pages.
+2. **State Management**:
+   - Custom hooks in the `hooks/` directory manage application state
+   - `useThemeState.ts`: Manages theme settings (dark/light mode, color variants)
+   - `useSidebarState.ts`: Manages sidebar collapsed/expanded state
 
-### app/routes.tsx
+3. **Theme Configuration**:
+   - Theme settings are centralized in `src/themeConfig.ts`
+   - Provides consistent styling across the application
+   - Supports multiple theme variants (default, red planet, blue space)
 
-This file defines the route configuration for the application.  
-- It sets up a parent route that uses the DashboardLayout for consistent UI elements: a sidebar and a top navigation bar.
-- Nested inside are child routes (e.g., Dashboard, Settings, Test) that match specific paths.
-- A redirect is provided to route the base URL to the Dashboard.
-
-### app/dashboard Folder
-
-Contains components specific to the dashboard functionality:
-- **DashboardLayout.tsx**: Defines the overall layout including the top AppBar, sidebar navigation, and an `<Outlet />` for nested routes.
-- **Dashboard.tsx**: Displays the core dashboard content.
-- **Settings.tsx**: Contains settings-related content.
-- **Test.tsx**: Manages the Test view content.
+4. **Routing**:
+   - React Router v7 manages navigation
+   - Routes defined in `app/routes.tsx`
+   - Nested routing with shared layout components
 
 ## Getting Started
 
@@ -57,7 +81,7 @@ Start the development server with HMR:
 npm run dev
 ```
 
-Access frontend through `http://localhost:5173`.
+Access the frontend through `http://localhost:5173`.
 
 ## Building for Production
 
