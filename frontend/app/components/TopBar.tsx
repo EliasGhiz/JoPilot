@@ -84,11 +84,21 @@ export default function TopBar(props: TopBarProps) {
             sx={{
               width: 56,
               height: 64,
-              fontSize: "24px",
               color: primaryContrast,
+              position: 'relative', // Add positioning context
             }}
           >
-            {themeIcon}
+            {/* Apply different font sizes based on the emoji */}
+            <span style={{ 
+              fontSize: themeIcon === "🪐" ? "30px" : "24px", // Larger size for planet
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)', // Center the emoji
+              lineHeight: 1,
+            }}>
+              {themeIcon}
+            </span>
           </IconButton>
         </Tooltip>
       </Toolbar>
