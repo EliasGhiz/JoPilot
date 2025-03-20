@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# JoPilot Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is built using Vite, React, and React Router v7 along with Material UI for styling. This README focuses on the key files that define the structure and routing for the frontend application.
 
-In the project directory, you can run:
+## Frontend File Structure
 
-### `npm start`
+### public/index.html
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This is the HTML template for the application.  
+- It contains the root div where the React application is mounted.
+- It also links to the favicon and sets up meta tags required for responsive design.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### src/index.tsx
 
-### `npm test`
+This is the entry point for the React application.  
+- It initializes the application by creating the React root and wrapping the app in a `<BrowserRouter>` for routing support.
+- It imports the main application component from `app/root.tsx`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### app/root.tsx
 
-### `npm run build`
+The main application component responsible for rendering the routes.  
+- It uses React Router's `useRoutes` hook to load the UI based on the route configuration.
+- This file is the central container for the dashboard layout and other pages.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### app/routes.tsx
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This file defines the route configuration for the application.  
+- It sets up a parent route that uses the DashboardLayout for consistent UI elements: a sidebar and a top navigation bar.
+- Nested inside are child routes (e.g., Dashboard, Settings, Test) that match specific paths.
+- A redirect is provided to route the base URL to the Dashboard.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### app/dashboard Folder
 
-### `npm run eject`
+Contains components specific to the dashboard functionality:
+- **DashboardLayout.tsx**: Defines the overall layout including the top AppBar, sidebar navigation, and an `<Outlet />` for nested routes.
+- **Dashboard.tsx**: Displays the core dashboard content.
+- **Settings.tsx**: Contains settings-related content.
+- **Test.tsx**: Manages the Test view content.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Install the dependencies:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm install
+```
 
-## Learn More
+### Development
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Start the development server with HMR:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run dev
+```
 
-### Code Splitting
+Access frontend through `http://localhost:5173`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Building for Production
 
-### Analyzing the Bundle Size
+Create a production build:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run build
+```
 
-### Making a Progressive Web App
+## Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Docker Deployment
 
-### Advanced Configuration
+To build and run using Docker:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+docker build -t my-app .
 
-### Deployment
+# Run the container
+docker run -p 3000:3000 my-app
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The containerized application can be deployed to any platform that supports Docker, including:
 
-### `npm run build` fails to minify
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### DIY Deployment
+
+If you're familiar with deploying Node applications, the built-in app server is production-ready.
+
+Make sure to deploy the output of `npm run build`
+
+```
+├── package.json
+├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
+├── build/
+│   ├── client/    # Static assets
+│   └── server/    # Server-side code
+```
+
+### Issues
+
+Sometimes Material Icons don't install correctly.
+Run the following command to manually install them.
+```sh
+npm install @mui/icons-material
+```
