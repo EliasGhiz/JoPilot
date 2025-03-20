@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+# JoPilot Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Stack
+Vite, React, React Router v7, MUI, TypeScript & JavaScript.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### Installation
 
-### `npm start`
+Install the dependencies:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Development
 
-### `npm test`
+Start the development server with HMR:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm run dev
+```
 
-### `npm run build`
+Access frontend through `http://localhost:5173`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Building for Production
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Create a production build:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm run build
+```
 
-### `npm run eject`
+## Deployment
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Docker Deployment
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To build and run using Docker:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+docker build -t my-app .
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Run the container
+docker run -p 3000:3000 my-app
+```
 
-## Learn More
+The containerized application can be deployed to any platform that supports Docker, including:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### DIY Deployment
 
-### Code Splitting
+If you're familiar with deploying Node applications, the built-in app server is production-ready.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Make sure to deploy the output of `npm run build`
 
-### Analyzing the Bundle Size
+```
+├── package.json
+├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
+├── build/
+│   ├── client/    # Static assets
+│   └── server/    # Server-side code
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Issues
 
-### Making a Progressive Web App
+Sometimes Material Icons don't install correctly.
+Run the following command to manually install them.
+```sh
+npm install @mui/icons-material
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Frontend File Structure
 
-### Advanced Configuration
+This section explains the purpose of each .tsx file in the `app` folder:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **app/root.tsx**  
+  This is the main entry point for your React application’s routes. It sets up the top-level router using `<Routes>` and `<Route>`, and defines the primary layout and top-level routes (e.g., Dashboard, Settings, Login, and a catch-all 404 route).
 
-### Deployment
+- **app/routes/home.tsx**  
+  This file defines the home route meta information and logic. It exports route metadata (such as the page title) and a component that redirects users to the Dashboard (using `<Navigate>`). It serves as the default landing page route when accessed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **app/dashboard/Dashboard.tsx**  
+  This is the core content component for the Dashboard page. It contains the main dashboard content including welcome text and other dashboard-specific information.
 
-### `npm run build` fails to minify
+- **app/dashboard/DashboardLayout.tsx**  
+  This component defines the overall layout for the dashboard pages. It renders the fixed top AppBar, a collapsible sidebar (which includes navigation items for Dashboard and Settings), and an `<Outlet />` to display the nested child routes. This layout ensures consistent placement of navigation and content across dashboard views.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **app/redirect/RedirectToDashboard.tsx**  
+  This file contains a redirect component that triggers a client-side redirect to `/dashboard` when rendered. It is used to automatically navigate users to the Dashboard when they access a root or other default route.

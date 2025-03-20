@@ -1,4 +1,4 @@
 __pycache__
 
-# Pyhton Virtual Enviroment
-backend-api/venv/
+# Ignore Python Virtual Env
+/backend-api/venv/
