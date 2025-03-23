@@ -1,85 +1,73 @@
-import { useState, useEffect } from 'react';
-import { createTheme } from '@mui/material';
-import type { Theme } from '@mui/material';
+// useThemeState.ts – Manages theme variant and color mode with persistence and switching functionality.
 
-// Theme variant types
-export type ThemeVariant = 0 | 1 | 2; // 0: default, 1: red (planet), 2: blue (space)
-export type ColorMode = "light" | "dark";
+import { useState, useMemo, useEffect } from 'react';
+import { PaletteMode } from '@mui/material';
+import { 
+  ThemeVariant, 
+  themeIcons 
+} from '../theme/colorSystem';
+import { createAppTheme } from '../theme/themeConfig';
 
-export interface ThemeState {
-  colorMode: ColorMode;
-  themeVariant: ThemeVariant;
-  themeIcon: string;
-  theme: Theme;
-  hamburgerWhite: boolean;
-  toggleColorMode: () => void;
-  cycleThemeVariant: () => void;
-}
+// Local storage keys
+const THEME_MODE_KEY = 'jopilot-theme-mode';
+const THEME_VARIANT_KEY = 'jopilot-theme-variant';
 
-export function useThemeState(): ThemeState {
-  // Initialize state with localStorage values
-  const [colorMode, setColorMode] = useState<ColorMode>(() => {
-    const stored = localStorage.getItem("colorMode");
-    return stored === "light" || stored === "dark" ? stored : "dark";
+// Valid theme cycle order
+const themeCycleOrder: ThemeVariant[] = ["red", "blue", "gray"];
+
+export const useThemeState = () => {
+  // Initialize from localStorage or default values
+  const [colorMode, setColorMode] = useState<PaletteMode>(() => {
+    const savedMode = localStorage.getItem(THEME_MODE_KEY);
+    return (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'light';
   });
   
   const [themeVariant, setThemeVariant] = useState<ThemeVariant>(() => {
-    const stored = localStorage.getItem("themeVariant");
-    return stored !== null ? Number(stored) as ThemeVariant : 0;
+    // Properly handle localStorage value with proper validation
+    const savedVariant = localStorage.getItem(THEME_VARIANT_KEY) as ThemeVariant | null;
+    return savedVariant && themeCycleOrder.includes(savedVariant) ? savedVariant : "red";
   });
-
-  // Persist state changes to localStorage
+  
+  // Save preferences when change
   useEffect(() => {
-    localStorage.setItem("colorMode", colorMode);
-    localStorage.setItem("themeVariant", themeVariant.toString());
+    localStorage.setItem(THEME_MODE_KEY, colorMode);
+  }, [colorMode]);
+  
+  useEffect(() => {
+    localStorage.setItem(THEME_VARIANT_KEY, themeVariant);
+  }, [themeVariant]);
+  
+  // Toggle light/ dark mode
+  const toggleColorMode = () => {
+    setColorMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+  
+  // Cycle through theme variants
+  const cycleThemeVariant = () => {
+    const currentIndex = themeCycleOrder.indexOf(themeVariant);
+    const nextIndex = (currentIndex + 1) % themeCycleOrder.length;
+    setThemeVariant(themeCycleOrder[nextIndex]);
+  };
+
+  // Create theme based on current settings
+  const theme = useMemo(() => {
+    return createAppTheme(colorMode, themeVariant);
   }, [colorMode, themeVariant]);
 
-  // Create the theme object
-  const theme = createThemeFromState(colorMode, themeVariant);
+  // Get current theme icon
+  const themeIcon = themeIcons[themeVariant];
   
-  // Derived state
-  const themeIcon = themeVariant === 0 ? "🌗" : themeVariant === 1 ? "🪐" : "🌌";
-  const hamburgerWhite = colorMode === "light" && themeVariant === 1;
-
-  // Actions
-  const toggleColorMode = () => setColorMode(prev => (prev === "dark" ? "light" : "dark"));
-  const cycleThemeVariant = () => setThemeVariant(prev => ((prev + 1) % 3) as ThemeVariant);
-
+  // Determine if hamburger menu should be white based on theme and mode
+  // Always use white hamburger icon for gray theme (in both light and dark modes)
+  const hamburgerWhite = colorMode === 'dark' || themeVariant === 'gray';
+  
   return {
     colorMode,
-    themeVariant,
-    themeIcon,
+    themeVariant, 
     theme,
+    themeIcon,
     hamburgerWhite,
     toggleColorMode,
-    cycleThemeVariant
+    cycleThemeVariant,
   };
-}
-
-function createThemeFromState(colorMode: ColorMode, themeVariant: ThemeVariant): Theme {
-  let defaultPrimary: string;
-  
-  if (themeVariant === 0) {
-    defaultPrimary = colorMode === "dark" ? "#424242" : "#1976d2";
-  } else if (themeVariant === 1) {
-    defaultPrimary = colorMode === "dark" ? "#550000" : "#ff5f5f";
-  } else {
-    defaultPrimary = colorMode === "dark" ? "#0D47A1" : "#1565c0";
-  }
-  
-  return createTheme({
-    palette: {
-      mode: colorMode,
-      primary: { main: defaultPrimary },
-      background: {
-        default: colorMode === "dark" ? "#1A1A1A" : "#fafafa",
-        paper: colorMode === "dark" ? "#1E1E1E" : "#fff",
-      },
-      text: {
-        primary: colorMode === "dark" ? "#FFFFFF" : "#000000",
-        secondary: colorMode === "dark" ? "#B0B0B0" : "#555",
-      },
-    },
-    typography: { fontFamily: "Arial, sans-serif" },
-  });
-}
+};

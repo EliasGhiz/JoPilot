@@ -1,76 +1,40 @@
 # JoPilot Frontend
 
-## Overview
-
-This project is built using Vite, React, and React Router v7 along with Material UI for styling.
-
-## Application Structure
-
-### Source Code Organization
+## Folder Structure
 
 ```
 frontend/
-├── app/                     # Main application code
-│   ├── components/          # Reusable UI components
-│   │   ├── Sidebar.tsx      # Application sidebar navigation
-│   │   └── TopBar.tsx       # Top application bar
-│   │
-│   ├── constants/           # Application-wide constants
-│   │   └── layout.ts        # Layout dimensions and settings
-│   │
-│   ├── dashboard/           # Dashboard feature
-│   │   ├── Dashboard.tsx    # Dashboard page component
-│   │   ├── DashboardLayout.tsx  # Layout wrapper for the app
-│   │   ├── Settings.tsx     # Settings page
-│   │   └── Test.tsx         # Test API connection page
-│   │
-│   ├── hooks/               # Custom React hooks
-│   │   ├── useSidebarState.ts  # Manages sidebar open/closed state
-│   │   └── useThemeState.ts # Manages theme and color mode
-│   │
-│   ├── root.tsx             # Root component that renders routes
-│   └── routes.tsx           # Application route definitions
-│
-├── src/                     # Supporting source code
-│   ├── index.tsx            # Application entry point
-│   └── version.ts           # App version information
-│
-└── public/                  # Static assets
-    ├── favicon.svg          # App favicon
-    └── index.html           # HTML template
+├── app/                  
+│   ├── components/   # Reusable UI components (TopBar, Sidebar, etc.)
+│   │   ├── App.tsx     # Main application component
+│   │   ├── Sidebar/    # Sidebar navigation components
+│   │   └── TopBar/     # Top navigation bar components
+│   ├── hooks/        # Custom hooks (e.g. useThemeState, useSidebarState)
+│   ├── layout/       # Layout components (e.g. DashboardLayout)
+│   ├── pages/        # Page components corresponding to routes
+│   ├── theme/        # Theme configuration, color system, and UI constants
+│   ├── routes.tsx    # Defines application routes and navigation structure
+│   ├── utils/        # Utility functions (e.g. colorUtils)
+│   └── index.tsx     # Application entry point that renders App component
+├── public/          # Static assets (index.html, favicon, etc.)
 ```
-
-### Key Architectural Components
-
-#### Component Organization
-
-1. **Layout Components**:
-   - `DashboardLayout.tsx`: Main layout wrapper that includes the sidebar, topbar, and content area
-   - Handles theme switching, sidebar state, and navigation
-
-2. **State Management**:
-   - Custom hooks in the `hooks/` directory manage application state
-   - `useThemeState.ts`: Manages theme settings (dark/light mode, color variants)
-   - `useSidebarState.ts`: Manages sidebar collapsed/expanded state
-
-3. **Theme Configuration**:
-   - Theme settings are centralized in `src/themeConfig.ts`
-   - Provides consistent styling across the application
-   - Supports multiple theme variants (default, red planet, blue space)
-
-4. **Routing**:
-   - React Router v7 manages navigation
-   - Routes defined in `app/routes.tsx`
-   - Nested routing with shared layout components
 
 ## Getting Started
 
 ### Installation
 
-Install the dependencies:
+For development:
 
 ```bash
+# Standard full installation
 npm install
+```
+
+For CI/CD environments:
+
+```bash
+# Clean install from package-lock.json
+npm ci
 ```
 
 ### Development
@@ -89,6 +53,12 @@ Create a production build:
 
 ```bash
 npm run build
+```
+
+Start the production server:
+
+```bash
+npm start
 ```
 
 ## Deployment
@@ -125,12 +95,4 @@ Make sure to deploy the output of `npm run build`
 ├── build/
 │   ├── client/    # Static assets
 │   └── server/    # Server-side code
-```
-
-### Issues
-
-Sometimes Material Icons don't install correctly.
-Run the following command to manually install them.
-```sh
-npm install @mui/icons-material
 ```
