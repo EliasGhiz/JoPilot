@@ -30,6 +30,7 @@ interface ExtendedRouteObject extends Omit<RouteObject, 'children'> {
   children?: ExtendedRouteObject[];
 }
 
+// Create routes with explicit file properties for each route
 const routes: ExtendedRouteObject[] = [
   {
     // Public login route that triggers Auth0 (bypassed when auth is disabled)
