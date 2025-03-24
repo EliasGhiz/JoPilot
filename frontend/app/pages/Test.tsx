@@ -6,7 +6,14 @@ export default function Test() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    // Better fallback - use localhost for local dev, but window.location.origin/api for production
+    const apiUrl = process.env.REACT_APP_API_URL || 
+                  (window.location.hostname === 'localhost' ? 
+                   'http://localhost:5000' : 
+                   `${window.location.origin}/api`);
+                   
+    console.log("Using API URL:", apiUrl);
+    
     fetch(`${apiUrl}/test`)
       .then(res => {
         if (!res.ok) throw new Error("Network response was not ok");
