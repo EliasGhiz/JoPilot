@@ -23,18 +23,8 @@ interface TopBarProps {
   colorMode: PaletteMode;
 }
 
-export default function TopBar({
-  open,
-  setOpen,
-  themeIcon,
-  onThemeLeftClick,
-  onThemeRightClick,
-  topbarColor,
-  primaryContrast,
-  hamburgerWhite,
-  themeVariant,
-  colorMode
-}: TopBarProps) {
+export default function TopBar(props: TopBarProps) {
+  const { open, setOpen, themeIcon, onThemeLeftClick, onThemeRightClick, topbarColor, primaryContrast, hamburgerWhite, themeVariant, colorMode } = props;
   const theme = useTheme<Theme>();
   const { layout, zIndex } = theme;
   

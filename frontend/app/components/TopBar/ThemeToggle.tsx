@@ -9,7 +9,7 @@ import type { PaletteMode } from "@mui/material";
 interface ThemeToggleProps {
   onThemeLeftClick: () => void;
   onThemeRightClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => void;
-  themeIcon: string; // Changed from React.ReactNode to string (SVG path)
+  themeIcon: string;
   primaryContrast: string;
   colorMode: PaletteMode;
   themeVariant: ThemeVariant;

@@ -1,6 +1,6 @@
 // SidebarItem.tsx – Renders individual navigation items in the sidebar with selection state and icons.
 
-import { cloneElement } from 'react';
+import React, { memo, cloneElement } from 'react';
 import {
   ListItemButton,
     ListItemText,
@@ -12,7 +12,7 @@ import { getSidebarIconColor, getThemeColor } from 'app/theme/colorSystem';
 import { SidebarItemProps } from './types';
 
 // Sidebar item component
-export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItemProps) => {
+export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: SidebarItemProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isSelected = location.pathname === item.route;
@@ -94,4 +94,4 @@ export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItem
       </ListItemButton>
     </Tooltip>
   );
-};
+});

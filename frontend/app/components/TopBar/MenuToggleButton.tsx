@@ -23,10 +23,13 @@ const MenuToggleButton: React.FC<MenuToggleButtonProps> = ({
   colorMode,
   themeVariant
 }) => {
-
+  // set fixed white color for icon
   const iconColor = "#fff";
-  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 70 : 80) + '20'; // 20 is hex for 12% opacity
   
+  // calculate hover color based on theme, dark/light tweak
+  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 70 : 80) + '20'; // 20 -> 12% opacity
+  
+  // style props changes (opacity, transform, duration)
   const buttonStyles = {
     color: iconColor,
     opacity: open ? 1 : 0.85,
@@ -34,6 +37,7 @@ const MenuToggleButton: React.FC<MenuToggleButtonProps> = ({
     transition: 'transform 0.2s, opacity 0.2s'
   };
   
+  // set circular container dimension
   const circleSize = 48;
   
   return (
@@ -57,6 +61,7 @@ const MenuToggleButton: React.FC<MenuToggleButtonProps> = ({
             pointerEvents: 'none'
           }}
         >
+          {/* key: icon toggle */}
           {open ? <MenuOpenIcon /> : <MenuIcon />}
         </IconButton>
       </CircularHighlight>
