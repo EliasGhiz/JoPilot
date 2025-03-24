@@ -24,7 +24,7 @@ interface ThemeToggleProps {
   disableTooltip?: boolean;
 }
 
-const ThemeToggle: React.FC<ThemeToggleProps> = ({
+export default function ThemeToggle({
   onThemeLeftClick,
   onThemeRightClick,
   themeIcon,
@@ -104,6 +104,4 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
       </Box>
     </Tooltip>
   );
-};
-
-export default ThemeToggle;
+}
