@@ -6,7 +6,8 @@ export default function Test() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/test")
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    fetch(`${apiUrl}/test`)
       .then(res => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
