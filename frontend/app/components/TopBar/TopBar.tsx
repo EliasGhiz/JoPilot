@@ -4,16 +4,16 @@ import React from "react";
 import { AppBar, Toolbar, Box, alpha } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
 import MenuToggleButton from "./MenuToggleButton";
-import LogoWithTitle from "./LogoWithTitle";
 import ThemeToggle from "./ThemeToggle";
 import { getThemeColor } from "app/theme/colorSystem";
 import type { ThemeVariant } from "app/theme/colorSystem";
 import type { PaletteMode } from "@mui/material";
+const JoLogo = "/JoLogo.svg";
 
 interface TopBarProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  themeIcon: React.ReactNode;
+  themeIcon: string;
   onThemeLeftClick: () => void;
   onThemeRightClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
   topbarColor: string;
@@ -80,7 +80,6 @@ export default function TopBar({
             colorMode={colorMode}
             themeVariant={themeVariant}
           />
-
           <Box sx={{
             position: "absolute",
             right: 0,
@@ -94,13 +93,9 @@ export default function TopBar({
           }} />
         </Box>
         
-        {/* Logo area */}
-        <Box sx={{ 
-          display: "flex", 
-          alignItems: "center",
-          ml: 2.5
-        }}>
-          <LogoWithTitle />
+        {/* Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+          <img src={JoLogo} alt="JoPilot logo" style={{ height: layout.appBarHeight * 0.68, width: "auto" }} />
         </Box>
         
         <Box sx={{ flexGrow: 1 }} />

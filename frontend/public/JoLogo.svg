@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1566 480">
+  <!-- "Jo" icon -->
+  <g>
+    <!-- Red background with rounded corners -->
+    <rect 
+      x="0" 
+      y="50%" 
+      width="556" 
+      height="480" 
+      transform="translate(0, -240)" 
+      fill="#E53E3E" 
+      rx="80" 
+      ry="80" 
+    />
+    <!-- "Jo" -->
+    <text 
+      x="278" 
+      y="285" 
+      dominant-baseline="middle" 
+      text-anchor="middle" 
+      font-family="Roboto Flex, sans-serif" 
+      font-weight="700" 
+      font-size="456" 
+      fill="#FFFFFF"
+      style="font-variation-settings: 'wght' 700; paint-order: stroke fill; stroke:#ffffff; stroke-width:1px; stroke-linejoin:round;"
+    >
+      Jo
+    </text>
+  </g>
+  <!-- "Pilot" -->
+  <text 
+    x="582" 
+    y="285" 
+    dominant-baseline="middle" 
+    text-anchor="start" 
+    font-family="Roboto Flex, sans-serif" 
+    font-weight="700" 
+    font-size="456" 
+    fill="#FFFFFF"
+    style="paint-order: stroke fill; stroke:#ffffff; stroke-width:1px; stroke-linejoin:round;"
+  >
+    Pilot
+  </text>
+</svg>
