@@ -1,10 +1,11 @@
 // ThemeToggle.tsx – Provides a button to switch themes and toggle dark/light mode.
 
 import React, { useState, useEffect } from "react";
-import { IconButton, Tooltip, Box, useTheme } from "@mui/material";
+import { Tooltip, Box, useTheme } from "@mui/material";
 import { getThemeColor } from "app/theme/colorSystem";
 import type { ThemeVariant } from "app/theme/colorSystem";
 import type { PaletteMode } from "@mui/material";
+import CentralIconButton from "../IconButton/IconButton";
 
 interface ThemeToggleProps {
   onThemeLeftClick: () => void;
@@ -15,14 +16,14 @@ interface ThemeToggleProps {
   themeVariant: ThemeVariant;
 }
 
-const ThemeToggle: React.FC<ThemeToggleProps> = ({
+export default function ThemeToggle({
   onThemeLeftClick,
   onThemeRightClick,
   themeIcon,
   primaryContrast,
   colorMode,
   themeVariant
-}) => {
+}: ThemeToggleProps) {
   const theme = useTheme();
   const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode==='dark' ? 70 : 80);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,8 +42,8 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
     }
   };
   
-const iconSize = getIconSize(themeVariant);
-const bgCircleSize = theme.layout.appBarHeight * 0.8;
+  const iconSize = getIconSize(themeVariant);
+  const bgCircleSize = theme.layout.appBarHeight * 0.8;
   
   const handleImageError = () => {
     setIsLoading(false);
@@ -57,7 +58,10 @@ const bgCircleSize = theme.layout.appBarHeight * 0.8;
     <Tooltip title="Left click: change theme, Right click: toggle dark/light mode">
       <Box
         onClick={onThemeLeftClick}
-        onContextMenu={onThemeRightClick}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          onThemeRightClick(e);
+        }}
         sx={{
           width: `${theme.layout.collapsedSidebarWidth}px`,
           height: `${theme.layout.appBarHeight}px`,
@@ -69,15 +73,9 @@ const bgCircleSize = theme.layout.appBarHeight * 0.8;
         }}
         aria-label="theme toggle area"
       >
-        <IconButton 
-          sx={{ 
-            color: primaryContrast,
-            padding: 0,
-            borderRadius: '50%',
-            '&:hover': {
-              backgroundColor: `${hoverBgColor}20`
-            }
-          }} 
+        <CentralIconButton
+          hoverBgColor={hoverBgColor}
+          iconColor={primaryContrast}
         >
           <Box 
             component="span" 
@@ -123,15 +121,13 @@ const bgCircleSize = theme.layout.appBarHeight * 0.8;
                     xs: 'translateY(3%)',
                     sm: 'translateY(3%)',
                     md: 'translateY(3%)'
-                  } // minimal vertical shift change for centering
+                  }
                 }}
               />
             </Box>
           </Box>
-        </IconButton>
+        </CentralIconButton>
       </Box>
     </Tooltip>
   );
-};
-
-export default ThemeToggle;
+}
