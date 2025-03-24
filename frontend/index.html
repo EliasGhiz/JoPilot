@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="fonts-loading" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +9,16 @@
     <link rel="preload" href="./saturn.png" as="image" type="image/png">
     <link rel="preload" href="./milkyway.png" as="image" type="image/png">
     <link rel="preload" href="./sunmoon.png" as="image" type="image/png">
+    
+    <!-- Hide entire document until fonts used by app are loaded -->
+    <style>
+      html.fonts-loading { visibility: hidden; }
+    </style>
+    <script>
+      document.fonts.ready.then(function() {
+        document.documentElement.classList.remove('fonts-loading');
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
