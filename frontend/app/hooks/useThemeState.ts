@@ -37,6 +37,15 @@ export const useThemeState = () => {
     localStorage.setItem(THEME_VARIANT_KEY, themeVariant);
   }, [themeVariant]);
   
+  // Preload theme icons when the app initializes
+  useEffect(() => {
+    // Preload all theme icon SVGs
+    Object.values(themeIcons).forEach(iconPath => {
+      const img = new Image();
+      img.src = iconPath;
+    });
+  }, []);
+  
   // Toggle light/ dark mode
   const toggleColorMode = () => {
     setColorMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));

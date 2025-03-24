@@ -2,7 +2,7 @@
 
 import { PaletteMode } from '@mui/material';
 import { ThemeVariant, MD3ColorScheme } from './types';
-import { SURFACE_COLORS, THEME_ICONS, THEME_ICON_SCALE_FACTORS } from './palettes';
+import { SURFACE_COLORS, THEME_ICONS, THEME_ICON_DIMENSIONS } from './palettes';
 import { createColorScheme, interpolateColor } from './paletteUtils';
 
 // Create color schemes for each theme variant
@@ -65,7 +65,7 @@ export function getSidebarIconColor(colorMode: PaletteMode, variant: ThemeVarian
 
 // Re-export theme icon constants
 export const themeIcons = THEME_ICONS;
-export const themeIconScaleFactors = THEME_ICON_SCALE_FACTORS;
+export const themeIconDimensions = THEME_ICON_DIMENSIONS;
 
 // Re-export type definitions
 export type { ThemeVariant };

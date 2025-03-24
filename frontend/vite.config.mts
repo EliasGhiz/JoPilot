@@ -12,6 +12,8 @@ export default defineConfig({
     sourcemap: true
   },
   server: {
-    port: 3000
+    port: 3000,
+    host: '0.0.0.0', // Allow connections from all network interfaces
+    open: true       // Automatically open browser
   }
 });
