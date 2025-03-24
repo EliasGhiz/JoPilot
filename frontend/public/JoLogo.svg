@@ -13,33 +13,34 @@
       rx="80" 
       ry="80" 
     />
-    <!-- "Jo" -->
-    <text 
-      x="278" 
-      y="285" 
-      dominant-baseline="middle" 
-      text-anchor="middle" 
-      font-family="Roboto Flex, sans-serif" 
-      font-weight="700" 
-      font-size="456" 
-      fill="#FFFFFF"
-      style="font-variation-settings: 'wght' 700; paint-order: stroke fill; stroke:#ffffff; stroke-width:1px; stroke-linejoin:round;"
-    >
-      Jo
-    </text>
+    <g style="stroke: none;"> <!-- Prevent weird lines showing on edges of letters -->
+      <text 
+        x="278" 
+        y="285" 
+        dominant-baseline="middle" 
+        text-anchor="middle" 
+        font-family="Roboto Flex, sans-serif" 
+        font-weight="700" 
+        font-size="456" 
+        fill="#FFFFFF"
+        style="font-variation-settings: 'wght' 700; paint-order: stroke fill;"
+      >
+        <tspan>J</tspan><tspan dx="-8">o</tspan>
+      </text>
+      <!-- "Pilot" text -->
+      <text 
+        x="582" 
+        y="285" 
+        dominant-baseline="middle" 
+        text-anchor="start" 
+        font-family="Roboto Flex, sans-serif" 
+        font-weight="700" 
+        font-size="456" 
+        fill="#FFFFFF"
+        style="paint-order: stroke fill;"
+      >
+        Pilot
+      </text>
+    </g>
   </g>
-  <!-- "Pilot" -->
-  <text 
-    x="582" 
-    y="285" 
-    dominant-baseline="middle" 
-    text-anchor="start" 
-    font-family="Roboto Flex, sans-serif" 
-    font-weight="700" 
-    font-size="456" 
-    fill="#FFFFFF"
-    style="paint-order: stroke fill; stroke:#ffffff; stroke-width:1px; stroke-linejoin:round;"
-  >
-    Pilot
-  </text>
 </svg>
