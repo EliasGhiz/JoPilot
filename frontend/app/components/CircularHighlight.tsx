@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 
 interface CircularHighlightProps {
   children: React.ReactNode;
-  size?: number; // in pixels
+  size?: number; // fallback maximum size in pixels
   hoverBgColor?: string;
 }
 
@@ -20,7 +20,12 @@ export default function CircularHighlight({ children, size = 48, hoverBgColor }:
         justifyContent: 'center',
         borderRadius: '50%',
         transition: 'background-color 0.2s',
-        '&:hover': { backgroundColor: hoverBgColor || 'rgba(0,0,0,0.1)' }
+        '&:hover': { backgroundColor: hoverBgColor || 'rgba(0,0,0,0.1)' },
+        // Make the circle smaller on smaller viewports
+        '@media (max-width:600px)': {
+          width: size * 0.9,
+          height: size * 0.9,
+        }
       }}
     >
       {children}
