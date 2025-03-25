@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme, Theme } from '@mui/material/styles';
 import { Box, IconButton } from '@mui/material';
 
@@ -18,21 +18,14 @@ export default function CentralIconButton({
   children
 }: CentralIconButtonProps) {
   const theme = useTheme<Theme>();
-  // Default to theme-driven layout values
   const containerHeight = theme.layout?.appBarHeight || 56;
   const containerWidth = theme.layout?.collapsedSidebarWidth || 56;
-  // Circle size: 80% of container height
   const circleSize = containerHeight * 0.75;
-
-  const [isHovered, setIsHovered] = useState(false);
-  const computedBg = isHovered ? `${hoverBgColor}20` : 'transparent';
 
   return (
     <Box
       onClick={onClick}
       onContextMenu={onContextMenu}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       sx={{
         width: containerWidth,
         height: containerHeight,
@@ -43,17 +36,22 @@ export default function CentralIconButton({
       }}
     >
       <IconButton
+        disableRipple
+        disableFocusRipple
+        onPointerDown={(e) => { e.currentTarget.style.backgroundColor = `${hoverBgColor}20`; }}
+        onPointerUp={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+        onTouchStart={(e) => { e.currentTarget.style.backgroundColor = `${hoverBgColor}20`; }}
+        onTouchEnd={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
         sx={{
           color: iconColor || 'inherit',
           padding: 0,
           borderRadius: '50%',
-          backgroundColor: computedBg,
+          backgroundColor: 'transparent',
           transition: 'background-color 0.2s',
-          '&:hover': { backgroundColor: computedBg },
-          pointerEvents: 'none'
+          '&:hover': { backgroundColor: `${hoverBgColor}20` },
+          '&:active': { backgroundColor: 'transparent' }
         }}
       >
-        {/* Circle containing children */}
         <Box
           sx={{
             width: circleSize,

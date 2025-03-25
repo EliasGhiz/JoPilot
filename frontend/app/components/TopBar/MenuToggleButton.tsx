@@ -6,7 +6,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { getThemeColor } from "app/theme/colorSystem";
 import type { ThemeVariant } from "app/theme/colorSystem";
 import type { PaletteMode } from "@mui/material";
-import CentralIconButton from "../IconButton/IconButton";
+import CentralIconButton from "app/components/IconButton/IconButton";
 
 interface MenuToggleButtonProps {
   open: boolean;
@@ -22,13 +22,8 @@ const MenuToggleButton: React.FC<MenuToggleButtonProps> = ({
   colorMode,
   themeVariant
 }) => {
+  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 70 : 80);
   const iconColor = "#fff";
-  const hoverBgColor = getThemeColor(
-    themeVariant,
-    'primary',
-    colorMode,
-    colorMode === 'dark' ? 70 : 80
-  );
   
   return (
     <CentralIconButton

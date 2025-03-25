@@ -1,11 +1,11 @@
 // ThemeToggle.tsx – Provides a button to switch themes and toggle dark/light mode.
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Tooltip, Box, useTheme } from "@mui/material";
-import { getThemeColor } from "app/theme/colorSystem";
 import type { ThemeVariant } from "app/theme/colorSystem";
 import type { PaletteMode } from "@mui/material";
-import CentralIconButton from "../IconButton/IconButton";
+import CentralIconButton from "app/components/IconButton/IconButton";
+import { getThemeColor } from "app/theme/colorSystem";
 
 interface ThemeToggleProps {
   onThemeLeftClick: () => void;
@@ -16,27 +16,23 @@ interface ThemeToggleProps {
   themeVariant: ThemeVariant;
 }
 
-export default function ThemeToggle({
+const ThemeToggle: React.FC<ThemeToggleProps> = ({
   onThemeLeftClick,
   onThemeRightClick,
   themeIcon,
   primaryContrast,
   colorMode,
-  themeVariant
-}: ThemeToggleProps) {
+  themeVariant,
+}) => {
   const theme = useTheme();
-  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode==='dark' ? 70 : 80);
-  const [isLoading, setIsLoading] = useState(false);
-  
+
   // Get exact size for each icon in pixels to avoid scaling issues
   const getIconSize = (variant: ThemeVariant): { width: number, height: number } => {
     switch(variant) {
       case 'red':
         return { width: 84, height: 84 };
       case 'blue':
-        return { width: 56, height: 56 };
       case 'gray':
-        return { width: 56, height: 56 };
       default:
         return { width: 56, height: 56 };
     }
@@ -44,24 +40,11 @@ export default function ThemeToggle({
   
   const iconSize = getIconSize(themeVariant);
   const bgCircleSize = theme.layout.appBarHeight * 0.8;
+  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 70 : 80);
   
-  const handleImageError = () => {
-    setIsLoading(false);
-  };
-  
-  // When theme icon changes, set loading state
-  useEffect(() => {
-    setIsLoading(true);
-  }, [themeIcon]);
-
   return (
     <Tooltip title="Left click: change theme, Right click: toggle dark/light mode">
       <Box
-        onClick={onThemeLeftClick}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          onThemeRightClick(e);
-        }}
         sx={{
           width: `${theme.layout.collapsedSidebarWidth}px`,
           height: `${theme.layout.appBarHeight}px`,
@@ -74,6 +57,8 @@ export default function ThemeToggle({
         aria-label="theme toggle area"
       >
         <CentralIconButton
+          onClick={onThemeLeftClick}
+          onContextMenu={onThemeRightClick}
           hoverBgColor={hoverBgColor}
           iconColor={primaryContrast}
         >
@@ -89,7 +74,6 @@ export default function ThemeToggle({
               transition: 'none'
             }}
           >
-            {/* Flex container for centering the image */}
             <Box
               sx={{
                 width: '100%',
@@ -104,15 +88,10 @@ export default function ThemeToggle({
                 component="img"
                 src={themeIcon}
                 alt={`${themeVariant} theme icon`}
-                onLoad={() => {
-                  setIsLoading(false);
-                  console.log("Successfully loaded:", themeIcon);
-                }}
-                onError={handleImageError}
                 sx={{
                   width: iconSize.width,  
                   height: iconSize.height,
-                  opacity: isLoading ? 0.3 : 1,
+                  opacity: 1,
                   filter: colorMode === 'dark' ? 'brightness(1.2) contrast(1.1)' : 'none',
                   transition: 'none',
                   objectFit: 'contain',
@@ -130,4 +109,6 @@ export default function ThemeToggle({
       </Box>
     </Tooltip>
   );
-}
+};
+
+export default ThemeToggle;
