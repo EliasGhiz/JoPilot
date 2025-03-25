@@ -1,7 +1,7 @@
-import DashboardLayout from "./dashboard/DashboardLayout";
-import Dashboard from "./dashboard/Dashboard";
-import Settings from "./dashboard/Settings";
-import Test from "./dashboard/Test";
+import DashboardLayout from "./pages/DashboardLayout";
+import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
+import Test from "./pages/Test";
 import { Navigate, type RouteObject } from 'react-router-dom';
 
 type ExtendedRouteObject = RouteObject & {

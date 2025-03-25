@@ -1,34 +1,35 @@
-// src/components/YourComponent.tsx
 import React, { useEffect, useState } from 'react';
-import api from '../api';
+import api from '../api/api';
 import axios from 'axios';
 
-const ApiComponent: React.FC = () => {
-    const [data, setData] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
+interface ApiComponentProps {
+  endpoint: string;
+}
 
-    const fetchAPI = async () => {
-        try 
-        {
-        const response = await api.get('/test'); //
-        console.log('Data fetched successfully:', response.data); //console debugging
-        setData(response.data.message);
-        }
-        catch (err)
-        {
-        if (axios.isAxiosError(err))
-            {
-                setError(err.message);
-            }else
-            {
-                setError('An unexpected error occurred');
-            }
-        }
-    };
+const ApiComponent: React.FC<ApiComponentProps> = ({ endpoint }) => {
+  const [data, setData] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchAPI = async () => {
+    console.log('fetchAPI called with endpoint:', endpoint);
+    try {
+      const response = await api.get(endpoint);
+      console.log('Data fetched successfully:', response.data);
+      setData(response.data.message);
+    } catch (err) {
+      console.log('Error occurred:', err);
+      if (axios.isAxiosError(err)) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
+    }
+  };
 
   useEffect(() => {
+    console.log('useEffect called');
     fetchAPI();
-  }, []);
+  }, [endpoint]);
 
   return (
     <div>
