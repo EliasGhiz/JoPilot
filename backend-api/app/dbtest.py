@@ -47,3 +47,34 @@ def test_create_profile(app, client):
     assert created_profile is not None
     assert created_profile.UserID == user.UserID
     assert created_profile.Resume == "My Resume"
+
+    
+
+
+def test_create_user_and_get_data(client):
+    user_data = {
+        "Name": "John Doe",
+        "Password": "password123",
+        "Email": "john@example.com",
+        "ContactInfo": "123-456-7890"
+    }
+
+    # POST request to create the user
+    response = client.post('/api/users', json=user_data)
+
+    # Assert the response status code is 201 (Created)
+    assert response.status_code == 201
+
+    # Assert that the response contains the correct data
+    json_data = response.get_json()
+    assert json_data['Name'] == "John Doe"
+    assert json_data['Email'] == "john@example.com"
+
+    # Ensure the user exists in the database within the application context
+    with client.application.app_context():
+        created_user = User.query.filter_by(Email="john@example.com").first()
+        assert created_user is not None
+        assert created_user.Name == "John Doe"
+        assert created_user.Email == "john@example.com"
+
+
