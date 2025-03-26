@@ -1,14 +1,16 @@
 #Models are used to define the stucture of data managed by the application.
 #This data will then, in most cases, be mapped to database tables. 
 
+from flask_sqlalchemy import SQLAlchemy
 
-#sample, do not use
-class User:
-    def __init__(self, email, username):
-        self.email = email
-        self.username = username
+db = SQLAlchemy()
 
-    #used to represent as string for debug
-    def __repr__(self):
-        return f'<User {self.username}>'
+class User(db.Model):
+    # make a unique ID for each user 
+    id = db.Column(db.Integer, primary_key= True)
+    email = db.Column(db.String(120) , unique=True , nullable=False )
+    password_hash = db.Column(db.String(128), nullable=False)
     
+
+
+ 
