@@ -2,6 +2,7 @@
 
 from app import create_app
 from app.database import db
+from sqlalchemy import inspect
 import os
 
 app = create_app()
@@ -12,5 +13,8 @@ if __name__ == '__main__':
     # Creates database tables
     with app.app_context():
         db.create_all()
+        inspector = inspect(db.engine)
+        print(inspector.get_table_names())
     # Bind to all interfaces to allow external access.
     app.run(host='0.0.0.0', port=port, debug=True)
+    
