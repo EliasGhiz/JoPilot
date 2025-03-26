@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Tooltip, Box, useTheme } from "@mui/material";
-import type { ThemeVariant } from "app/theme/colorSystem";
+import type { ThemeVariant } from "app/theme/themeColors";
 import type { PaletteMode } from "@mui/material";
 import CentralIconButton from "app/components/IconButton/IconButton";
-import { getThemeColor } from "app/theme/colorSystem";
+import { getThemeColor } from "app/theme/themeColors";
 
 interface ThemeToggleProps {
   onThemeLeftClick: () => void;

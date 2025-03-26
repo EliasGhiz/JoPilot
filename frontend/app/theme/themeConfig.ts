@@ -7,7 +7,7 @@ import {
   getPrimaryColor, 
   getOnPrimaryColor, 
   getThemeColor,
-} from './colorSystem';
+} from './themeColors';
 
 // Theme configuration interface
 declare module "@mui/material/styles" {

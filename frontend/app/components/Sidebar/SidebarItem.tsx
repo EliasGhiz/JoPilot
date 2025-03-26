@@ -8,7 +8,7 @@ import {
   Box
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getSidebarIconColor, getThemeColor } from 'app/theme/colorSystem';
+import { getSidebarIconColor, getThemeColor } from '../../theme/themeColors';
 import { SidebarItemProps } from './types';
 
 // Sidebar item component

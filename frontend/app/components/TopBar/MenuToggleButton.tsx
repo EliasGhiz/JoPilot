@@ -3,7 +3,7 @@
 import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { getThemeColor } from "app/theme/colorSystem";
+import { getThemeColor } from "app/theme/themeColors";
 import type { ThemeVariant } from "app/theme/colorSystem";
 import type { PaletteMode } from "@mui/material";
 import CentralIconButton from "app/components/IconButton/IconButton";

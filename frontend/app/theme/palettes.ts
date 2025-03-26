@@ -1,8 +1,9 @@
 // palettes.ts – Defines the base color palettes for different theme variants.
 
-import { ThemeVariant, Palette } from './types';
+import type { ThemeVariant, Palette } from './types';
 
 // Base color palettes for each theme
+// 0 = Darkest shade, 100 = Lightest shade
 export const BASE_PALETTES: Record<ThemeVariant, Palette> = {
   red: {
     0: '#000000', 10: '#410002', 20: '#690005', 30: '#93000A', 40: '#BA1A1A',

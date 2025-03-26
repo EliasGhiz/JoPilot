@@ -5,7 +5,7 @@ import { PaletteMode } from '@mui/material';
 import { 
   ThemeVariant, 
   themeIcons 
-} from '../theme/colorSystem';
+} from '../theme/themeColors';
 import { createAppTheme } from '../theme/themeConfig';
 
 // Local storage keys

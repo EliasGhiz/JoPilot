@@ -5,8 +5,8 @@ import { AppBar, Toolbar, Box, alpha } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
 import MenuToggleButton from "./MenuToggleButton";
 import ThemeToggle from "./ThemeToggle";
-import { getThemeColor } from "app/theme/colorSystem";
-import type { ThemeVariant } from "app/theme/colorSystem";
+import { getThemeColor } from "app/theme/themeColors";
+import type { ThemeVariant } from "app/theme/themeColors";
 import type { PaletteMode } from "@mui/material";
 const JoLogo = "/JoLogo.svg";
 
@@ -63,7 +63,7 @@ export default function TopBar(props: TopBarProps) {
           backgroundColor: actualTopbarColor,
           ...(open && { borderLeft: "3px solid", borderColor })
         }}>
-          {/* Larger clickable area removed extra hover logic */}
+          {/* Larger clickable area */}
           <Box 
             sx={{ 
               width: 56, 
