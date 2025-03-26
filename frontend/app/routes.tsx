@@ -1,11 +1,24 @@
 // routes.tsx – Defines the application's routing structure using React Router with a nested hierarchy.
 
+import React, { useEffect } from 'react';
+import { Navigate, type RouteObject } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Test from "./pages/Test";
-import { Navigate, type RouteObject } from 'react-router-dom';
 import RequireAuth from "./components/RequireAuth";
+
+// Inline component to redirect to Auth0 login
+const Login: React.FC = () => {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, loginWithRedirect]);
+  return <div>Redirecting to login...</div>;
+};
 
 // Define extended route type to include file property
 interface ExtendedRouteObject extends Omit<RouteObject, 'children'> {
@@ -15,7 +28,13 @@ interface ExtendedRouteObject extends Omit<RouteObject, 'children'> {
 
 const routes: ExtendedRouteObject[] = [
   {
-    // Lock main app routes behind authentication; if not authenticated, RequireAuth triggers redirect
+    // Public login route that triggers Auth0
+    path: '/login',
+    element: <Login />,
+    file: "pages/Login.tsx"
+  },
+  {
+    // Protected routes
     path: '/',
     element: (
       <RequireAuth>
