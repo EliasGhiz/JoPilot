@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import axios from 'axios';
+import api from "../components/api/api";
 
 export default function Test() {
   const [data, setData] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Better fallback - use localhost for local dev, but window.location.origin/api for production
-    const apiUrl = process.env.REACT_APP_API_URL || 
-                  (window.location.hostname === 'localhost' ? 
-                   'http://localhost:5000' : 
-                   `${window.location.origin}/api`);
-                   
+    //
+    const apiUrl = window.location.hostname === 'localhost' ? 
+                  'http://localhost:5000' : 
+                  `${window.location.origin}/api`;
+                  
     console.log("Using API URL:", apiUrl);
     
-    fetch(`${apiUrl}/test`)
-      .then(res => {
-        if (!res.ok) throw new Error("Network response was not ok");
-        return res.json();
+    api.get('/test')
+      .then(response => {
+        setData(response.data.message);
       })
-      .then(data => {
-        setData(data.message);
-      })
-      .catch(err => setError(err.message));
+      .catch(err => {
+        if (axios.isAxiosError(err)) {
+          setError(err.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      });
   }, []);
 
   return (
