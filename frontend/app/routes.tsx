@@ -5,19 +5,23 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Test from "./pages/Test";
 import { Navigate, type RouteObject } from 'react-router-dom';
+import RequireAuth from "./components/RequireAuth";
 
 // Define extended route type to include file property
 interface ExtendedRouteObject extends Omit<RouteObject, 'children'> {
   file: string;
-  children?: ExtendedRouteObject[]; 
+  children?: ExtendedRouteObject[];
 }
 
-// Create routes with explicit file properties for each route
 const routes: ExtendedRouteObject[] = [
   {
-    // Use DashboardLayout as parent route to display sidebar and navbar
+    // Lock main app routes behind authentication; if not authenticated, RequireAuth triggers redirect
     path: '/',
-    element: <DashboardLayout />,
+    element: (
+      <RequireAuth>
+        <DashboardLayout />
+      </RequireAuth>
+    ),
     file: "layout/DashboardLayout.tsx",
     children: [
       { index: true, element: <Navigate to="/dashboard" replace />, file: "routes.tsx" },

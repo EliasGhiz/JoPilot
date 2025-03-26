@@ -1,3 +1,5 @@
+// IconButton.tsx – Renders a centralized icon button with defined styles for interactive feedback.
+
 import React from 'react';
 import { useTheme, Theme } from '@mui/material/styles';
 import { Box, IconButton } from '@mui/material';
@@ -37,7 +39,6 @@ export default function CentralIconButton({
     >
       <IconButton
         disableRipple
-        disableFocusRipple
         onPointerDown={(e) => { e.currentTarget.style.backgroundColor = `${hoverBgColor}20`; }}
         onPointerUp={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
         onTouchStart={(e) => { e.currentTarget.style.backgroundColor = `${hoverBgColor}20`; }}
