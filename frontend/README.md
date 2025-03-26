@@ -1,52 +1,40 @@
 # JoPilot Frontend
 
-## Overview
+## Folder Structure
 
-This project is built using Vite, React, and React Router v7 along with Material UI for styling. This README focuses on the key files that define the structure and routing for the frontend application.
-
-## Frontend File Structure
-
-### public/index.html
-
-This is the HTML template for the application.  
-- It contains the root div where the React application is mounted.
-- It also links to the favicon and sets up meta tags required for responsive design.
-
-### src/index.tsx
-
-This is the entry point for the React application.  
-- It initializes the application by creating the React root and wrapping the app in a `<BrowserRouter>` for routing support.
-- It imports the main application component from `app/root.tsx`.
-
-### app/root.tsx
-
-The main application component responsible for rendering the routes.  
-- It uses React Router's `useRoutes` hook to load the UI based on the route configuration.
-- This file is the central container for the dashboard layout and other pages.
-
-### app/routes.tsx
-
-This file defines the route configuration for the application.  
-- It sets up a parent route that uses the DashboardLayout for consistent UI elements: a sidebar and a top navigation bar.
-- Nested inside are child routes (e.g., Dashboard, Settings, Test) that match specific paths.
-- A redirect is provided to route the base URL to the Dashboard.
-
-### app/dashboard Folder
-
-Contains components specific to the dashboard functionality:
-- **DashboardLayout.tsx**: Defines the overall layout including the top AppBar, sidebar navigation, and an `<Outlet />` for nested routes.
-- **Dashboard.tsx**: Displays the core dashboard content.
-- **Settings.tsx**: Contains settings-related content.
-- **Test.tsx**: Manages the Test view content.
+```
+frontend/
+├── app/                  
+│   ├── components/   # Reusable UI components (TopBar, Sidebar, etc.)
+│   │   ├── App.tsx     # Main application component
+│   │   ├── Sidebar/    # Sidebar navigation components
+│   │   └── TopBar/     # Top navigation bar components
+│   ├── hooks/        # Custom hooks (e.g. useThemeState, useSidebarState)
+│   ├── layout/       # Layout components (e.g. DashboardLayout)
+│   ├── pages/        # Page components corresponding to routes
+│   ├── theme/        # Theme configuration, color system, and UI constants
+│   ├── routes.tsx    # Defines application routes and navigation structure
+│   ├── utils/        # Utility functions (e.g. colorUtils)
+│   └── index.tsx     # Application entry point that renders App component
+├── public/          # Static assets (index.html, favicon, etc.)
+```
 
 ## Getting Started
 
 ### Installation
 
-Install the dependencies:
+For development:
 
 ```bash
+# Standard full installation
 npm install
+```
+
+For CI/CD environments:
+
+```bash
+# Clean install from package-lock.json
+npm ci
 ```
 
 ### Development
@@ -57,7 +45,7 @@ Start the development server with HMR:
 npm run dev
 ```
 
-Access frontend through `http://localhost:5173`.
+Access the frontend through `http://localhost:5173`.
 
 ## Building for Production
 
@@ -65,6 +53,12 @@ Create a production build:
 
 ```bash
 npm run build
+```
+
+Start the production server:
+
+```bash
+npm start
 ```
 
 ## Deployment
@@ -101,12 +95,4 @@ Make sure to deploy the output of `npm run build`
 ├── build/
 │   ├── client/    # Static assets
 │   └── server/    # Server-side code
-```
-
-### Issues
-
-Sometimes Material Icons don't install correctly.
-Run the following command to manually install them.
-```sh
-npm install @mui/icons-material
 ```

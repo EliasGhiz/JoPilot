@@ -2,3 +2,6 @@ __pycache__
 
 # Ignore Python Virtual Env
 /backend-api/venv/
+
+# Build outputs
+/frontend/dist/

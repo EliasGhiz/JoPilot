@@ -1,12 +1,11 @@
 {
   "name": "frontend",
   "private": true,
-  "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "vite build",
     "dev": "vite",
-    "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "start": "vite preview --port 3000",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.0.0",

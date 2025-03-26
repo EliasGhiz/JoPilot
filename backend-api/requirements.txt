@@ -1,4 +1,4 @@
 #Temporary use, should find longer term solution instead.
 
-Flask==2.0.1
+Flask==3.0.3
 flask_cors==5.0.1
