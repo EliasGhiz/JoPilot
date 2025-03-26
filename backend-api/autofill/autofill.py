@@ -11,36 +11,57 @@ service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
 
 # Open the target webpage
-driver.get("https://demoqa.com/text-box")
+driver.get("http://localhost:8000/test_form.html")
 time.sleep(3)  # Wait for the page to fully load
 
-# Define autofill data clearly (extend as needed)
+# Define autofill data
 autofill_data = {
-    "name": "Elias Ghiz",
-    "full name": "Elias Ghiz",
+    # Personal info
     "first name": "Elias",
     "last name": "Ghiz",
+    "full name": "Elias Ghiz",
     "email": "eliasghiz@example.com",
     "date of birth": "1990-01-01",
     "phone number": "555-123-4567",
+    # Locations
     "address": "1234 Street Name",
     "city": "Mothatown",
-    "zipcode": "98101",
+    "zip": "98101",
     "state": "Islandstate",
     "country": "United States",
+    # Education
+    "degree": "Bachelors of Science",
+    "major": "Computer Science",
+    "school": "Temple University",
+    "graduation": "May 2025",
+    # Past employment
+    "employer": "Example Employer",
+    "job title": "Programmer",
+    "start date": "01/01/2020",
+    "end date": "02/02/2020",
+    "dates": "01/01/2020 - 02/02/2020",
+    "responsibilities": "example responsibility",
+    # Various job questions
+    "skills": "example skills",
+    "salary expectations": "$100,000",
+    "certifications": "example certifications",
+    "reference name": "Jack Raisch",
+    "reference contact": "100-100-1000",
+    "availability": "availability example",
+    "why": "I like the location and salary",
+    "relocate": "no",
+    "authorized to work in US": "no",
     "about": "Test about section input",
-    "additional": "I'm excited to get this working ",
+    "additional": "I'm excited to get this working",
 }
 
-
-# Helper function to simplify label strings
+# Function to simplify labels for matching
 def simplify_label(text):
     return re.sub(r'[\s:?*]', '', text.lower().strip())
 
-
-# Find all input fields and text areas
+# Find all input fields and textareas
 fields = driver.find_elements(By.XPATH,
-                              "//input[@type='text' or @type='email' or @type='tel' or @type='date'] | //textarea")
+                              "//input[@type='text' or @type='email' or @type='tel' or @type='number' or @type='date'] | //textarea")
 
 for field_element in fields:
     label_text = ""
@@ -52,7 +73,7 @@ for field_element in fields:
         if labels:
             label_text = labels[0].text.strip()
 
-    # No label directly associated? Check parent label or previous sibling element
+    # No label? Check parent or previous sibling
     if not label_text:
         try:
             parent = field_element.find_element(By.XPATH, "./parent::*")
@@ -67,20 +88,26 @@ for field_element in fields:
             pass
 
     simplified_label_text = simplify_label(label_text)
-
     filled = False
-    for key in autofill_data:
-        simplified_key = simplify_label(key)
-        if simplified_key in simplified_label_text or simplified_label_text in simplified_key:
-            field_element.send_keys(autofill_data[key])
-            filled = True
-            print(f"Filled '{label_text}' with '{autofill_data[key]}'")
-            break
+
+    # Prioritize exact matches first
+    if simplified_label_text in autofill_data:
+        field_element.clear()
+        field_element.send_keys(autofill_data[simplified_label_text])
+        filled = True
+        print(f"Filled '{label_text}' with '{autofill_data[simplified_label_text]}'")
+    else:
+        # Fallback to partial matches
+        for key in autofill_data:
+            if simplify_label(key) in simplified_label_text or simplified_label_text in simplify_label(key):
+                field_element.clear()
+                field_element.send_keys(autofill_data[key])
+                filled = True
+                print(f"Filled '{label_text}' with '{autofill_data[key]}'")
+                break
 
     if not filled:
-        print(f"No matching data found for label: '{label_text}'. Leaving blank or adding default.")
-        # Optionally include a default placeholder:
-        # field_element.send_keys("Default Response")
+        print(f"No matching data found for label: '{label_text}'. Leaving blank.")
 
-time.sleep(5)  # Let user view filled values briefly
+time.sleep(500)  # Shorter wait time
 driver.quit()
