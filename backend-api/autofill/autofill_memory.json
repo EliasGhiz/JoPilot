@@ -1,0 +1,16 @@
+{
+    "name": "Elias Ghiz",
+    "full name": "Elias Ghiz",
+    "first name": "Elias",
+    "last name": "Ghiz",
+    "email": "eliasghiz@example.com",
+    "date of birth": "1990-01-01",
+    "phone number": "555-123-4567",
+    "address": "1234 Street Name",
+    "city": "Mothatown",
+    "zipcode": "98101",
+    "state": "Islandstate",
+    "country": "United States",
+    "about": "Test about section input",
+    "additional": "I'm excited to get this working"
+}
