@@ -5,7 +5,7 @@ import { AppBar, Toolbar, Box, alpha } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
 import MenuToggleButton from "./MenuToggleButton";
 import ThemeToggle from "./ThemeToggle";
-import { getThemeColor } from "app/theme/themeColors";
+import { getThemeColor, getTopbarColor } from "app/theme/themeColors";
 import type { ThemeVariant } from "app/theme/themeColors";
 import type { PaletteMode } from "@mui/material";
 const JoLogo = "/JoLogo.svg";
@@ -28,15 +28,7 @@ export default function TopBar(props: TopBarProps) {
   const theme = useTheme<Theme>();
   const { layout, zIndex } = theme;
   
-  const actualTopbarColor = colorMode === 'dark'
-    ? (themeVariant === 'blue'
-          ? getThemeColor('blue', 'primary', colorMode, 25)
-          : themeVariant === 'red'
-          ? getThemeColor('red', 'primary', colorMode, 15)
-          : getThemeColor('gray', 'neutral', colorMode, 15))
-    : themeVariant === 'red'
-      ? getThemeColor('red', 'primary', colorMode, 35)
-      : topbarColor;
+  const actualTopbarColor = getTopbarColor(themeVariant, colorMode, topbarColor);
   
   const borderColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 60 : 65);
   const dividerColor = colorMode === 'dark'

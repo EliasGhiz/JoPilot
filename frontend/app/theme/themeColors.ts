@@ -66,6 +66,35 @@ export const getLogoutIconColor = (colorMode: PaletteMode): string => {
   return colorMode === 'dark' ? "#c62828" : "#d32f2f";
 };
 
+export const getTopbarColor = (
+	themeVariant: ThemeVariant,
+	colorMode: PaletteMode,
+	fallbackTopbarColor?: string,
+	grayscale?: boolean  // <-- new optional parameter
+): string => {
+    if(grayscale){
+        // Always use gray palette regardless of themeVariant
+        return colorMode === 'dark'
+            ? getThemeColor('gray', 'neutral', colorMode, 15)
+            : getThemeColor('gray', 'neutral', colorMode, 90);
+    }
+	if (colorMode === 'dark') {
+		if (themeVariant === 'blue') {
+			return getThemeColor('blue', 'primary', colorMode, 25);
+		} else if (themeVariant === 'red') {
+			return getThemeColor('red', 'primary', colorMode, 15);
+		} else {
+			return getThemeColor('gray', 'neutral', colorMode, 15);
+		}
+	} else {
+		if (themeVariant === 'red') {
+			return getThemeColor('red', 'primary', colorMode, 35);
+		} else {
+			return fallbackTopbarColor || getThemeColor(themeVariant, 'primary', colorMode, 40);
+		}
+	}
+};
+
 // Re-export theme icon constants
 export const themeIcons = THEME_ICONS;
 export const themeIconDimensions = THEME_ICON_DIMENSIONS;
