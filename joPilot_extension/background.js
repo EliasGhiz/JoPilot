@@ -1,6 +1,6 @@
 // background.js – Handles API communication and other background tasks for the Chrome extension
 
-import api from './api/api-service'; // Import the API instance
+import api from '../api/api-service'; // Import the API instance
 
 //Utility function to log messages
 const log = (message, data = null) => {
