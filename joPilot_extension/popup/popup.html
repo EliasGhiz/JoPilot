@@ -3,17 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JoPilot Extension</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 10px;
-      width: 300px;
+    html, body {
+      background-color: #9b9b9b; 
     }
-    h1 {
-      font-size: 18px;
-      text-align: center;
+    header {
+      padding: 8px;
+      display: flex; /* Use flexbox to align items horizontally */
+      align-items: center; /* Center items vertically */
+      justify-content: flex-start; /* Space between logo and button */
+      background-color: #403f3e; /* White background for the header */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+      border-radius: 0px;
+      border-bottom: #9b9b9b;
+      margin: 0px;
+      width: 120px;
+    }
+    header svg {
+      display: inline-block; /* Ensure the SVG stays inline */
+      margin: 0; /* Remove any default margin */
+    }
+    #buttonContainer {
+      padding: 8px;
+      background-color: #403f3e; /* White background for the section */
+      border-radius: 0px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+      margin: 0;
     }
     button {
       display: block;
@@ -23,27 +38,44 @@
       font-size: 14px;
       cursor: pointer;
       border: none;
-      border-radius: 4px;
-      background-color: #4CAF50;
+      border-radius: 8px;
+      background-color: #403f3e;
       color: white;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #d6d4d4;
     }
-    #output {
-      margin-top: 10px;
+    #loginButton {
+      width: auto; /* Adjust width for the login button */
+      margin: 0; /* Remove default margin */
+      padding: 8px px; /* Add padding for better appearance */
       font-size: 14px;
-      color: #333;
-      word-wrap: break-word;
+      background-color: #007BFF; /* Blue background for differentiation */
+      color: white;
+      border-radius: 8px; /* Slightly rounded edges */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for the button */
+    }
+    #loginButton:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+    }
+    img {
+      height: 20px;
+      width: auto;
+      cursor: pointer; /* Show pointer cursor on hover */
     }
   </style>
 </head>
 <body>
-  <h1>JoPilot Extension</h1>
-  <button id="testApiButton">Test API Connection</button>
-  <button id="saveDataButton">Save Data to Storage</button>
-  <button id="fetchDataButton">Fetch Data from Storage</button>
-  <div id="output"></div>
-  <script src="popup.js"></script>
+  <header>
+    <a href="https://jopilot.co" target="_blank">
+      <img src="../public/logo-with-title.png" alt="Logo with Title">
+    </a>
+    <!-- Login Button -->
+    <button id="loginButton">Login</button>
+  </header>
+  <section id="buttonContainer">
+    <button id="syncButton">Sync</button>
+    <button id="autofillButton">Autofill</button>
+  </section>
 </body>
 </html>
