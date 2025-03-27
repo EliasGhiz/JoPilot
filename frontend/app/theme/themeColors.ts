@@ -61,6 +61,11 @@ export const getOnPrimaryColor = (variant: ThemeVariant, mode: PaletteMode): str
   return getThemeColor(variant, 'primary', mode, 100);
 };
 
+export const getLogoutIconColor = (colorMode: PaletteMode): string => {
+  // Use a darker red in dark mode, lighter red in light mode
+  return colorMode === 'dark' ? "#c62828" : "#d32f2f";
+};
+
 // Re-export theme icon constants
 export const themeIcons = THEME_ICONS;
 export const themeIconDimensions = THEME_ICON_DIMENSIONS;

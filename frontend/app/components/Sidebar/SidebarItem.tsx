@@ -8,7 +8,7 @@ import {
   Box
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getSidebarIconColor, getThemeColor } from '../../theme/themeColors';
+import { getSidebarIconColor, getThemeColor, getLogoutIconColor } from '../../theme/themeColors';
 import { SidebarItemProps } from './types';
 
 // Sidebar item component
@@ -42,7 +42,7 @@ export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: Sideba
           // Different styling for open vs closed sidebar
           p: 0,
           my: 0.5,
-          // Don't touch  horizontal margins when collapsed so the icon container stays fixed
+          // Don't touch horizontal margins when collapsed so the icon container stays fixed
           mx: 0,
           height: 48,
           borderRadius: open ? '4px' : 0,
@@ -58,6 +58,7 @@ export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: Sideba
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
+          ...(item.label === 'Logout')
         }}
       >
         {/* Fixed container for the icon */}
@@ -73,8 +74,11 @@ export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: Sideba
         >
           {cloneElement(item.icon as React.ReactElement<any>, { 
             style: { 
-              color: iconColor,
+              color: item.useCustomColor 
+                ? getLogoutIconColor(colorMode) 
+                : iconColor,
               fontSize: '1.4rem',
+              transform: 'scaleX(-1)'
             }
           })}
         </Box>

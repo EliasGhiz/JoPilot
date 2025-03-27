@@ -7,6 +7,7 @@ import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Test from "./pages/Test";
+import Logout from "./pages/Logout"; // <-- new import
 import RequireAuth from "./components/RequireAuth";
 
 // Inline component to redirect to Auth0 login
@@ -46,7 +47,8 @@ const routes: ExtendedRouteObject[] = [
       { index: true, element: <Navigate to="/dashboard" replace />, file: "routes.tsx" },
       { path: 'dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
       { path: 'settings', element: <Settings />, file: "pages/Settings.tsx" },
-      { path: 'test', element: <Test />, file: "pages/Test.tsx" }
+      { path: 'test', element: <Test />, file: "pages/Test.tsx" },
+      { path: 'logout', element: <Logout />, file: "pages/Logout.tsx" }
     ]
   }
 ];

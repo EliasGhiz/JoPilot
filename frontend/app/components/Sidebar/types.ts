@@ -8,6 +8,8 @@ export interface NavItem {
   route: string;
   icon: ReactNode;
   group: 'top' | 'bottom';
+  // New optional flag: if true then SidebarItem should use a custom logout color.
+  useCustomColor?: boolean;
 }
 
 export interface SidebarItemProps {
