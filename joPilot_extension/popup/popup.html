@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JoPilot Extension</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      width: 300px;
+    }
+    h1 {
+      font-size: 18px;
+      text-align: center;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #output {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>JoPilot Extension</h1>
+  <button id="testApiButton">Test API Connection</button>
+  <button id="saveDataButton">Save Data to Storage</button>
+  <button id="fetchDataButton">Fetch Data from Storage</button>
+  <div id="output"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
