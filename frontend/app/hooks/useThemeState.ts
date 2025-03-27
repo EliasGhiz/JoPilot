@@ -19,7 +19,8 @@ export const useThemeState = () => {
   // Initialize from localStorage or default values
   const [colorMode, setColorMode] = useState<PaletteMode>(() => {
     const savedMode = localStorage.getItem(THEME_MODE_KEY);
-    return (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'light';
+    // Auto-set to 'dark' if no valid saved mode is found
+    return (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'dark';
   });
   
   const [themeVariant, setThemeVariant] = useState<ThemeVariant>(() => {
