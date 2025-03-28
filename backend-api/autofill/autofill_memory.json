@@ -1,8 +1,7 @@
 {
-    "name": "Elias Ghiz",
-    "full name": "Elias Ghiz",
     "first name": "Elias",
     "last name": "Ghiz",
+    "full name": "Elias Ghiz",
     "email": "eliasghiz@example.com",
     "date of birth": "1990-01-01",
     "phone number": "555-123-4567",
@@ -12,5 +11,16 @@
     "state": "Islandstate",
     "country": "United States",
     "about": "Test about section input",
-    "additional": "I'm excited to get this working"
+    "additional": "I'm excited to get this working",
+    "school": "Temple",
+    "major": "Computer Science",
+    "highestdegreeobtained": "Bachelors",
+    "employer": "Google",
+    "jobtitle": "Programmer",
+    "employmentdates": "June 2022 - April 2024",
+    "keyresponsibilities": "typing, working, and stuff",
+    "whydoyouwanttoworkforourcompany": "because its cool and i like it",
+    "whatskillsandqualificationsdoyoupossessthatmakeyouagoodfitforthisposition": "communication skills, good typer",
+    "whatareyoursalaryexpectations": "$100,000",
+    "whatisyouravailabilitytostart": "next week"
 }
