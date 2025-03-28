@@ -5,14 +5,15 @@
     "build": "vite build",
     "dev": "vite",
     "start": "vite preview --port 3000",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "jest --config jest.config.js"
   },
   "dependencies": {
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "@fontsource/roboto-flex": "^5.2.5",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
-    "@fontsource/roboto-flex": "^5.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.4.0"
@@ -21,10 +22,13 @@
     "@rollup/rollup-win32-x64-msvc": "4.36.0"
   },
   "devDependencies": {
+    "@testing-library/react": "16.2.0",
     "@types/node": "^20.11.0",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "@vitejs/plugin-react": "^4.0.0",
+    "jest-environment-jsdom": "29.7.0",
+    "ts-jest": "29.3.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.1.4"
