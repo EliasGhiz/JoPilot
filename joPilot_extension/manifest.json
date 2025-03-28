@@ -3,14 +3,18 @@
     "name": "JoPilot",
     "version": "1.0",
     "description": "Companion for Job Applications",
+    "icons": {
+        "16": "public/favicon.png"
+    },
     "browser_action": {
-        "default_popup": "index.html"
+        "default_popup": "popup/popup.html"
+    },
+    "background": {
+        "scripts": ["background.js"], 
+        "persistent": false
     },
     "permissions": [
-        "storage"
-    ],
-    "default_popup": {
-        "width": 400,
-        "height": 200
-    }
+        "storage", 
+        "activeTab" 
+    ]
 }
