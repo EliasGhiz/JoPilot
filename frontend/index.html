@@ -10,9 +10,17 @@
     <link rel="preload" href="./milkyway.png" as="image" type="image/png">
     <link rel="preload" href="./sunmoon.png" as="image" type="image/png">
     
-    <!-- Hide entire document until fonts used by app are loaded -->
+    <!-- Remove extra body margin, padding, and border; and enforce custom font + background color -->
     <style>
       html.fonts-loading { visibility: hidden; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        font-family: "Roboto Flex", sans-serif;
+        background-color: #242729;
+      }
     </style>
     <script>
       document.fonts.ready.then(function() {

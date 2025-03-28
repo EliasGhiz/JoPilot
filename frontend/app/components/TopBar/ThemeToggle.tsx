@@ -7,6 +7,13 @@ import type { PaletteMode } from "@mui/material";
 import CentralIconButton from "app/components/IconButton/IconButton";
 import { getThemeColor } from "app/theme/themeColors";
 
+// Mapping for icon sizes instead of a switch statement.
+const ICON_SIZES: Record<ThemeVariant, { width: number; height: number }> = {
+  red: { width: 84, height: 84 },
+  blue: { width: 56, height: 56 },
+  gray: { width: 56, height: 56 },
+};
+
 interface ThemeToggleProps {
   onThemeLeftClick: () => void;
   onThemeRightClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => void;
@@ -14,6 +21,7 @@ interface ThemeToggleProps {
   primaryContrast: string;
   colorMode: PaletteMode;
   themeVariant: ThemeVariant;
+  disableTooltip?: boolean;
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({
@@ -23,26 +31,62 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
   primaryContrast,
   colorMode,
   themeVariant,
+  disableTooltip,
 }) => {
   const theme = useTheme();
 
-  // Get exact size for each icon in pixels to avoid scaling issues
-  const getIconSize = (variant: ThemeVariant): { width: number, height: number } => {
-    switch(variant) {
-      case 'red':
-        return { width: 84, height: 84 };
-      case 'blue':
-      case 'gray':
-      default:
-        return { width: 56, height: 56 };
-    }
-  };
-  
-  const iconSize = getIconSize(themeVariant);
+  // Use the object mapping for icon sizes.
+  const iconSize = ICON_SIZES[themeVariant] || ICON_SIZES.gray;
   const bgCircleSize = theme.layout.appBarHeight * 0.8;
+  
+  // Extract a common transform value.
+  const translateY = 'translateY(3%)';
+  
   const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 70 : 80);
   
-  return (
+  const button = (
+    <CentralIconButton
+      onClick={onThemeLeftClick}
+      onContextMenu={onThemeRightClick}
+      hoverBgColor={hoverBgColor}
+      iconColor={primaryContrast}
+    >
+      {/* Combined spanning Box for centering */}
+      <Box
+        component="span"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: `${bgCircleSize}px`,
+          height: `${bgCircleSize}px`,
+          borderRadius: '50%',
+          transition: 'none',
+          overflow: 'hidden'
+        }}
+      >
+        <Box
+          component="img"
+          src={themeIcon}
+          alt={`${themeVariant} theme icon`}
+          sx={{
+            width: iconSize.width,
+            height: iconSize.height,
+            opacity: 1,
+            filter: colorMode === 'dark' ? 'brightness(1.2) contrast(1.1)' : 'none',
+            transition: 'none',
+            objectFit: 'contain',
+            objectPosition: 'center',
+            transform: translateY
+          }}
+        />
+      </Box>
+    </CentralIconButton>
+  );
+
+  return disableTooltip ? (
+    button
+  ) : (
     <Tooltip title="Left click: change theme, Right click: toggle dark/light mode">
       <Box
         sx={{
@@ -56,56 +100,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
         }}
         aria-label="theme toggle area"
       >
-        <CentralIconButton
-          onClick={onThemeLeftClick}
-          onContextMenu={onThemeRightClick}
-          hoverBgColor={hoverBgColor}
-          iconColor={primaryContrast}
-        >
-          <Box 
-            component="span" 
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: `${bgCircleSize}px`,
-              height: `${bgCircleSize}px`,
-              borderRadius: '50%',
-              transition: 'none'
-            }}
-          >
-            <Box
-              sx={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden'
-              }}
-            >
-              <Box 
-                component="img"
-                src={themeIcon}
-                alt={`${themeVariant} theme icon`}
-                sx={{
-                  width: iconSize.width,  
-                  height: iconSize.height,
-                  opacity: 1,
-                  filter: colorMode === 'dark' ? 'brightness(1.2) contrast(1.1)' : 'none',
-                  transition: 'none',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  transform: {
-                    xs: 'translateY(3%)',
-                    sm: 'translateY(3%)',
-                    md: 'translateY(3%)'
-                  }
-                }}
-              />
-            </Box>
-          </Box>
-        </CentralIconButton>
+        {button}
       </Box>
     </Tooltip>
   );

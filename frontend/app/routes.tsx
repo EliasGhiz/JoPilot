@@ -1,13 +1,14 @@
 // routes.tsx – Defines the application's routing structure using React Router with a nested hierarchy.
 
 import React, { useEffect } from 'react';
-import { Navigate, type RouteObject } from 'react-router-dom';
+import { type RouteObject } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Test from "./pages/Test";
-import Logout from "./pages/Logout"; // <-- new import
+import Logout from "./pages/Logout";
+import Landing from "./pages/Landing";
 import RequireAuth from "./components/RequireAuth";
 
 // Inline component to redirect to Auth0 login
@@ -35,8 +36,15 @@ const routes: ExtendedRouteObject[] = [
     file: "pages/Login.tsx"
   },
   {
-    // Protected routes
+    // Public landing page for root URL
     path: '/',
+    element: <Landing />,
+    file: "pages/Landing.tsx"
+  },
+  {
+    // Protected routes with shared DashboardLayout.
+    // Set parent's path to "" so that absolute child paths (e.g. "/dashboard") are allowed.
+    path: "", 
     element: (
       <RequireAuth>
         <DashboardLayout />
@@ -44,13 +52,12 @@ const routes: ExtendedRouteObject[] = [
     ),
     file: "layout/DashboardLayout.tsx",
     children: [
-      { index: true, element: <Navigate to="/dashboard" replace />, file: "routes.tsx" },
-      { path: 'dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
-      { path: 'settings', element: <Settings />, file: "pages/Settings.tsx" },
-      { path: 'test', element: <Test />, file: "pages/Test.tsx" },
-      { path: 'logout', element: <Logout />, file: "pages/Logout.tsx" }
+      { path: '/dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
+      { path: '/settings', element: <Settings />, file: "pages/Settings.tsx" },
+      { path: '/test', element: <Test />, file: "pages/Test.tsx" },
+      { path: '/logout', element: <Logout />, file: "pages/Logout.tsx" }
     ]
   }
 ];
 
-export default routes;
+export { routes };

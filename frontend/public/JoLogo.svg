@@ -21,9 +21,8 @@
         text-anchor="middle" 
         font-family="Roboto Flex, sans-serif" 
         font-weight="700" 
-        font-size="456" 
-        fill="#FFFFFF"
-        style="font-variation-settings: 'wght' 700; paint-order: stroke fill;"
+        font-size="456"
+        style="fill: var(--primary-color, #FFFFFF); font-variation-settings: 'wght' 700; paint-order: stroke fill;"
       >
         <tspan>J</tspan><tspan dx="-8">o</tspan>
       </text>
@@ -35,9 +34,8 @@
         text-anchor="start" 
         font-family="Roboto Flex, sans-serif" 
         font-weight="700" 
-        font-size="456" 
-        fill="#FFFFFF"
-        style="paint-order: stroke fill;"
+        font-size="456"
+        style="fill: var(--secondary-color, #FFFFFF); paint-order: stroke fill;"
       >
         Pilot
       </text>
