@@ -12,6 +12,7 @@ const Landing: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const [logoReady, setLogoReady] = React.useState(false);
 
   // Derive text color from the palette.
   const textPrimary = React.useMemo(
@@ -42,8 +43,6 @@ const Landing: React.FC = () => {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    textAlign: "center",
-    px: 2,
   };
 
   return isAuthenticated ? (
@@ -51,10 +50,7 @@ const Landing: React.FC = () => {
   ) : (
     <Box
       sx={{
-        height: "100vh",
         backgroundColor: getThemeColor("gray", "neutral", colorMode, colorMode === "dark" ? 15 : 90),
-        overflow: "hidden",
-        position: "relative",
       }}
     >
       {/* Theme toggle icon */}
@@ -80,25 +76,27 @@ const Landing: React.FC = () => {
       </Box>
 
       {/* Centered Main Content */}
-      <Box sx={containerStyle}>
+      <Box
+        sx={{
+          ...containerStyle,
+          opacity: logoReady ? 1 : 0,
+          transition: "opacity 2.5s ease",
+        }}
+      >
         <JoLogo
           style={{
-            marginBottom: 16,
-            height: 80,
-            width: "auto",
-            display: "block",
-            marginLeft: "auto",
-            marginRight: "auto",
             userSelect: "none",
+            marginBottom: "4px",
           }}
           primaryColor={theme.palette.common.white}
           secondaryColor={colorMode === "light" ? textPrimary : theme.palette.common.white}
+          onLoad={() => setLogoReady(true)}
         />
 
           {/* Desc */}
         <Box
           sx={{
-            mb: 3,
+            mb: 2,
             color: primaryContrast,
             fontSize: "1.25rem",
             fontWeight: 500,
