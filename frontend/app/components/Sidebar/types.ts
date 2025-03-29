@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import type { PaletteMode } from "@mui/material";
-import { ThemeVariant } from 'app/theme/colorSystem';
+import { ThemeVariant } from '../../theme/themeColors';
 
 // Define the navigation item type
 export interface NavItem {

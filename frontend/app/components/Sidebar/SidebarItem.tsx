@@ -58,7 +58,7 @@ export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: Sideba
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
-          ...(item.label === 'Logout')
+          ...(item.label === 'Logout' ? {} : {})
         }}
       >
         {/* Fixed container for the icon */}
