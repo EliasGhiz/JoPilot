@@ -5,7 +5,8 @@
     "build": "vite build",
     "dev": "vite",
     "start": "vite preview --port 3000",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "dev-no-auth": "vite --mode no-auth"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
