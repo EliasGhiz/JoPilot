@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme, Stack } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 import ThemeToggle from "app/components/TopBar/ThemeToggle";
 import { getThemeColor } from "app/theme/themeColors";
@@ -36,21 +36,14 @@ const Landing: React.FC = () => {
     }
   };
 
-  // Common container style.
-  const containerStyle = {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
   return isAuthenticated ? (
     <Navigate to="/dashboard" replace />
   ) : (
     <Box
       sx={{
         backgroundColor: getThemeColor("gray", "neutral", colorMode, colorMode === "dark" ? 15 : 90),
+        position: "relative",
+        height: "100%",
       }}
     >
       {/* Theme toggle icon */}
@@ -75,10 +68,14 @@ const Landing: React.FC = () => {
         />
       </Box>
 
-      {/* Centered Main Content */}
-      <Box
+      {/* Centered Main Content using MUI Stack */}
+      <Stack
+        direction="column"
+        spacing={2}
+        alignItems="center"
+        justifyContent="center"
         sx={{
-          ...containerStyle,
+          height: "100%",
           opacity: logoReady ? 1 : 0,
           transition: "opacity 2.5s ease",
         }}
@@ -93,10 +90,8 @@ const Landing: React.FC = () => {
           onLoad={() => setLogoReady(true)}
         />
 
-          {/* Desc */}
         <Box
           sx={{
-            mb: 2,
             color: primaryContrast,
             fontSize: "1.25rem",
             fontWeight: 500,
@@ -106,7 +101,6 @@ const Landing: React.FC = () => {
           Discover your future opportunities.
         </Box>
 
-        {/* Log In Button */}
         <Button
           variant="contained"
           onClick={handleLogin}
@@ -123,7 +117,7 @@ const Landing: React.FC = () => {
         >
           Log In
         </Button>
-      </Box>
+      </Stack>
     </Box>
   );
 };
