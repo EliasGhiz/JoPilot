@@ -12,6 +12,7 @@ const Landing: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true'; // added for bypassing Auth0 in local dev
   const [logoReady, setLogoReady] = React.useState(false);
 
   // Derive text color from the palette.
@@ -29,7 +30,9 @@ const Landing: React.FC = () => {
       : theme.palette.grey[900];
 
   const handleLogin = () => {
-    if (isAuthenticated) {
+    if (disableAuth) {
+      navigate("/dashboard");
+    } else if (isAuthenticated) {
       navigate("/dashboard");
     } else {
       loginWithRedirect();

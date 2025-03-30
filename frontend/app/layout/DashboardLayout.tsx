@@ -38,7 +38,7 @@ export default function DashboardLayout() {
   
   return (
     <ThemeProvider theme={themeState.theme}>
-      <Box sx={{ display: "flex", bgcolor: "background.default", color: "text.primary" }}>
+      <Box sx={{ display: "flex", bgcolor: "background.default", color: "text.primary", height: "100%" }}>
         <CssBaseline />
         
         <TopBar

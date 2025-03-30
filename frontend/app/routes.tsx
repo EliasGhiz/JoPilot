@@ -11,6 +11,8 @@ import Logout from "./pages/Logout";
 import Landing from "./pages/Landing";
 import RequireAuth from "./components/RequireAuth";
 
+const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true'; // added for auth bypass in local dev mode
+
 // Inline component to redirect to Auth0 login
 const Login: React.FC = () => {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
@@ -30,9 +32,9 @@ interface ExtendedRouteObject extends Omit<RouteObject, 'children'> {
 
 const routes: ExtendedRouteObject[] = [
   {
-    // Public login route that triggers Auth0
+    // Public login route that triggers Auth0 (bypassed when auth is disabled)
     path: '/login',
-    element: <Login />,
+    element: disableAuth ? <div>Login bypassed</div> : <Login />,
     file: "pages/Login.tsx"
   },
   {
@@ -42,10 +44,9 @@ const routes: ExtendedRouteObject[] = [
     file: "pages/Landing.tsx"
   },
   {
-    // Protected routes with shared DashboardLayout.
-    // Set parent's path to "" so that absolute child paths (e.g. "/dashboard") are allowed.
+    // Protected routes wrapped conditionally based on auth setting
     path: "", 
-    element: (
+    element: disableAuth ? <DashboardLayout /> : (
       <RequireAuth>
         <DashboardLayout />
       </RequireAuth>
