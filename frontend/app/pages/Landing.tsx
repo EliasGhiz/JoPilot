@@ -52,6 +52,7 @@ const Landing: React.FC = () => {
           position: "absolute",
           top: 16,
           right: 16,
+          zIndex: 2, // added to ensure the theme toggle is on top
         }}
       >
         <ThemeToggle
@@ -71,7 +72,7 @@ const Landing: React.FC = () => {
       {/* Centered Main Content using MUI Stack */}
       <Stack
         direction="column"
-        spacing={2}
+        spacing={3}
         alignItems="center"
         justifyContent="center"
         sx={{
@@ -80,25 +81,26 @@ const Landing: React.FC = () => {
           transition: "opacity 2.5s ease",
         }}
       >
-        <JoLogo
-          style={{
-            userSelect: "none",
-            marginBottom: "4px",
-          }}
-          primaryColor={theme.palette.common.white}
-          secondaryColor={colorMode === "light" ? textPrimary : theme.palette.common.white}
-          onLoad={() => setLogoReady(true)}
-        />
+        <Box>
+          <JoLogo
+            style={{
+              userSelect: "none",
+            }}
+            primaryColor={theme.palette.common.white}
+            secondaryColor={colorMode === "light" ? textPrimary : theme.palette.common.white}
+            onLoad={() => setLogoReady(true)}
+          />
 
-        <Box
-          sx={{
-            color: primaryContrast,
-            fontSize: "1.25rem",
-            fontWeight: 500,
-            userSelect: "none",
-          }}
-        >
-          Discover your future opportunities.
+          <Box
+            sx={{
+              color: primaryContrast,
+              fontSize: "1.25rem",
+              fontWeight: 500,
+              userSelect: "none",
+            }}
+          >
+            Discover your future opportunities.
+          </Box>
         </Box>
 
         <Button
