@@ -5,6 +5,7 @@ import { type RouteObject } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
+import Postings from "./pages/Postings";
 import Settings from "./pages/Settings";
 import Test from "./pages/Test";
 import Logout from "./pages/Logout";
@@ -54,6 +55,7 @@ const routes: ExtendedRouteObject[] = [
     file: "layout/DashboardLayout.tsx",
     children: [
       { path: '/dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
+      { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" },
       { path: '/settings', element: <Settings />, file: "pages/Settings.tsx" },
       { path: '/test', element: <Test />, file: "pages/Test.tsx" },
       { path: '/logout', element: <Logout />, file: "pages/Logout.tsx" }
