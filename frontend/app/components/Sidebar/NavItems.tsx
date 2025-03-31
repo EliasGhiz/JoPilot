@@ -4,6 +4,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PestControlRodentIcon from '@mui/icons-material/PestControlRodent';
 import LogoutIcon from '@mui/icons-material/Logout';
+import FeedIcon from '@mui/icons-material/Feed';
 import { NavItem } from './types';
 
 // Sidebar Navigation items
@@ -12,6 +13,12 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Dashboard',
     route: '/dashboard',
     icon: <DashboardIcon />,
+    group: 'top'
+  },
+  {
+    label: 'Applications',
+    route: '/applications',
+    icon: <FeedIcon />,
     group: 'top'
   },
   {

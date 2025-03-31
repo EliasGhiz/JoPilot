@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import { ThemeProvider } from '@mui/material/styles';
 import { useThemeState } from './hooks/useThemeState';
-import { Auth0Provider } from '@auth0/auth0-react';
+import Auth0ProviderWrapper from './Auth0ProviderWrapper';
 
 let disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true';
 const authDomain = import.meta.env.VITE_AUTH0_DOMAIN;
@@ -34,19 +34,9 @@ if (container) {
   const root = ReactDOM.createRoot(container);
   root.render(
     <React.StrictMode>
-      {disableAuth ? (
+      <Auth0ProviderWrapper>
         <Root />
-      ) : (
-        <Auth0Provider
-          domain={authDomain}
-          clientId={authClientId}
-          authorizationParams={{
-            redirect_uri: window.location.origin, // For local testing this points to localhost
-          }}
-        >
-          <Root />
-        </Auth0Provider>
-      )}
+      </Auth0ProviderWrapper>
     </React.StrictMode>
   );
 }
