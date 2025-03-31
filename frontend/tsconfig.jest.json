@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "lib": ["ES2022", "DOM", "DOM.Iterable"],
+      "module": "CommonJS",
+      "skipLibCheck": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      "jsx": "react-jsx",
+      "strict": true,
+      "noFallthroughCasesInSwitch": true,
+      "allowJs": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "paths": {
+        "app/*": ["./app/*"]
+      },
+      "baseUrl": ".",
+      "noUnusedLocals": true,
+      "noUnusedParameters": true
+    },
+    "include": ["app/**/*.ts", "app/**/*.tsx"]
+  }
