@@ -61,11 +61,23 @@
             background-color: #45a049;
         }
     </style>
+    <script>
+        // Clear all form fields on page load
+        window.onload = () => {
+            const fields = document.querySelectorAll('input, textarea, select');
+            fields.forEach((field) => {
+                field.value = ''; // Clear the value of each field
+                field.removeAttribute('value'); // Remove any persistent value attribute
+                field.setAttribute('autocomplete', 'off'); // Disable browser autofill
+            });
+            console.log('Form fields cleared on page load.');
+        };
+    </script>
 </head>
 <body>
 
 <h2>Job Application Form</h2>
-<form action="/submit_application" method="post">
+<form action="/submit_application" method="post" autocomplete="off">
 
     <!-- Personal Information -->
     <div class="section-title">Personal Information</div>
@@ -206,4 +218,3 @@
 
 </body>
 </html>
-
