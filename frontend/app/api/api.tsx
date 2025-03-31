@@ -1,6 +1,6 @@
 // for axios api layer
 import axios from 'axios';
-import getApiUrl from 'app/utils/apiUrl'; // <-- new import
+import getApiUrl from 'app/api/apiUrl'; // <-- new import
 
 const api = axios.create({
 	// Set the baseURL dynamically
