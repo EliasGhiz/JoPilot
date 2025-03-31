@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+
+    body {
+      margin: 0; /* Remove default margin */
+      padding: 1px; /* Remove default padding */
+      background: lightgray; /* Make the background transparent */
+      box-sizing: border-box; /* Ensure padding and border are included in dimensions */
+      border-radius: 16px;
+    }
+
+    header {
+      position: relative; /* Ensure the pseudo-element is positioned relative to the header */
+      padding: 6px;
+      display: flex; /* Use flexbox to align items horizontally */
+      align-items: center; /* Center items vertically */
+      justify-content: flex-start; /* Space between logo and button */
+      background: #403f3e;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 0px;
+      border-bottom: #9b9b9b;
+      margin: 0px;
+      width: 132px;
+      overflow: hidden;
+    }
+    
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; /* Position the line just below the header */
+      left: 0;
+      width: 100%;
+      height: 2px; /* Thickness of the line */
+      background: linear-gradient(to right, rgba(229, 62, 62, 0), #E53E3E, rgba(229, 62, 62, 0)); /* Fading red effect */
+    }
+    
+    
+    #buttonContainer {
+      position: relative; /* Ensure the pseudo-element is positioned relative to the button container */
+      padding: 6px;
+      background: rgba(64, 63, 62, 0.8);
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      margin: 0;
+    }
+    
+    #buttonContainer::before {
+      content: '';
+      position: absolute;
+      top: -1px; /* Position the line just above the button container */
+      left: 0;
+      width: 100%;
+      height: 2px; /* Thickness of the line */
+      background: linear-gradient(to right, rgba(229, 62, 62, 0), #E53E3E, rgba(229, 62, 62, 0)); /* Fading red effect */
+    }
+
+    header svg {
+      display: inline-block; /* Ensure the SVG stays inline */
+      margin: 0 0 20px 0;
+      overflow: hidden;
+    }
+
+    #buttonContainer {
+      position: relative;
+      padding: 6px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      background: rgba(64, 63, 62, 0.8); /* Semi-transparent background */
+      border-radius: 0px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for depth */
+      backdrop-filter: blur(8px); /* Glassmorphism effect */
+      margin: 0;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #403f3e;
+      color: white;
+      outline: 1px solid white; /* Add a small white outline */
+    }
+
+    button:hover {
+      background-color: #d6d4d4;
+    }
+
+    #loginButton {
+      width: auto; /* Adjust width for the login button */
+      margin: 0; /* Remove default margin */
+      padding: 6px; /* Add padding for better appearance */
+      font-size: 12px;
+      background-color: #38A169;
+      color: white;
+      border-radius: 8px; /* Slightly rounded edges */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for the button */
+      overflow: hidden;
+      margin-left: auto;
+    }
+
+    #loginButton:hover {
+      background-color: #237047; /* Darker blue on hover */
+    }
+
+    img {
+      height: 20px;
+      width: auto;
+      cursor: pointer; /* Show pointer cursor on hover */
+    }
+  </style>
+</head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<body>
+  <header>
+    <a href="https://jopilot.co" target="_blank">
+      <img src="../public/logo-with-title.png" alt="Logo with Title">
+    </a>
+    <!-- Login Button -->
+    <button id="loginButton">Login</button>
+  </header>
+  <section id="buttonContainer">
+    <button id="syncButton">
+      <i class="fa-solid fa-rotate" style="color: #ffffff; margin-right: 2px;"></i> Sync
+    <button id="autofillButton">
+      <i class="fa-solid fa-file" style="color: #ffffff; margin-right: 6px;"></i> Autofill
+    </button>
+  </section>
+  <script src="popup.js"></script>
+</body>
+</html>

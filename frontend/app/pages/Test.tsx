@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import getApiUrl from "app/utils/apiUrl";
+
+// import getApiUrl from "app/utils/apiUrl"; // Previous method, may revert.
+
+import axios from 'axios';
+import api from "../components/api/api";
 
 export default function Test() {
   const [data, setData] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+/* // Previous method, may revert
     const apiUrl = getApiUrl();
 
     fetch(`${apiUrl}/test`)
@@ -17,11 +22,25 @@ export default function Test() {
           throw new Error("Expected JSON, got something else");
         }
         return res.json();
+*/
+    //
+    const apiUrl = window.location.hostname === 'localhost' ? 
+                  'http://localhost:5000' : 
+                  `${window.location.origin}/api`;
+                  
+    console.log("Using API URL:", apiUrl);
+    
+    api.get('/test')
+      .then(response => {
+        setData(response.data.message);
       })
-      .then(data => {
-        setData(data.message);
-      })
-      .catch(err => setError(err.message));
+      .catch(err => {
+        if (axios.isAxiosError(err)) {
+          setError(err.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      });
   }, []);
 
   return (
