@@ -5,4 +5,6 @@ __pycache__
 
 # Build outputs
 /frontend/dist/
+
+node_modules
 frontend/.env.no-auth
