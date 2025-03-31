@@ -13,7 +13,7 @@ import { styles } from './styles';
 import { SidebarProps } from './types';
 import { SidebarItem } from './SidebarItem';
 import { NAV_ITEMS } from './NavItems';
-import { getThemeColor } from '../../theme/colorSystem';
+import { getThemeColor } from '../../theme/themeColors';
 
 export default function Sidebar({ open, themeVariant, colorMode }: SidebarProps) {
   const theme = useTheme();

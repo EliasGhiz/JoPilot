@@ -15,6 +15,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ title }) => {
       <Typography 
         variant="subtitle1"
         sx={{
+          whiteSpace: 'nowrap',
           fontSize: '1.125rem',
           fontWeight: 400,
           color: theme.palette.text.secondary,

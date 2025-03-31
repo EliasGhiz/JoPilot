@@ -1,8 +1,9 @@
 // palettes.ts – Defines the base color palettes for different theme variants.
 
-import { ThemeVariant, Palette } from './types';
+import type { ThemeVariant, Palette } from './types';
 
 // Base color palettes for each theme
+// 0 = Darkest shade, 100 = Lightest shade
 export const BASE_PALETTES: Record<ThemeVariant, Palette> = {
   red: {
     0: '#000000', 10: '#410002', 20: '#690005', 30: '#93000A', 40: '#BA1A1A',
@@ -34,15 +35,15 @@ export const SURFACE_COLORS = {
   dark: { surface: '#1F1B1A', surfaceVariant: '#534341', onSurface: '#FFFBFF', onSurfaceVariant: '#F3DDD9' }
 };
 
-// Theme icons
+// Theme icons (updated to use PNG files)
 export const THEME_ICONS = {
-  red: "🪐",
-  blue: "🌌",
-  gray: "🌗"
+  red: "/saturn.png",
+  blue: "/milkyway.png",
+  gray: "/sunmoon.png"
 };
 
-export const THEME_ICON_SCALE_FACTORS: Record<string, number> = {
-  "🪐": 1.3,
-  "🌌": 0.9,
-  "🌗": 0.9
+// Increase base dimensions for all icons
+export const THEME_ICON_DIMENSIONS = {
+  width: 32,
+  height: 32
 };

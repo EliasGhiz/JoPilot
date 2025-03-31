@@ -1,9 +1,8 @@
 // App.tsx - App component definition, ets up route-based navigation.
 
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
-import type { RouteObject } from 'react-router-dom';
-import routes from '../../app/routes';
+import { useRoutes, RouteObject } from 'react-router-dom';
+import { routes } from '../../app/routes';
 
 const App: React.FC = () => {
   // React Router's 'useRoutes' renders component based on current path

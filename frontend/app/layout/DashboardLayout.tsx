@@ -9,7 +9,7 @@ import MainContent from "../components/MainContent";
 import PageTitle from "../components/PageTitle";
 import { useThemeState } from "../hooks/useThemeState";
 import { useSidebarState } from "../hooks/useSidebarState";
-import { TRANSITION_SPEED_FAST } from "app/theme/uiConstants";
+import { TRANSITION_SPEED_FAST } from "app/theme/styleConstants";
 
 // Map routes to page titles
 const pageTitles: Record<string, string> = {
@@ -38,7 +38,7 @@ export default function DashboardLayout() {
   
   return (
     <ThemeProvider theme={themeState.theme}>
-      <Box sx={{ display: "flex", bgcolor: "background.default", color: "text.primary" }}>
+      <Box sx={{ display: "flex", bgcolor: "background.default", color: "text.primary", height: "100%" }}>
         <CssBaseline />
         
         <TopBar
