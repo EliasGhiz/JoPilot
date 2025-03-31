@@ -8,14 +8,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useThemeState } from './hooks/useThemeState';
 import { Auth0Provider } from '@auth0/auth0-react';
 
-const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true';
+let disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true';
 const authDomain = import.meta.env.VITE_AUTH0_DOMAIN;
 const authClientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
-// Validate Auth0 config only if auth is enabled
 if (!disableAuth && (!authDomain || !authClientId)) {
-  console.error('Missing Auth0 configuration. Set VITE_AUTH0_DOMAIN and VITE_AUTH0_CLIENT_ID in your environment.');
-  throw new Error('Auth0 configuration is not defined.');
+  console.warn('Missing Auth0 configuration. Disabling authentication.');
+  disableAuth = true;
 }
 
 // Create a root component that provides the custom theme

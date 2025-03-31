@@ -7,12 +7,13 @@ import { useThemeState } from "app/hooks/useThemeState";
 import { useAuth0 } from "@auth0/auth0-react";
 import JoLogo from "app/components/JoLogo";
 
+const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true';
+
 const Landing: React.FC = () => {
   const { colorMode, toggleColorMode } = useThemeState();
   const theme = useTheme();
   const navigate = useNavigate();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
-  const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true'; // added for bypassing Auth0 in local dev
   const [logoReady, setLogoReady] = React.useState(false);
 
   // Derive text color from the palette.
@@ -32,6 +33,7 @@ const Landing: React.FC = () => {
   const handleLogin = () => {
     if (disableAuth) {
       navigate("/dashboard");
+      return;
     } else if (isAuthenticated) {
       navigate("/dashboard");
     } else {

@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 // import getApiUrl from "app/utils/apiUrl"; // Previous method, may revert.
 
 import axios from 'axios';
-import api from "../components/api/api";
+import api from "../api/api";
 
 export default function Test() {
   const [data, setData] = useState("");
