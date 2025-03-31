@@ -1,11 +1,13 @@
 // for axios api layer
 import axios from 'axios';
+import getApiUrl from 'app/utils/apiUrl'; // <-- new import
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000', //base url for flask api
-  headers: {
-    'Content-Type': 'application/json',
-  },
+	// Set the baseURL dynamically
+	baseURL: getApiUrl(),
+	headers: {
+		'Content-Type': 'application/json',
+	},
 });
 
 export default api;
