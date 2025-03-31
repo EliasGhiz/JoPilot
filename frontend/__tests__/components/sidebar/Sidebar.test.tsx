@@ -19,7 +19,7 @@ jest.mock('../../../app/components/Sidebar/NavItems', () => ({
   ],
 }));
 
-jest.mock('../../../app/theme/colorSystem', () => ({
+jest.mock('../../../app/theme/themeColors', () => ({
   getThemeColor: () => '#000',
 }));
 

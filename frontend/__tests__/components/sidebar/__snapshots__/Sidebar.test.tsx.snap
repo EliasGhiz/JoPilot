@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sidebar Snapshot Test should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiDrawer-root MuiDrawer-anchorLeft MuiDrawer-docked css-pdzvz5-MuiDrawer-docked"
+  >
+    <div
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation0 MuiDrawer-paper MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft css-1lwhjos-MuiPaper-root-MuiDrawer-paper"
+      style="--Paper-shadow: none;"
+    >
+      <div
+        class="MuiBox-root css-19ssmzo"
+      >
+        <ul
+          class="MuiList-root MuiList-padding css-15w5z1i-MuiList-root"
+        >
+          <div>
+            Mocked SidebarItem
+          </div>
+        </ul>
+        <div
+          class="MuiBox-root css-8xl60i"
+        >
+          <ul
+            class="MuiList-root MuiList-padding css-2wvk20-MuiList-root"
+          >
+            <div>
+              Mocked SidebarItem
+            </div>
+          </ul>
+          <hr
+            class="MuiDivider-root MuiDivider-fullWidth css-g2m0nt-MuiDivider-root"
+          />
+          <div
+            class="MuiBox-root css-1koj1hf"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-caption css-65ntss-MuiTypography-root"
+            >
+              Version 1.0.0
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

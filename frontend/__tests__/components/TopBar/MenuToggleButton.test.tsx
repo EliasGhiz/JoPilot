@@ -3,14 +3,9 @@ import { render } from '@testing-library/react';
 import MenuToggleButton from '../../../app/components/TopBar/MenuToggleButton';
 
 // Mock all imports
-jest.mock('../../../app/theme/colorSystem', () => ({
+jest.mock('../../../app/theme/themeColors', () => ({
   getThemeColor: () => '#000',
 }));
-
-jest.mock('../../../app/components/CircularHighlight', () => ({
-    __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => <div>Mocked CircularHighlight {children}</div>,
-  }));
 
 describe('MenuToggleButton Snapshot Test', () => {
   it('should match the snapshot when open', () => {
