@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, useTheme, Stack } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 import ThemeToggle from "app/components/TopBar/ThemeToggle";
@@ -15,6 +15,11 @@ const Landing: React.FC = () => {
   const navigate = useNavigate();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   const [logoReady, setLogoReady] = React.useState(false);
+
+  // Set document title to "JoPilot" when landing page mounts
+  useEffect(() => {
+    document.title = "JoPilot";
+  }, []);
 
   // Derive text color from the palette.
   const textPrimary = React.useMemo(

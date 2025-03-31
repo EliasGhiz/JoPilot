@@ -10,13 +10,7 @@ import PageTitle from "../components/PageTitle";
 import { useThemeState } from "../hooks/useThemeState";
 import { useSidebarState } from "../hooks/useSidebarState";
 import { TRANSITION_SPEED_FAST } from "app/theme/styleConstants";
-
-// Map routes to page titles
-const pageTitles: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/settings": "Settings",
-  "/test": "Test"
-};
+import { NAV_ITEMS } from "app/components/Sidebar/NavItems";
 
 export default function DashboardLayout() {
   const themeState = useThemeState();
@@ -33,8 +27,14 @@ export default function DashboardLayout() {
     }
   }, [location.pathname, navigate]);
 
-  // Get current page title from route
-  const title = pageTitles[location.pathname] || "";
+  // Derive the current page title automatically from NAV_ITEMS
+  const title =
+    NAV_ITEMS.find((item) => item.route === location.pathname)?.label || "";
+  
+  // Update browser tab title automatically
+  useEffect(() => {
+    document.title = `JoPilot | ${title}`;
+  }, [title]);
   
   return (
     <ThemeProvider theme={themeState.theme}>
