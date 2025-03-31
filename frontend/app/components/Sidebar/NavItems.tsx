@@ -15,6 +15,12 @@ export const NAV_ITEMS: NavItem[] = [
     group: 'top'
   },
   {
+    label: 'Job Postings',
+    route: '/postings',
+    icon: <DashboardIcon />,
+    group: 'top'
+  },
+  {
     label: 'Settings',
     route: '/settings',
     icon: <SettingsIcon />,
