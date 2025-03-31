@@ -7,7 +7,7 @@ import {
   getPrimaryColor, 
   getOnPrimaryColor, 
   getThemeColor,
-} from './colorSystem';
+} from './themeColors';
 
 // Theme configuration interface
 declare module "@mui/material/styles" {
@@ -27,7 +27,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-// Create MUI theme using MD3 color system
+// MUI theme using MD3 color system
 export const createAppTheme = (mode: PaletteMode, variant: ThemeVariant) => {
   return createTheme({
     palette: {

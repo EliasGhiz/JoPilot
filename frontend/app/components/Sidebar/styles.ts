@@ -1,8 +1,8 @@
 // styles.ts – Sidebar styles centralized definitions.
 
 import type { PaletteMode } from "@mui/material";
-import { getThemeColor } from "app/theme/colorSystem";
-import { TRANSITION_SPEED_FAST } from "app/theme/uiConstants";
+import { getThemeColor } from "app/theme/themeColors";
+import { TRANSITION_SPEED_FAST } from "app/theme/styleConstants";
 
 // Styling objects to reduce inline styles
 export const styles = {

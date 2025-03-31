@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Box } from "@mui/material";
-import { TRANSITION_SPEED_FAST } from "app/theme/uiConstants";
+import { TRANSITION_SPEED_FAST } from "app/theme/styleConstants";
 
 interface MainContentProps {
   open: boolean;

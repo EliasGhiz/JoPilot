@@ -1,31 +1,64 @@
 // routes.tsx – Defines the application's routing structure using React Router with a nested hierarchy.
 
+import React, { useEffect } from 'react';
+import { type RouteObject } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Test from "./pages/Test";
-import { Navigate, type RouteObject } from 'react-router-dom';
+import Logout from "./pages/Logout";
+import Landing from "./pages/Landing";
+import RequireAuth from "./components/RequireAuth";
+
+const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true'; // added for auth bypass in local dev mode
+
+// Inline component to redirect to Auth0 login
+const Login: React.FC = () => {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, loginWithRedirect]);
+  return <div>Redirecting to login...</div>;
+};
 
 // Define extended route type to include file property
 interface ExtendedRouteObject extends Omit<RouteObject, 'children'> {
   file: string;
-  children?: ExtendedRouteObject[]; 
+  children?: ExtendedRouteObject[];
 }
 
-// Create routes with explicit file properties for each route
 const routes: ExtendedRouteObject[] = [
   {
-    // Use DashboardLayout as parent route to display sidebar and navbar
+    // Public login route that triggers Auth0 (bypassed when auth is disabled)
+    path: '/login',
+    element: disableAuth ? <div>Login bypassed</div> : <Login />,
+    file: "pages/Login.tsx"
+  },
+  {
+    // Public landing page for root URL
     path: '/',
-    element: <DashboardLayout />,
+    element: <Landing />,
+    file: "pages/Landing.tsx"
+  },
+  {
+    // Protected routes wrapped conditionally based on auth setting
+    path: "", 
+    element: disableAuth ? <DashboardLayout /> : (
+      <RequireAuth>
+        <DashboardLayout />
+      </RequireAuth>
+    ),
     file: "layout/DashboardLayout.tsx",
     children: [
-      { index: true, element: <Navigate to="/dashboard" replace />, file: "routes.tsx" },
-      { path: 'dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
-      { path: 'settings', element: <Settings />, file: "pages/Settings.tsx" },
-      { path: 'test', element: <Test />, file: "pages/Test.tsx" }
+      { path: '/dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
+      { path: '/settings', element: <Settings />, file: "pages/Settings.tsx" },
+      { path: '/test', element: <Test />, file: "pages/Test.tsx" },
+      { path: '/logout', element: <Logout />, file: "pages/Logout.tsx" }
     ]
   }
 ];
 
-export default routes;
+export { routes };

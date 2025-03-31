@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1566 480" preserveAspectRatio="xMidYMid meet">
+  <!-- "Jo" icon -->
+  <g>
+    <!-- Red background with rounded corners -->
+    <rect 
+      x="0" 
+      y="50%" 
+      width="556" 
+      height="480" 
+      transform="translate(0, -240)" 
+      fill="#E53E3E" 
+      rx="80" 
+      ry="80" 
+    />
+    <g style="stroke: none;"> <!-- Prevent weird lines showing on edges of letters -->
+      <text 
+        x="278" 
+        y="285" 
+        dominant-baseline="middle" 
+        text-anchor="middle" 
+        font-family="Roboto Flex, sans-serif" 
+        font-weight="700" 
+        font-size="456"
+        style="fill: var(--primary-color, #FFFFFF); font-variation-settings: 'wght' 700; paint-order: stroke fill;"
+      >
+        <tspan>J</tspan><tspan dx="-8">o</tspan>
+      </text>
+      <!-- "Pilot" text -->
+      <text 
+        x="582" 
+        y="285" 
+        dominant-baseline="middle" 
+        text-anchor="start" 
+        font-family="Roboto Flex, sans-serif" 
+        font-weight="700" 
+        font-size="456"
+        style="fill: var(--secondary-color, #FFFFFF); paint-order: stroke fill;"
+      >
+        Pilot
+      </text>
+    </g>
+  </g>
+</svg>

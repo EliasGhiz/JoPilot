@@ -19,7 +19,10 @@
     },
     "baseUrl": ".",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "types": [
+      "vite/client"
+    ]
   },
   "include": ["app/**/*.ts", "app/**/*.tsx"]
 }

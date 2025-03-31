@@ -1,13 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="fonts-loading" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JoPilot</title>
     <link rel="icon" href="./favicon.svg" />
+    <!-- Preload theme PNGs -->
+    <link rel="preload" href="./saturn.png" as="image" type="image/png">
+    <link rel="preload" href="./milkyway.png" as="image" type="image/png">
+    <link rel="preload" href="./sunmoon.png" as="image" type="image/png">
+    
+    <!-- Remove extra body margin, padding, and border; and enforce custom font + background color -->
+    <style>
+      html.fonts-loading { visibility: hidden; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        font-family: "Roboto Flex", sans-serif;
+        background-color: #242729;
+        height: 100%;
+      }
+    </style>
+
+    <script>
+      document.fonts.ready.then(function() {
+        document.documentElement.classList.remove('fonts-loading');
+      });
+    </script>
+    <style>
+      /* Disable mobile tap highlight globally */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root" style="height: 100%;"></div>
     <script type="module" src="/app/index.tsx"></script>
   </body>
 </html>

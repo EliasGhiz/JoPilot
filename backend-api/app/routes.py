@@ -1,4 +1,5 @@
 #API endpoints
+
 from flask import request, jsonify, render_template, Blueprint
 from .database import db, User, Profile, Job, AppliedTo, Bookmark
 
@@ -300,14 +301,18 @@ def delete_bookmark(user_id, job_id):
     return '', 204
     
 
-
 def initialize_app_endpoints(app):
     app.register_blueprint(bp)
     #test sending data to react
     @app.route('/test') #parameters reflect web url path. This will be the homepage
     def test_endpoint():
-        data = {'message': 'Test Message from API'}
-        return jsonify(data)
-        
-    
-    
+        response_data = {'message': 'Test Message from API'}
+        app.logger.info("Endpoint /test hit, sending JSON: %s", response_data)
+        return jsonify(response_data)
+
+    # New alias route to support /api/test requests
+    @app.route('/api/test')
+    def api_test_endpoint():
+        # Reuse test_endpoint to avoid duplication
+        return test_endpoint()
+

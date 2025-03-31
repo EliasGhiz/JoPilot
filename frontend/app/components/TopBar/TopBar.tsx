@@ -4,16 +4,16 @@ import React from "react";
 import { AppBar, Toolbar, Box, alpha } from "@mui/material";
 import { useTheme, Theme } from "@mui/material/styles";
 import MenuToggleButton from "./MenuToggleButton";
-import LogoWithTitle from "./LogoWithTitle";
 import ThemeToggle from "./ThemeToggle";
-import { getThemeColor } from "app/theme/colorSystem";
-import type { ThemeVariant } from "app/theme/colorSystem";
+import { getThemeColor, getTopbarColor } from "app/theme/themeColors";
+import type { ThemeVariant } from "app/theme/themeColors";
 import type { PaletteMode } from "@mui/material";
+const JoLogo = "/JoLogo.svg";
 
 interface TopBarProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  themeIcon: React.ReactNode;
+  themeIcon: string;
   onThemeLeftClick: () => void;
   onThemeRightClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
   topbarColor: string;
@@ -23,30 +23,12 @@ interface TopBarProps {
   colorMode: PaletteMode;
 }
 
-export default function TopBar({
-  open,
-  setOpen,
-  themeIcon,
-  onThemeLeftClick,
-  onThemeRightClick,
-  topbarColor,
-  primaryContrast,
-  hamburgerWhite,
-  themeVariant,
-  colorMode
-}: TopBarProps) {
+export default function TopBar(props: TopBarProps) {
+  const { open, setOpen, themeIcon, onThemeLeftClick, onThemeRightClick, topbarColor, primaryContrast, hamburgerWhite, themeVariant, colorMode } = props;
   const theme = useTheme<Theme>();
   const { layout, zIndex } = theme;
   
-  const actualTopbarColor = colorMode === 'dark'
-    ? (themeVariant === 'blue'
-          ? getThemeColor('blue', 'primary', colorMode, 25)
-          : themeVariant === 'red'
-          ? getThemeColor('red', 'primary', colorMode, 15)
-          : getThemeColor('gray', 'neutral', colorMode, 15))
-    : themeVariant === 'red'
-      ? getThemeColor('red', 'primary', colorMode, 35)
-      : topbarColor;
+  const actualTopbarColor = getTopbarColor(themeVariant, colorMode, topbarColor);
   
   const borderColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 60 : 65);
   const dividerColor = colorMode === 'dark'
@@ -73,14 +55,26 @@ export default function TopBar({
           backgroundColor: actualTopbarColor,
           ...(open && { borderLeft: "3px solid", borderColor })
         }}>
-          <MenuToggleButton 
-            open={open} 
-            onClick={() => setOpen(!open)} 
-            hamburgerWhite={hamburgerWhite} 
-            colorMode={colorMode}
-            themeVariant={themeVariant}
-          />
-
+          {/* Larger clickable area */}
+          <Box 
+            sx={{ 
+              width: 56, 
+              height: 56, 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "center",
+              cursor: "pointer"
+            }}
+            onClick={() => setOpen(!open)}
+          >
+            <MenuToggleButton 
+              open={open}
+              hamburgerWhite={hamburgerWhite} 
+              colorMode={colorMode}
+              themeVariant={themeVariant}
+            />
+          </Box>
+          
           <Box sx={{
             position: "absolute",
             right: 0,
@@ -94,26 +88,43 @@ export default function TopBar({
           }} />
         </Box>
         
-        {/* Logo area */}
-        <Box sx={{ 
-          display: "flex", 
-          alignItems: "center",
-          ml: 2.5
-        }}>
-          <LogoWithTitle />
+        {/* Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+          <img 
+            src={JoLogo} 
+            alt="JoPilot logo" 
+            style={{ 
+              height: layout.appBarHeight * 0.68, 
+              width: "auto",
+              userSelect: "none",
+              WebkitUserSelect: "none",
+              msUserSelect: "none"
+            }} 
+          />
         </Box>
         
         <Box sx={{ flexGrow: 1 }} />
         
-        {/* Theme toggle */}
-        <ThemeToggle
-          onThemeLeftClick={onThemeLeftClick}
-          onThemeRightClick={onThemeRightClick}
-          themeIcon={themeIcon}
-          primaryContrast={primaryContrast}
-          colorMode={colorMode}
-          themeVariant={themeVariant}
-        />
+        {/* Theme toggle with larger clickable area */}
+        <Box
+          sx={{ 
+            width: 56, 
+            height: 56, 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center",
+            cursor: "pointer"
+          }}
+        >
+          <ThemeToggle
+            onThemeLeftClick={onThemeLeftClick}
+            onThemeRightClick={onThemeRightClick}
+            themeIcon={themeIcon}
+            primaryContrast={primaryContrast}
+            colorMode={colorMode}
+            themeVariant={themeVariant}
+          />
+        </Box>
       </Toolbar>
     </AppBar>
   );

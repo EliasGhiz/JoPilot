@@ -1,98 +1,96 @@
 # JoPilot Frontend
 
+JoPilot Frontend is a modern web application built with [React](https://reactjs.org/), styled using [MUI (Material UI)](https://mui.com/), and routed via [React Router v7](https://reactrouter.com/). The project is developed with Vite, providing fast build and hot-reload during development.
+
+## Technology Stack
+
+- **React**: For building user interfaces.
+- **MUI (Material UI)**: Provides UI components following the Material Design guidelines.
+- **React Router v7**: For managing routing and page navigation.
+- **Vite**: Development server and build tool.
+- **Axios**: For HTTP requests in the API layer.
+- **TypeScript**: Ensures type safety throughout the project.
+
 ## Folder Structure
+
+The project is organized to separate concerns and promote modularity. Below is an explanation of the folder structure from top to bottom:
 
 ```
 frontend/
-├── app/                  
-│   ├── components/   # Reusable UI components (TopBar, Sidebar, etc.)
-│   │   ├── App.tsx     # Main application component
-│   │   ├── Sidebar/    # Sidebar navigation components
-│   │   └── TopBar/     # Top navigation bar components
-│   ├── hooks/        # Custom hooks (e.g. useThemeState, useSidebarState)
-│   ├── layout/       # Layout components (e.g. DashboardLayout)
-│   ├── pages/        # Page components corresponding to routes
-│   ├── theme/        # Theme configuration, color system, and UI constants
-│   ├── routes.tsx    # Defines application routes and navigation structure
-│   ├── utils/        # Utility functions (e.g. colorUtils)
-│   └── index.tsx     # Application entry point that renders App component
-├── public/          # Static assets (index.html, favicon, etc.)
+├── app/
+│   ├── api/            # Contains API service modules (e.g., api-service.ts) for handling HTTP calls.
+│   ├── components/     # Reusable UI components.
+│   │   ├── IconButton/ # Centralized icon button component with interactive feedback.
+│   │   ├── Sidebar/    # Components for rendering the side navigation including SidebarItem, NavItems, and styling.
+│   │   └── TopBar/     # Components for the top navigation bar (TopBar, ThemeToggle, MenuToggleButton).
+│   ├── hooks/          # Custom hooks (e.g., useThemeState, useSidebarState) providing state management and persistence.
+│   ├── layout/         # Layout components such as DashboardLayout which defines the overall page structure.
+│   ├── pages/          # Route-specific page components (e.g., Dashboard.tsx, Settings.tsx, Landing.tsx, RequireAuth.tsx).
+│   ├── theme/          # Theme configuration including color utilities, palettes, and theme creation (themeConfig.ts, themeColors.ts, etc.).
+│   └── utils/          # Utility modules (e.g., colorUtils.ts) for common helper functions.
+├── public/             # Static assets like HTML template, favicon, images, etc.
+├── index.html          # Main HTML file which includes the root div for the React application.
+├── routes.tsx          # Defines the routing configuration and route entries for React Router.
+├── App.tsx             # The main App component that sets up the route-based navigation.
+├── MainContent.tsx     # Component providing the primary content area with responsive margins based on sidebar state.
+└── AuthProviderWrapper.tsx  # Conditionally wraps the application with Auth0Provider for authentication.
 ```
 
-## Getting Started
+### Additional File Explanations
 
-### Installation
+- **App.tsx**: Renders the application using React Router’s route configuration. It decides which page to display based on the current URL.
+- **MainContent.tsx**: Provides a container for page content. It automatically adjusts layout based on sidebar width and app bar height.
+- **RequireAuth.tsx**: A higher-order component that protects routes by ensuring the user is authenticated. If not, it triggers a redirect.
+- **AuthProviderWrapper.tsx**: Wraps the application with Auth0Provider (or bypasses it based on environment settings) to handle user authentication.
+- **index.tsx**: Entry point of the application. It initializes the React app, sets up routing with BrowserRouter, and conditionally applies the Auth0Provider.
+- **routes.tsx**: Contains routing definitions including protected and public routes, mapping URLs to their respective page components.
 
-For development:
+## Development Environment Setup
 
-```bash
-# Standard full installation
-npm install
-```
+1. **Install Dependencies**
 
-For CI/CD environments:
+   Navigate to the frontend folder and run:
 
-```bash
-# Clean install from package-lock.json
-npm ci
-```
+   ````bash
+   npm install
+   ````
 
-### Development
+2. **Create a .env File**
 
-Start the development server with HMR:
+   For development, create a `.env` file in the `frontend` folder with at least the following content:
 
-```bash
-npm run dev
-```
+   ````properties
+   VITE_DISABLE_AUTH0=true
+   ````
 
-Access the frontend through `http://localhost:5173`.
+   This setting disables authentication during local development.
 
-## Building for Production
+3. **Environment Variables for Production**
 
-Create a production build:
+   In production, you should define the following environment variables:
+   - `VITE_AUTH0_DOMAIN`: The Auth0 domain for your application.
+   - `VITE_AUTH0_CLIENT_ID`: The Auth0 client ID.
 
-```bash
-npm run build
-```
+   Configure these variables in your hosting provider’s environment settings or within a production `.env` file (do not commit sensitive data).
 
-Start the production server:
+4. **Run the Development Server**
 
-```bash
-npm start
-```
+   Start the dev server for hot-reload:
 
-## Deployment
+   ````bash
+   npm run dev
+   ````
 
-### Docker Deployment
+5. **Build for Production**
 
-To build and run using Docker:
+   To build the production bundle:
 
-```bash
-docker build -t my-app .
+   ````bash
+   npm run build
+   ````
 
-# Run the container
-docker run -p 3000:3000 my-app
-```
+   To preview the built application:
 
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
+   ````bash
+   npm run start
+   ````

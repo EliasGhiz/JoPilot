@@ -1,6 +1,6 @@
 // SidebarItem.tsx – Renders individual navigation items in the sidebar with selection state and icons.
 
-import { cloneElement } from 'react';
+import React, { memo, cloneElement } from 'react';
 import {
   ListItemButton,
     ListItemText,
@@ -8,11 +8,11 @@ import {
   Box
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getSidebarIconColor, getThemeColor } from 'app/theme/colorSystem';
+import { getSidebarIconColor, getThemeColor, getLogoutIconColor } from '../../theme/themeColors';
 import { SidebarItemProps } from './types';
 
 // Sidebar item component
-export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItemProps) => {
+export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: SidebarItemProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isSelected = location.pathname === item.route;
@@ -42,7 +42,7 @@ export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItem
           // Different styling for open vs closed sidebar
           p: 0,
           my: 0.5,
-          // Don't touch  horizontal margins when collapsed so the icon container stays fixed
+          // Don't touch horizontal margins when collapsed so the icon container stays fixed
           mx: 0,
           height: 48,
           borderRadius: open ? '4px' : 0,
@@ -58,6 +58,7 @@ export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItem
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
+          ...(item.label === 'Logout' ? {} : {})
         }}
       >
         {/* Fixed container for the icon */}
@@ -73,8 +74,11 @@ export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItem
         >
           {cloneElement(item.icon as React.ReactElement<any>, { 
             style: { 
-              color: iconColor,
+              color: item.useCustomColor 
+                ? getLogoutIconColor(colorMode) 
+                : iconColor,
               fontSize: '1.4rem',
+              transform: 'scaleX(-1)'
             }
           })}
         </Box>
@@ -94,4 +98,4 @@ export const SidebarItem = ({ item, open, colorMode, themeVariant }: SidebarItem
       </ListItemButton>
     </Tooltip>
   );
-};
+});

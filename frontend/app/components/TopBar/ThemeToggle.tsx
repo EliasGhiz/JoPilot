@@ -1,18 +1,27 @@
 // ThemeToggle.tsx – Provides a button to switch themes and toggle dark/light mode.
 
 import React from "react";
-import { IconButton, Tooltip, Box, useTheme } from "@mui/material";
-import { getThemeColor, themeIconScaleFactors } from "app/theme/colorSystem";
-import type { ThemeVariant } from "app/theme/colorSystem";
+import { Tooltip, Box, useTheme } from "@mui/material";
+import type { ThemeVariant } from "app/theme/themeColors";
 import type { PaletteMode } from "@mui/material";
+import CentralIconButton from "app/components/IconButton/IconButton";
+import { getThemeColor } from "app/theme/themeColors";
+
+// Mapping for icon sizes instead of a switch statement.
+const ICON_SIZES: Record<ThemeVariant, { width: number; height: number }> = {
+  red: { width: 84, height: 84 },
+  blue: { width: 56, height: 56 },
+  gray: { width: 56, height: 56 },
+};
 
 interface ThemeToggleProps {
   onThemeLeftClick: () => void;
   onThemeRightClick: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>) => void;
-  themeIcon: React.ReactNode;
+  themeIcon: string;
   primaryContrast: string;
   colorMode: PaletteMode;
   themeVariant: ThemeVariant;
+  disableTooltip?: boolean;
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({
@@ -21,16 +30,65 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
   themeIcon,
   primaryContrast,
   colorMode,
-  themeVariant
+  themeVariant,
+  disableTooltip,
 }) => {
   const theme = useTheme();
-  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode==='dark' ? 70 : 80);
 
-  return (
+  // Use the object mapping for icon sizes.
+  const iconSize = ICON_SIZES[themeVariant] || ICON_SIZES.gray;
+  const bgCircleSize = theme.layout.appBarHeight * 0.8;
+  
+  // Extract a common transform value.
+  const translateY = 'translateY(3%)';
+  
+  const hoverBgColor = getThemeColor(themeVariant, 'primary', colorMode, colorMode === 'dark' ? 70 : 80);
+  
+  const button = (
+    <CentralIconButton
+      onClick={onThemeLeftClick}
+      onContextMenu={onThemeRightClick}
+      hoverBgColor={hoverBgColor}
+      iconColor={primaryContrast}
+    >
+      {/* Combined spanning Box for centering */}
+      <Box
+        component="span"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: `${bgCircleSize}px`,
+          height: `${bgCircleSize}px`,
+          borderRadius: '50%',
+          transition: 'none',
+          overflow: 'hidden'
+        }}
+      >
+        <Box
+          component="img"
+          src={themeIcon}
+          alt={`${themeVariant} theme icon`}
+          sx={{
+            width: iconSize.width,
+            height: iconSize.height,
+            opacity: 1,
+            filter: colorMode === 'dark' ? 'brightness(1.2) contrast(1.1)' : 'none',
+            transition: 'none',
+            objectFit: 'contain',
+            objectPosition: 'center',
+            transform: translateY
+          }}
+        />
+      </Box>
+    </CentralIconButton>
+  );
+
+  return disableTooltip ? (
+    button
+  ) : (
     <Tooltip title="Left click: change theme, Right click: toggle dark/light mode">
       <Box
-        onClick={onThemeLeftClick}
-        onContextMenu={onThemeRightClick}
         sx={{
           width: `${theme.layout.collapsedSidebarWidth}px`,
           height: `${theme.layout.appBarHeight}px`,
@@ -42,37 +100,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
         }}
         aria-label="theme toggle area"
       >
-        <IconButton 
-          sx={{ 
-            color: primaryContrast,
-            padding: 0,
-            borderRadius: '100%',
-            '&:hover': {
-              backgroundColor: `${hoverBgColor}20`
-            }
-          }} 
-        >
-          <Box component="span" sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: theme.spacing(7),
-            height: theme.spacing(7), 
-            borderRadius: '50%',
-            position: 'relative'
-          }}>
-            <Box component="span" sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: `translate(-50%, -50%) scale(${themeIconScaleFactors[themeIcon as string] || 1})`,
-              fontSize: theme.typography.fontSize * 2,
-              lineHeight: 1,
-            }}>
-              {themeIcon}
-            </Box>
-          </Box>
-        </IconButton>
+        {button}
       </Box>
     </Tooltip>
   );

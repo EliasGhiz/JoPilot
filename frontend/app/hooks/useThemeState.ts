@@ -5,7 +5,7 @@ import { PaletteMode } from '@mui/material';
 import { 
   ThemeVariant, 
   themeIcons 
-} from '../theme/colorSystem';
+} from '../theme/themeColors';
 import { createAppTheme } from '../theme/themeConfig';
 
 // Local storage keys
@@ -19,7 +19,8 @@ export const useThemeState = () => {
   // Initialize from localStorage or default values
   const [colorMode, setColorMode] = useState<PaletteMode>(() => {
     const savedMode = localStorage.getItem(THEME_MODE_KEY);
-    return (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'light';
+    // Auto-set to 'dark' if no valid saved mode is found
+    return (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'dark';
   });
   
   const [themeVariant, setThemeVariant] = useState<ThemeVariant>(() => {
@@ -36,6 +37,15 @@ export const useThemeState = () => {
   useEffect(() => {
     localStorage.setItem(THEME_VARIANT_KEY, themeVariant);
   }, [themeVariant]);
+  
+  // Preload theme icons when the app initializes
+  useEffect(() => {
+    // Preload all theme icon SVGs
+    Object.values(themeIcons).forEach(iconPath => {
+      const img = new Image();
+      img.src = iconPath;
+    });
+  }, []);
   
   // Toggle light/ dark mode
   const toggleColorMode = () => {
