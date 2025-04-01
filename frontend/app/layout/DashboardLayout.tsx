@@ -15,7 +15,8 @@ import { TRANSITION_SPEED_FAST } from "app/theme/styleConstants";
 const pageTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/settings": "Settings",
-  "/test": "Test"
+  "/test": "Test",
+  "/postings": "Job Postings",
 };
 
 export default function DashboardLayout() {
