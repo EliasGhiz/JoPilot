@@ -53,7 +53,7 @@ const Landing: React.FC = () => {
       sx={{
         backgroundColor: getThemeColor("gray", "neutral", colorMode, colorMode === "dark" ? 15 : 90),
         position: "relative",
-        height: "100%",
+        height: "100dvh",
       }}
     >
       {/* Theme toggle icon */}
@@ -86,7 +86,7 @@ const Landing: React.FC = () => {
         alignItems="center"
         justifyContent="center"
         sx={{
-          height: "100%",
+          height: "100dvh",
           opacity: logoReady ? 1 : 0,
           transition: "opacity 2.5s ease",
         }}
