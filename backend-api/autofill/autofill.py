@@ -8,7 +8,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Set up Selenium Chrome driver
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
 
@@ -28,11 +27,7 @@ else:
 
 # Helper function to standardize labels
 def simplify_label(text):
-    # Keep certain words like "school", "name", etc., intact
-    text = re.sub(r'[\s:?*]', '', text.lower().strip())
-    # Prevent over-generalization of important words like 'name' and 'school'
-    text = re.sub(r'\b(school|name|address|phone|email|city|state)\b', '', text)  
-    return text
+    return re.sub(r'[\s:?*]', '', text.lower().strip())
 
 # Locate all input fields and text areas
 fields = driver.find_elements(By.XPATH,
@@ -41,8 +36,6 @@ fields = driver.find_elements(By.XPATH,
 # Autofill fields if data exists and attach listeners for real-time updates
 for field_element in fields:
     label_text = ""
-
-    # Find label associated with the field
     field_id = field_element.get_attribute('id')
     if field_id:
         labels = driver.find_elements(By.XPATH, f"//label[@for='{field_id}']")
@@ -61,7 +54,7 @@ for field_element in fields:
                 if previous_label:
                     label_text = previous_label.text.strip()
         except:
-            continue  # Skip if no label is found
+            continue
 
     simplified_label_text = simplify_label(label_text)
 
@@ -69,16 +62,7 @@ for field_element in fields:
     filled = False
     for key in autofill_data:
         simplified_key = simplify_label(key)
-        
-        # Check for both 'school' and 'name' in the label text
-        if 'school' in simplified_label_text and 'name' in simplified_label_text:
-            field_element.clear()
-            field_element.send_keys(autofill_data[key])
-            filled = True
-            print(f"Autofilled '{label_text}' with '{autofill_data[key]}'")
-            break
-        # General case for other fields
-        elif simplified_key in simplified_label_text or simplified_label_text in simplified_key:
+        if simplified_key in simplified_label_text or simplified_label_text in simplified_key:
             field_element.clear()
             field_element.send_keys(autofill_data[key])
             filled = True
@@ -141,7 +125,7 @@ try:
                         label_text = labels[0].text.strip()
                     else:
                         previous_label = field_element.find_element(By.XPATH, "./preceding::label[1]")
-                        if previous_label:
+                        if (previous_label):
                             label_text = previous_label.text.strip()
                 except:
                     continue
