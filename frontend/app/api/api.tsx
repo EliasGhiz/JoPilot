@@ -1,13 +1,16 @@
-// for axios api layer
-import axios from 'axios';
-import getApiUrl from 'app/api/apiUrl'; // <-- new import
+import getApiUrl from 'app/api/apiUrl';
 
-const api = axios.create({
-	// Set the baseURL dynamically
-	baseURL: getApiUrl(),
-	headers: {
-		'Content-Type': 'application/json',
-	},
-});
+const baseURL = getApiUrl();
+
+const api = {
+    get: async (endpoint: string) => {
+        const res = await fetch(`${baseURL}${endpoint}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        const data = await res.json();
+        return { data };
+    }
+};
 
 export default api;
