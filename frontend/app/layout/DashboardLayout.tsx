@@ -1,12 +1,11 @@
 // DashboardLayout.tsx – Renders the main application layout with responsive sidebar, topbar, and content area.
 
 import { useEffect } from "react";
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider } from "@mui/material";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import TopBar from "../components/TopBar/TopBar";
 import Sidebar from "../components/Sidebar/Sidebar";
 import MainContent from "../components/MainContent";
-import PageTitle from "../components/PageTitle";
 import { useThemeState } from "../hooks/useThemeState";
 import { useSidebarState } from "../hooks/useSidebarState";
 import { TRANSITION_SPEED_FAST } from "app/theme/styleConstants";
@@ -38,8 +37,7 @@ export default function DashboardLayout() {
   
   return (
     <ThemeProvider theme={themeState.theme}>
-      <Box sx={{ display: "flex", bgcolor: "background.default", color: "text.primary", height: "100%" }}>
-        <CssBaseline />
+      <Box sx={{ display: "flex", bgcolor: "background.default", color: "text.primary", minHeight: "100dvh", maxHeight: "100dvh" }}>
         
         <TopBar
           open={open}
@@ -65,13 +63,11 @@ export default function DashboardLayout() {
           appBarHeight={appBarHeight}
           expandedSidebarWidth={expandedSidebarWidth}
           collapsedSidebarWidth={collapsedSidebarWidth}
-        >
-          <PageTitle title={title} />
-          
+        >          
           <Box sx={{
-            pt: themeState.theme.spacing(10),
-            px: open ? 1.5 : 6,
-            transition: `padding ${TRANSITION_SPEED_FAST} ease`
+            pt: themeState.theme.spacing(2),
+            px: open ? 1 : 4,
+            transition: `padding ${TRANSITION_SPEED_FAST} ease`,
           }}>
             <Outlet />
           </Box>

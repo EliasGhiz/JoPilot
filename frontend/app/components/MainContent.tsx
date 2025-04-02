@@ -30,7 +30,9 @@ const MainContent: React.FC<MainContentProps> = ({
         marginTop: `${appBarHeight}px`,
         marginLeft: `${sidebarWidth}px`,
         width: `calc(100% - ${sidebarWidth}px)`,
-        minHeight: `calc(100vh - ${appBarHeight}px)`,
+        minHeight: `calc(100dvh - ${appBarHeight}px)`,
+        maxHeight: `calc(100dvh - ${appBarHeight}px)`,
+        overflowY: 'auto', // allow/keep scrolling within main content
         transition: `margin-left ${TRANSITION_SPEED_FAST} ease`
       }}
     >

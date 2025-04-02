@@ -21,14 +21,22 @@ if (!disableAuth && (!authDomain || !authClientId)) {
 }
 
 // Create a root component that provides the custom theme
-const Root: React.FC = () => {
+import Box from '@mui/material/Box';
+
+interface RootProps {
+  sx?: object;
+}
+
+const Root: React.FC<RootProps> = ({ sx }) => {
   const themeState = useThemeState();
   return (
     <ThemeProvider theme={themeState.theme}>
       <CssBaseline enableColorScheme />
       <GlobalStyles styles={globalScrollbarStyles} />
       <BrowserRouter>
-        <App />
+        <Box sx={sx}>
+          <App />
+        </Box>
       </BrowserRouter>
     </ThemeProvider>
   );
@@ -39,8 +47,11 @@ if (container) {
   const root = ReactDOM.createRoot(container);
   root.render(
     <React.StrictMode>
-      <Auth0ProviderWrapper>
-        <Root />
+      <Auth0ProviderWrapper >
+        <Root sx={{
+            minHeight: '100dvh',
+            maxHeight: '100dvh',
+           }} />
       </Auth0ProviderWrapper>
     </React.StrictMode>
   );
