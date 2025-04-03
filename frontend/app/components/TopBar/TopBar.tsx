@@ -8,7 +8,7 @@ import ThemeToggle from "./ThemeToggle";
 import { getThemeColor, getTopbarColor } from "app/theme/themeColors";
 import type { ThemeVariant } from "app/theme/themeColors";
 import type { PaletteMode } from "@mui/material";
-const JoLogo = "/JoLogo.svg";
+import JoLogo from "app/components/JoLogo";
 
 interface TopBarProps {
   open: boolean;
@@ -89,17 +89,20 @@ export default function TopBar(props: TopBarProps) {
         </Box>
         
         {/* Logo */}
-        <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
-          <img 
-            src={JoLogo} 
-            alt="JoPilot logo" 
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          ml: 1,
+        }}>
+          <JoLogo 
             style={{ 
               height: layout.appBarHeight * 0.68, 
               width: "auto",
-              userSelect: "none",
-              WebkitUserSelect: "none",
-              msUserSelect: "none"
+              userSelect: "none"
             }} 
+            primaryColor="var(--primary-color)" 
+            secondaryColor="var(--secondary-color)"
           />
         </Box>
         
