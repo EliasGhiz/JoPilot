@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import type { ApplicationData } from 'app/api/pages/Applications';
 
@@ -114,31 +114,30 @@ const columns: GridColDef[] = [
 
 export default function Applications() {
     return (
-        <Box sx={{ flexGrow: 1, p: 2, display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <Typography variant="h4" gutterBottom>
+        <div style={{
+            width: '100%',
+            maxHeight: 'inherit',
+            height: 'inherit',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 0,
+            margin: 0,
+        }}>
+            <Typography variant="h5">
                 Applications
             </Typography>
-            <Box sx={{ flexGrow: 1 }}>
-                <DataGrid
-                    rows={sampleApplications}
-                    columns={columns}
-                    getRowId={(row) => row.applicationID}
-                    disableRowSelectionOnClick
-                    initialState={{
-                      pagination: { paginationModel: { pageSize: 25 } }
-                    }}
-                    sx={{
-                        border: 0,
-                        "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-                        "& .MuiDataGrid-footerContainer": {
-                            position: "sticky",
-                            bottom: 0,
-                            backgroundColor: "inherit",
-                            zIndex: 1,
-                        }
-                    }}
-                />
-            </Box>
-        </Box>
+            <DataGrid
+                rows={sampleApplications}
+                columns={columns}
+                getRowId={(row) => row.applicationID}
+                disableRowSelectionOnClick
+                initialState={{
+                    pagination: { paginationModel: { pageSize: 25 } },
+                }}
+                sx={{
+                    border: 0,
+                }}
+            />
+        </div>
     );
 }

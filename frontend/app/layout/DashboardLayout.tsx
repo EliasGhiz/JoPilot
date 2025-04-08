@@ -68,6 +68,8 @@ export default function DashboardLayout() {
             pt: themeState.theme.spacing(2),
             px: open ? 1 : 4,
             transition: `padding ${TRANSITION_SPEED_FAST} ease`,
+            height: "100%",
+            maxHeight: "inherit",
           }}>
             <Outlet />
           </Box>
