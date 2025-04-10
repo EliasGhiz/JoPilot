@@ -1,20 +1,28 @@
 {
-    "manifest_version": 2,
-    "name": "JoPilot",
-    "version": "1.0",
-    "description": "Companion for Job Applications",
-    "icons": {
-        "16": "public/favicon.png"
-    },
-    "browser_action": {
-        "default_popup": "popup/popup.html"
-    },
-    "background": {
-        "scripts": ["background.js"], 
-        "persistent": false
-    },
-    "permissions": [
-        "storage", 
-        "activeTab" 
-    ]
+  "manifest_version": 2,
+  "name": "JoPilot",
+  "version": "1.0",
+  "description": "Companion for Job Applications",
+  "icons": {
+    "16": "public/favicon.png"
+  },
+  "browser_action": {
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["public/contentScript.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }
