@@ -17,7 +17,6 @@ highlightInputFields(); // Run highlighting on load
 // Helper function to standardize labels
 function simplifyLabel(text) {
   if (!text) return '';
-  // Keep only alphanumeric, remove whitespace and symbols, lowercase
   return text.replace(/[^a-z0-9]/gi, '').toLowerCase();
 }
 
@@ -26,7 +25,6 @@ function findLabelForField(fieldElement) {
    let labelText = "";
    const fieldId = fieldElement.getAttribute('id');
 
-   // 1. Try explicit label with "for" attribute
    if (fieldId) {
        const labels = document.querySelectorAll(`label[for="${fieldId}"]`);
        if (labels.length > 0) {
@@ -35,7 +33,6 @@ function findLabelForField(fieldElement) {
        }
    }
 
-   // 2. Try finding a label within the parent element
    let parent = fieldElement.parentElement;
    if (parent) {
        const labelsInParent = parent.querySelectorAll('label');
@@ -45,7 +42,7 @@ function findLabelForField(fieldElement) {
        }
    }
    
-   // 3. Try finding the closest preceding label (less reliable)
+
     let sibling = fieldElement.previousElementSibling;
     while(sibling) {
         if (sibling.tagName === 'LABEL') {
@@ -56,13 +53,13 @@ function findLabelForField(fieldElement) {
          sibling = sibling.previousElementSibling;
     }
 
-   // 4. Placeholder attribute as a fallback
+
    const placeholder = fieldElement.getAttribute('placeholder');
    if (placeholder) {
         return placeholder.trim();
    }
 
-   return ""; // Return empty if no label found
+   return "";
 }
 
 
@@ -79,32 +76,30 @@ function fillFormFields(autofillData) {
     const labelText = findLabelForField(field);
     if (!labelText) {
       console.log("Skipping field with no identifiable label:", field);
-      return; // Skip fields without a clear label
+      return;
     }
 
     const simplifiedLabel = simplifyLabel(labelText);
     let filled = false;
 
-    // Try to find a matching key in the autofill data
+
     for (const key in autofillData) {
       const simplifiedKey = simplifyLabel(key);
       
-      // Basic matching: check if simplified keys contain each other
+
       if (simplifiedKey && simplifiedLabel && 
          (simplifiedKey.includes(simplifiedLabel) || simplifiedLabel.includes(simplifiedKey))) {
         
         console.log(`Match found: Label "${labelText}" (Simplified: ${simplifiedLabel}) matches Key "${key}" (Simplified: ${simplifiedKey}). Filling with "${autofillData[key]}"`);
-        
-        // Set the value
+
         field.value = autofillData[key]; 
-        
-        // Optional: Trigger input/change events if needed for the page's JS
+
         field.dispatchEvent(new Event('input', { bubbles: true }));
         field.dispatchEvent(new Event('change', { bubbles: true }));
         
         fieldsFilled++;
         filled = true;
-        break; // Stop checking keys once a match is found for this field
+        break;
       }
     }
     if (!filled) {
@@ -113,7 +108,7 @@ function fillFormFields(autofillData) {
   });
 
   console.log(`Autofill attempt complete. Filled ${fieldsFilled} fields.`);
-  return fieldsFilled > 0; // Return true if at least one field was filled
+  return fieldsFilled > 0;
 }
 
 // Listen for messages from the background script
@@ -140,3 +135,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } 
 
 });
+
+// Listen for messages from the background script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("<<< CONTENT SCRIPT: Message received inside listener! >>>", message);
+
+    if (message.type === 'fillForm') {
+        console.log("<<< CONTENT SCRIPT: Received 'fillForm' message type. >>>");
+        if (!message.data || Object.keys(message.data).length === 0) {
+            console.error("<<< CONTENT SCRIPT: No data provided for autofill. >>>");
+            sendResponse({success: false, error: "No data provided for autofill."});
+            return; // Stop processing if no data
+        }
+        try {
+            const success = fillFormFields(message.data);
+            if (success) {
+                console.log("<<< CONTENT SCRIPT: Form filling successful. Sending response. >>>");
+                sendResponse({success: true});
+            } else {
+                console.log("<<< CONTENT SCRIPT: No fields matched. Sending response. >>>");
+                sendResponse({success: false, error: "No matching fields found to fill."});
+            }
+        } catch (error) {
+            console.error("<<< CONTENT SCRIPT: Error during form filling:", error, ">>>");
+            sendResponse({success: false, error: `Error during fill: ${error.message}`});
+        }
+    } else {
+        console.log("<<< CONTENT SCRIPT: Received message, but type was not 'fillForm'. Type was: ", message.type, ">>>");
+    }
+});
+
+console.log("<<< CONTENT SCRIPT: Message listener attached. >>>");

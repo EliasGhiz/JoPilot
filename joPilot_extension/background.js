@@ -1,6 +1,4 @@
-// background.js – Handles API communication and other background tasks for the Chrome extension
-
-import api from '../api/api-service'; // Import the API instance
+//import api from '../api/api-service'; // Import the API instance
 
 //Utility function to log messages
 const log = (message, data = null) => {
@@ -43,7 +41,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 //Handle API connection test
 const handleFetchFromStorage = (keys, sendResponse) => {
   log('Fetching data from storage', keys);
-  // Ensure keys is null, an array of strings, or an object
   const validKeys = Array.isArray(keys) || typeof keys === 'object' || keys === null ? keys : null;
   chrome.storage.local.get(validKeys, (result) => {
     if (chrome.runtime.lastError) {
@@ -59,7 +56,6 @@ const handleFetchFromStorage = (keys, sendResponse) => {
 // Handle the autofill trigger from the popup
 const handleTriggerAutofill = (sendResponse) => {
   log('Autofill triggered. Fetching data...');
-  // Fetch ALL stored data for autofill.
   chrome.storage.local.get(null, (autofillData) => {
     if (chrome.runtime.lastError) {
       log('Error fetching autofill data from storage', chrome.runtime.lastError);
@@ -75,29 +71,33 @@ const handleTriggerAutofill = (sendResponse) => {
 
     log('Autofill data fetched', autofillData);
 
-    // Send the autofill data to the content script in the active tab
+    // Get the active tab
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length === 0) {
-        log("No active tab found.");
+      if (tabs.length === 0 || !tabs[0].id) { // Check if tab exists and has an ID
+        log("No active tab found or tab has no ID.");
         sendResponse({ success: false, error: "No active tab found." });
         return;
       }
       const activeTabId = tabs[0].id;
-      log(`Sending autofill data to tab ${activeTabId}`);
+      const messageToSend = { type: 'fillForm', data: autofillData };
+
+      // --- ADD THESE LOGS ---
+      console.log(`<<< BACKGROUND: Attempting to send message to Tab ID: ${activeTabId} >>>`);
+      console.log("<<< BACKGROUND: Message Content: >>>", messageToSend);
+      // --- END OF ADDED LOGS ---
 
       chrome.tabs.sendMessage(
         activeTabId,
-        { type: 'fillForm', data: autofillData }, // Message for content script
-        (response) => { // Optional: Handle response from content script
+        messageToSend,
+        (response) => {
           if (chrome.runtime.lastError) {
-            log('Error sending message to content script:', chrome.runtime.lastError.message);
-            // It's common for this error to occur if the content script isn't injected on the page
-             sendResponse({ success: false, error: `Could not communicate with content script: ${chrome.runtime.lastError.message}. Ensure you are on a valid page.` });
+            console.error('<<< BACKGROUND: Error sending message to content script: >>>', chrome.runtime.lastError.message);
+             sendResponse({ success: false, error: `Could not communicate with content script: ${chrome.runtime.lastError.message}. Is the content script active on this page?` });
           } else if (response && response.success) {
-            log('Content script processed autofill successfully.');
+            log('<<< BACKGROUND: Content script responded with success. >>>', response);
             sendResponse({ success: true });
           } else {
-             log('Content script did not respond or reported failure.', response);
+             log('<<< BACKGROUND: Content script responded with failure or no response. >>>', response);
              sendResponse({ success: false, error: response?.error || 'Content script failed or did not respond.' });
           }
         }
@@ -130,20 +130,6 @@ const handleSaveToStorage = (payload, sendResponse) => {
     } else {
       log('Data saved to storage successfully');
       sendResponse({ success: true });
-    }
-  });
-};
-
-//Handle fetching data from Chrome storage
-const handleFetchFromStorage = (keys, sendResponse) => {
-  log('Fetching data from storage', keys);
-  chrome.storage.local.get(keys, (result) => {
-    if (chrome.runtime.lastError) {
-      log('Error fetching from storage', chrome.runtime.lastError);
-      sendResponse({ success: false, error: chrome.runtime.lastError.message });
-    } else {
-      log('Data fetched from storage successfully', result);
-      sendResponse({ success: true, data: result });
     }
   });
 };
