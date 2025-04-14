@@ -3,7 +3,7 @@ import requests
 import pdfplumber
 from docx import Document
 import sys
-
+#  HOW TO RUN: python API_Analysis.py functionalsample.pdf
 # Load the DeepSeek API key securely from environment variables
 API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
