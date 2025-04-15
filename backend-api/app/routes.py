@@ -1,7 +1,10 @@
 #API endpoints
 
 from flask import request, jsonify, render_template, Blueprint
+from werkzeug.utils import secure_filename
 from .database import db, User, Profile, Job, AppliedTo, Bookmark
+from .API_Analysis import extract_text, optimize_resume
+import os
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -316,3 +319,46 @@ def initialize_app_endpoints(app):
         # Reuse test_endpoint to avoid duplication
         return test_endpoint()
 
+
+#Resume analysis endpoint
+# Define the allowed file extensions
+ALLOWED_EXTENSIONS = {'pdf', 'docx'}
+
+# Helper function to check allowed file extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@bp.route('/analyze-resume', methods=['POST'])
+def analyze_resume():
+    # Check if a file is included in the request
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part in the request'}), 400
+
+    file = request.files['file']
+
+    # Check if the file has a valid name and extension
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if not allowed_file(file.filename):
+        return jsonify({'error': 'Unsupported file type. Please upload a PDF or DOCX file.'}), 400
+
+    try:
+        # Secure the filename and save the file temporarily
+        filename = secure_filename(file.filename)
+        temp_path = os.path.join('/tmp', filename)
+        file.save(temp_path)
+
+        # Extract text from the file
+        resume_text = extract_text(temp_path)
+
+        # Optimize the resume using the DeepSeek API
+        feedback = optimize_resume(resume_text)
+
+        # Clean up the temporary file
+        os.remove(temp_path)
+
+        # Return the optimization suggestions
+        return jsonify({'suggestions': feedback}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

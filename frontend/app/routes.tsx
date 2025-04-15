@@ -12,6 +12,7 @@ import Landing from "./pages/Landing";
 import RequireAuth from "./components/RequireAuth";
 import Applications from "./pages/Applications";
 import Postings from "./pages/Postings";
+import AnalyzePage from './pages/AnalyzePage';
 
 const disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true'; // added for auth bypass in local dev mode
 
@@ -60,7 +61,8 @@ const routes: ExtendedRouteObject[] = [
       { path: '/settings', element: <Settings />, file: "pages/Settings.tsx" },
       { path: '/test', element: <Test />, file: "pages/Test.tsx" },
       { path: '/logout', element: <Logout />, file: "pages/Logout.tsx" },
-      { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" }
+      { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" },
+      { path: '/analyze', element: < AnalyzePage/>, file: "pages/AnalyzePage.tsx" }
     ]
   }
 ];
