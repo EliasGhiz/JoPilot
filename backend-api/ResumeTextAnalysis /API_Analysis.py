@@ -5,7 +5,8 @@ from docx import Document
 import sys
 #  HOW TO RUN: python API_Analysis.py functionalsample.pdf
 # Load the DeepSeek API key securely from environment variables
-API_KEY = os.getenv("DEEPSEEK_API_KEY")
+API_KEY = "sk-e34b4f979bf54b43893af5874059af00"
+#(os.getenv("DEEPSEEK_API_KEY"))
 
 # Exit the program if the API key is not found
 if not API_KEY:
