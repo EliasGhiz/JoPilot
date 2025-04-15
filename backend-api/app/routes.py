@@ -2,6 +2,7 @@
 
 from flask import request, jsonify, render_template, Blueprint
 from werkzeug.utils import secure_filename
+import tempfile
 from .database import db, User, Profile, Job, AppliedTo, Bookmark
 from .API_Analysis import extract_text, optimize_resume
 import os
@@ -345,7 +346,8 @@ def analyze_resume():
     try:
         # Secure the filename and save the file temporarily
         filename = secure_filename(file.filename)
-        temp_path = os.path.join('/tmp', filename)
+        temp_dir = tempfile.gettempdir()
+        temp_path = os.path.join(temp_dir, filename)
         file.save(temp_path)
 
         # Extract text from the file
