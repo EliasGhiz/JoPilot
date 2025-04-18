@@ -117,7 +117,7 @@ const AnalyzePage: React.FC = () => {
           flexDirection: "column", // Stack items vertically
           alignItems: "center",
           justifyContent: "center",
-          gap: theme.spacing(1), // Add spacing between icon and text
+          gap: theme.spacing(2), // Add spacing between icon and text
         }}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -169,44 +169,67 @@ const AnalyzePage: React.FC = () => {
 
       {/* Modal for File Preview and Suggestions */}
       <Dialog open={isModalOpen} onClose={handleCloseModal} fullWidth maxWidth="md">
-        <DialogTitle>Resume Analysis</DialogTitle>
-            <DialogContent>
-                {fileUrl && file && (
-                <Box sx={{ width: "100%", height: "400px", marginBottom: theme.spacing(2) }}>
-                    <Typography variant="h6" gutterBottom>
-                    File Preview:
-                    </Typography>
-                    {file.name.endsWith(".pdf") ? (
-                    <iframe
-                        src={fileUrl}
-                        title="File Preview"
-                        style={{ width: "100%", height: "100%", border: "none" }}
-                    />
-                    ) : (
-                    <Typography variant="body2">
-                        Preview not available for .docx files.{" "}
-                        <a href={fileUrl} download={file.name}>
-                        Download the file
-                        </a>
-                    </Typography>
-                    )}
-                </Box>
-                )}
-                {suggestions && (
-                <Box sx={{ marginTop: theme.spacing(6) }}>
-                    <Typography variant="h6" gutterBottom>
-                    Suggestions:
-                    </Typography>
-                    <Typography variant="body2">{suggestions}</Typography>
-                </Box>
-                )}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleCloseModal} color="primary">
-                Close
-                </Button>
-            </DialogActions>
-       </Dialog>
+        <DialogTitle>
+          <Typography
+            variant="h5"
+            sx={{
+              color: theme.palette.mode === "dark" ? theme.palette.primary.light : theme.palette.primary.dark,
+              fontWeight: "bold",
+            }}
+          >
+            Resume Analysis
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          {fileUrl && file && (
+            <Box sx={{ width: "100%", height: "400px", marginBottom: theme.spacing(2) }}>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  color: theme.palette.text.primary,
+                  fontWeight: "bold",
+                }}
+              >
+              </Typography>
+              {file.name.endsWith(".pdf") ? (
+                <iframe
+                  src={fileUrl}
+                  title="File Preview"
+                  style={{ width: "100%", height: "100%", border: "none" }}
+                />
+              ) : (
+                <Typography variant="body2">
+                  Preview not available for .docx files.{" "}
+                  <a href={fileUrl} download={file.name}>
+                    Download the file
+                  </a>
+                </Typography>
+              )}
+            </Box>
+          )}
+          {suggestions && (
+            <Box sx={{ marginTop: theme.spacing(6) }}>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  color: theme.palette.text.primary,
+                  fontWeight: "bold",
+                }}
+              >
+                Suggestions:
+              </Typography>
+              <Typography variant="body2">{suggestions}</Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
