@@ -107,7 +107,7 @@ const AnalyzePage: React.FC = () => {
         elevation={3}
         sx={{
           width: "100%",
-          padding: theme.spacing(3),
+          padding: theme.spacing(2),
           textAlign: "center",
           border: "2px dashed",
           borderColor: theme.palette.primary.main,
@@ -117,7 +117,7 @@ const AnalyzePage: React.FC = () => {
           flexDirection: "column", // Stack items vertically
           alignItems: "center",
           justifyContent: "center",
-          gap: theme.spacing(2), // Add spacing between icon and text
+          gap: theme.spacing(1), // Add spacing between icon and text
         }}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -128,7 +128,9 @@ const AnalyzePage: React.FC = () => {
             color: theme.palette.mode === "dark" ? theme.palette.primary.light : theme.palette.primary.dark,
           }}
         />
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" gutterBottom
+        sx={{ marginBottom: theme.spacing(0) }} // Use a smaller margin
+        >
           Drag & Drop to Upload File <br />
           or
         </Typography>
