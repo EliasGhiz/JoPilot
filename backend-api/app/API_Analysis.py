@@ -26,26 +26,20 @@ headers = {
 # Function to extract text from PDF or DOCX files
 def extract_text(filepath):
     try:
-        # Handle PDF files
         if filepath.lower().endswith('.pdf'):
             with pdfplumber.open(filepath) as pdf:
-                # Extract and join text from all pages
                 text = '\n'.join(page.extract_text() or "" for page in pdf.pages)
-        # Handle DOCX files
         elif filepath.lower().endswith('.docx'):
             doc = Document(filepath)
-            # Extract and join text from paragraphs
             text = '\n'.join(para.text for para in doc.paragraphs)
-        # Raise an error for unsupported file types
         else:
             raise ValueError("Unsupported file type. Please provide a PDF or DOCX file.")
 
-        # Check if the extracted text is empty and raise an error if so
         if not text.strip():
             raise ValueError("The file is readable, but contains no extractable text.")
 
+        ##print(f"Extracted text from {filepath}:\n{text[:500]}")  #debug
         return text
-    # Handle any exception that occurs during extraction
     except Exception as e:
         raise RuntimeError(f"Extraction failed: {e}")
 
@@ -53,37 +47,31 @@ def extract_text(filepath):
 # Function to interact with the DeepSeek API to optimize resumes
 def optimize_resume(resume_text):
     try:
-        # Prepare the prompt for the API
         prompt = (
             "Analyze the following resume and provide a concise summary "
             "of actionable improvements to optimize it:\n\n"
             f"{resume_text}"
         )
 
-        # Construct the API request payload
         data = {
-            "model": "deepseek-chat",  # Specify the model for DeepSeek
-            "messages": [{"role": "user", "content": prompt}],  # Provide the prompt in chat format
-            "temperature": 0.3,  # Set the temperature for response randomness
-            "max_tokens": 500,  # Limit the response to a maximum number of tokens
+            "model": "deepseek-chat",
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.3,
+            "max_tokens": 500,
         }
 
-        # Send the POST request to the API
+        print(f"Sending API request with prompt:\n{prompt[:500]}")  # Debug: Print first 500 characters of the prompt
         response = requests.post(DEEPSEEK_API_URL, headers=headers, json=data)
-        # Raise an error if the response status code indicates failure
         response.raise_for_status()
 
-        # Parse the response JSON
         result = response.json()
+        print(f"API response:\n{result}")  # Debug: Print the full API response
 
-        # Extract optimization suggestions from the response
         suggestions = result.get("choices", [{}])[0].get("message", {}).get("content")
-        # Check if the response is empty and raise an error if no suggestions are found
         if not suggestions:
             raise RuntimeError("Got an empty response from DeepSeek API.")
 
         return suggestions
-    # Handle various errors, including API request failures and invalid response structures
     except requests.RequestException as e:
         raise RuntimeError(f"API Request failed: {e}")
     except (ValueError, KeyError, IndexError) as e:

@@ -321,43 +321,41 @@ def initialize_app_endpoints(app):
 
 
 #Resume analysis endpoint
-# Define the allowed file extensions
+
 ALLOWED_EXTENSIONS = {'pdf', 'docx'}
 
-# Helper function to check allowed file extensions
+#helps determine allowed file extensions
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @bp.route('/analyze-resume', methods=['POST'])
 def analyze_resume():
-    # Check if a file is included in the request
+    #check for file
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
 
     file = request.files['file']
 
-    # Check if the file has a valid name and extension
+    #check extension type
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     if not allowed_file(file.filename):
         return jsonify({'error': 'Unsupported file type. Please upload a PDF or DOCX file.'}), 400
 
     try:
-        # Secure the filename and save the file temporarily
+        #save temp
         filename = secure_filename(file.filename)
         temp_path = os.path.join('/tmp', filename)
         file.save(temp_path)
 
-        # Extract text from the file
         resume_text = extract_text(temp_path)
 
-        # Optimize the resume using the DeepSeek API
+        #call to deepseek api
         feedback = optimize_resume(resume_text)
 
-        # Clean up the temporary file
         os.remove(temp_path)
 
-        # Return the optimization suggestions
+        #return suggestions
         return jsonify({'suggestions': feedback}), 200
 
     except Exception as e:
