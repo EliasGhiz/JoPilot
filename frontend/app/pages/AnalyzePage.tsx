@@ -13,6 +13,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import FileUpload from '@mui/icons-material/FileUpload'; // Import the FileUpload icon
 
 const AnalyzePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -112,10 +113,21 @@ const AnalyzePage: React.FC = () => {
           borderColor: theme.palette.primary.main,
           backgroundColor: theme.palette.background.default,
           cursor: "pointer",
+          display: "flex",
+          flexDirection: "column", // Stack items vertically
+          alignItems: "center",
+          justifyContent: "center",
+          gap: theme.spacing(1), // Add spacing between icon and text
         }}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
+        <FileUpload
+          sx={{
+            fontSize: 48, // Larger size for emphasis
+            color: theme.palette.mode === "dark" ? theme.palette.primary.light : theme.palette.primary.dark,
+          }}
+        />
         <Typography variant="body1" gutterBottom>
           Drag & Drop to Upload File <br />
           or
