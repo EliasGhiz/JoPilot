@@ -3,34 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JoPilot</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 10px;
-      background-color: #f4f4f9;
+      padding: 1px;
+      background: lightgray;
+      box-sizing: border-box;
+      border-radius: 16px;
+    }
+    header {
+      position: relative;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background: #403f3e;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 132px;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, rgba(229, 62, 62, 0), #E53E3E, rgba(229, 62, 62, 0));
+    }
+    #buttonContainer {
+      position: relative;
+      padding: 6px;
+      background: rgba(64, 63, 62, 0.8);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    #buttonContainer::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, rgba(229, 62, 62, 0), #E53E3E, rgba(229, 62, 62, 0));
     }
     button {
       display: block;
       width: 100%;
       margin: 10px 0;
-      padding: 10px;
+      padding: 8px;
       font-size: 14px;
       cursor: pointer;
       border: none;
-      border-radius: 4px;
-      background-color: #4CAF50;
+      border-radius: 8px;
+      background-color: #403f3e;
       color: white;
+      outline: 1px solid white;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #d6d4d4;
+    }
+    #loginButton {
+      position: absolute; /* Position the button absolutely */
+      top: -6px; /* Add some space from the top */
+      right: 6px; /* Add some space from the right */
+      width: auto;
+      padding: 6px;
+      font-size: 12px;
+      background-color: #38A169;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    #loginButton:hover {
+      background-color: #237047;
+    }
+    img {
+      height: 20px;
+      width: auto;
+      cursor: pointer;
     }
   </style>
 </head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <body>
-  <h1>JoPilot</h1>
-  <button id="autofillButton">Autofill Form</button>
+  <header>
+    <a href="https://jopilot.co" target="_blank">
+      <img src="../public/logo-with-title.png" alt="Logo with Title">
+    </a>
+    <a href="https://jopilot.co" target="_blank">
+      <button id="loginButton">Login</button>
+    </a>
+  </header>
+  <section id="buttonContainer">
+    <button id="autofillButton">
+      <i class="fa-solid fa-file" style="color: #ffffff; margin-right: 6px;"></i> Autofill
+    </button>
+  </section>
   <script src="popup.js"></script>
 </body>
 </html>
