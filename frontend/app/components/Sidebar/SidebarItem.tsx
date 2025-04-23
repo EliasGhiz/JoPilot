@@ -89,6 +89,7 @@ export const SidebarItem = memo(({ item, open, colorMode, themeVariant }: Sideba
             primary={item.label} 
             sx={{
               ml: 1,
+              whiteSpace: 'nowrap', // Prevent text wrapping and vertical height offsetting
               color: colorMode === 'dark' 
                 ? getThemeColor('gray', 'neutral', colorMode, 95) 
                 : 'inherit'

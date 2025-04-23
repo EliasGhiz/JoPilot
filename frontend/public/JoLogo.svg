@@ -24,7 +24,7 @@
         font-size="456"
         style="fill: var(--primary-color, #FFFFFF); font-variation-settings: 'wght' 700; paint-order: stroke fill;"
       >
-        <tspan>J</tspan><tspan dx="-8">o</tspan>
+        Jo
       </text>
       <!-- "Pilot" text -->
       <text 
