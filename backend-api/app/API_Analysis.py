@@ -48,7 +48,7 @@ def extract_text(filepath):
 def optimize_resume(resume_text):
     try:
         prompt = (
-            "Analyze the following resume and provide a concise summary "
+            "Analyze the following resume and provide a bulleted list "
             "of actionable improvements to optimize it:\n\n"
             f"{resume_text}"
         )
@@ -67,11 +67,23 @@ def optimize_resume(resume_text):
         result = response.json()
         print(f"API response:\n{result}")  # Debug: Print the full API response
 
+        # Extract suggestions from the API response
         suggestions = result.get("choices", [{}])[0].get("message", {}).get("content")
         if not suggestions:
             raise RuntimeError("Got an empty response from DeepSeek API.")
 
-        return suggestions
+        # Remove Markdown formatting
+        cleaned_suggestions = suggestions.replace("###", "").replace("**", "").replace("*", "")
+        
+        # Split the text into individual bullet points and reformat
+        bullet_points = cleaned_suggestions.split("- ")  # Split by Markdown-style bullets
+
+        # Skip the first bullet point (introductory text) and reformat the rest
+        formatted_suggestions = "\n".join(
+            f"• {point.strip()}" for point in bullet_points[1:] if point.strip()
+        )
+
+        return formatted_suggestions
     except requests.RequestException as e:
         raise RuntimeError(f"API Request failed: {e}")
     except (ValueError, KeyError, IndexError) as e:

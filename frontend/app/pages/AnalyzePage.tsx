@@ -137,12 +137,16 @@ const AnalyzePage: React.FC = () => {
         )}
 
         {suggestions && (
-          <Box sx={{ marginBottom: theme.spacing(4) }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
-              Suggestions:
-            </Typography>
-            <Typography variant="body1">{suggestions}</Typography>
-          </Box>
+            <Box sx={{ marginBottom: theme.spacing(4) }}>
+                <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+                    Suggestions:
+                </Typography>
+                <Typography variant="body1" component="div">
+                    {suggestions.split("\n").map((line, index) => (
+                        <div key={index}>{line}</div>
+                    ))}
+                </Typography>
+            </Box>
         )}
 
         <Box textAlign="center">
