@@ -7,13 +7,9 @@ import {
   Paper,
   CircularProgress,
   Alert,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import FileUpload from '@mui/icons-material/FileUpload'; // Import the FileUpload icon
+import FileUpload from "@mui/icons-material/FileUpload";
 
 const AnalyzePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -21,14 +17,14 @@ const AnalyzePage: React.FC = () => {
   const [suggestions, setSuggestions] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const theme = useTheme();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
       setFile(selectedFile);
-      setFileUrl(URL.createObjectURL(selectedFile)); // Create a URL for the file
+      setFileUrl(URL.createObjectURL(selectedFile));
     }
   };
 
@@ -37,7 +33,7 @@ const AnalyzePage: React.FC = () => {
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
       const droppedFile = event.dataTransfer.files[0];
       setFile(droppedFile);
-      setFileUrl(URL.createObjectURL(droppedFile)); // Create a URL for the file
+      setFileUrl(URL.createObjectURL(droppedFile));
     }
   };
 
@@ -71,10 +67,13 @@ const AnalyzePage: React.FC = () => {
 
       setSuggestions(response.data.suggestions || "No suggestions available.");
       setError(null);
-      setIsModalOpen(true); // Open the modal when suggestions are returned
+      setIsModalOpen(true);
     } catch (err: any) {
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.error || "An error occurred while uploading the file.");
+        setError(
+          err.response?.data?.error ||
+            "An error occurred while uploading the file."
+        );
       } else {
         setError("An unexpected error occurred.");
       }
@@ -85,8 +84,75 @@ const AnalyzePage: React.FC = () => {
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Close the modal
+    setIsModalOpen(false);
   };
+
+  if (isModalOpen) {
+    return (
+      <Box
+        sx={{
+          padding: theme.spacing(4),
+          maxWidth: "800px",
+          margin: "auto",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: theme.spacing(2),
+          }}
+        >
+          <Typography variant="h4" sx={{}}>
+            Resume Analysis
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCloseModal}
+            sx={{ textTransform: "none" }}
+          >
+            Back
+          </Button>
+        </Box>
+
+        {fileUrl && file && (
+          <Box sx={{ width: "100%", height: "400px", marginBottom: theme.spacing(4) }}>
+            {file.name.endsWith(".pdf") ? (
+              <iframe
+                src={fileUrl}
+                title="File Preview"
+                style={{ width: "100%", height: "100%", border: "none" }}
+              />
+            ) : (
+              <Typography variant="body2">
+                Preview not available for .docx files.{" "}
+                <a href={fileUrl} download={file.name}>
+                  Download the file
+                </a>
+              </Typography>
+            )}
+          </Box>
+        )}
+
+        {suggestions && (
+          <Box sx={{ marginBottom: theme.spacing(4) }}>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+              Suggestions:
+            </Typography>
+            <Typography variant="body1">{suggestions}</Typography>
+          </Box>
+        )}
+
+        <Box textAlign="center">
+          <Button onClick={handleCloseModal} variant="contained" color="primary">
+            Back
+          </Button>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -101,6 +167,7 @@ const AnalyzePage: React.FC = () => {
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
+        Upload Your Resume
       </Typography>
 
       <Paper
@@ -114,22 +181,27 @@ const AnalyzePage: React.FC = () => {
           backgroundColor: theme.palette.background.default,
           cursor: "pointer",
           display: "flex",
-          flexDirection: "column", // Stack items vertically
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: theme.spacing(1), // Add spacing between icon and text
+          gap: theme.spacing(1),
         }}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
         <FileUpload
           sx={{
-            fontSize: 48, // Larger size for emphasis
-            color: theme.palette.mode === "dark" ? theme.palette.primary.light : theme.palette.primary.dark,
+            fontSize: 48,
+            color:
+              theme.palette.mode === "dark"
+                ? theme.palette.primary.light
+                : theme.palette.primary.dark,
           }}
         />
-        <Typography variant="body1" gutterBottom
-        sx={{ marginBottom: theme.spacing(0) }} // Use a smaller margin
+        <Typography
+          variant="body1"
+          gutterBottom
+          sx={{ marginBottom: theme.spacing(0) }}
         >
           Drag & Drop to Upload File <br />
           or
@@ -168,70 +240,6 @@ const AnalyzePage: React.FC = () => {
           {error}
         </Alert>
       )}
-
-      {/* Modal for File Preview and Suggestions */}
-      <Dialog open={isModalOpen} onClose={handleCloseModal} fullWidth maxWidth="md">
-        <DialogTitle>
-          <Typography
-            variant="h5"
-            sx={{
-              color: theme.palette.mode === "dark" ? theme.palette.primary.light : theme.palette.primary.dark,
-              fontWeight: "bold",
-            }}
-          >
-            Resume Analysis
-          </Typography>
-        </DialogTitle>
-        <DialogContent>
-          {fileUrl && file && (
-            <Box sx={{ width: "100%", height: "400px", marginBottom: theme.spacing(2) }}>
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: "bold",
-                }}
-              >
-              </Typography>
-              {file.name.endsWith(".pdf") ? (
-                <iframe
-                  src={fileUrl}
-                  title="File Preview"
-                  style={{ width: "100%", height: "100%", border: "none" }}
-                />
-              ) : (
-                <Typography variant="body2">
-                  Preview not available for .docx files.{" "}
-                  <a href={fileUrl} download={file.name}>
-                    Download the file
-                  </a>
-                </Typography>
-              )}
-            </Box>
-          )}
-          {suggestions && (
-            <Box sx={{ marginTop: theme.spacing(6) }}>
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: "bold",
-                }}
-              >
-                Suggestions:
-              </Typography>
-              <Typography variant="body2">{suggestions}</Typography>
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };
