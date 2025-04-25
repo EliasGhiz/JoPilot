@@ -29,7 +29,7 @@ export const styles = {
       width: open ? drawerWidth : collapsedWidth,
       transition: `width ${TRANSITION_SPEED_FAST}`,
       top: appBarHeight,
-      height: `calc(100vh - ${appBarHeight}px)`,
+      height: `calc(100dvh - ${appBarHeight}px)`,
       overflowX: 'hidden',
       overflowY: 'hidden',
       bgcolor: 'background.paper',

@@ -5,8 +5,15 @@ from werkzeug.utils import secure_filename
 from .database import db, User, Profile, Job, AppliedTo, Bookmark
 from .API_Analysis import extract_text, optimize_resume
 import os
+from .database import db, User, Profile, Job, AppliedTo, Bookmark
+from jose import jwt 
+from urllib.request import urlopen
+import json
+from functools import wraps
 
 bp = Blueprint('api', __name__, url_prefix='/api')
+
+
 
 # User Routes
 
@@ -360,3 +367,63 @@ def analyze_resume():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+      
+#obtain access token 
+def get_token_auth_header():
+    auth = request.headers.get("Authorization", None)
+    if not auth:
+        raise Exception("Authorization header is expected")
+
+    parts = auth.split()
+    if parts[0].lower() != "bearer" or len(parts) != 2:
+        raise Exception("Authorization header must be 'Bearer <token>'")
+    return parts[1]
+
+
+#wraps route to require authenication before letting it run
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        
+        token = get_token_auth_header()
+        #fetch JWKS to sign JWT 
+        jsonurl = urlopen(f"https://{AUTH0_DOMAIN}/.well-known/jwks.json")
+        jwks = json.loads(jsonurl.read())
+        unverified_header = jwt.get_unverified_header(token)
+
+        #build RSA pulic key to verfiy tokens 
+        rsa_key = {}
+        for key in jwks["keys"]:
+            if key["kid"] == unverified_header["kid"]:
+                rsa_key = {
+                    "kty": key["kty"],
+                    "kid": key["kid"],
+                    "use": key["use"],
+                    "n": key["n"],
+                    "e": key["e"]
+                }
+
+        #decode and verify token 
+        if rsa_key:
+            try:
+                payload = jwt.decode(
+                    token,
+                    rsa_key,
+                    algorithms="RS256",
+                    audience="https://jopilot-api",
+                    issuer=f"https://{AUTH0_DOMAIN}/"
+                )
+                
+                g.current_user = payload
+            except jwt.ExpiredSignatureError:
+                return jsonify({"message": "token expired"}), 401
+            except jwt.JWTClaimsError:
+                return jsonify({"message": "invalid claims"}), 401
+            except Exception:
+                return jsonify({"message": "invalid token"}), 400
+
+            return f(*args, **kwargs)
+
+        return jsonify({"message": "Unable to find appropriate key"}), 400
+
+    return decorated

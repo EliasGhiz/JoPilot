@@ -7,6 +7,9 @@ import App from './components/App';
 import { ThemeProvider } from '@mui/material/styles';
 import { useThemeState } from './hooks/useThemeState';
 import Auth0ProviderWrapper from './Auth0ProviderWrapper';
+import CssBaseline from '@mui/material/CssBaseline';
+import GlobalStyles from '@mui/material/GlobalStyles';
+import globalScrollbarStyles from './theme/GlobalStyles';
 
 let disableAuth = import.meta.env.VITE_DISABLE_AUTH0 === 'true';
 const authDomain = import.meta.env.VITE_AUTH0_DOMAIN;
@@ -18,12 +21,22 @@ if (!disableAuth && (!authDomain || !authClientId)) {
 }
 
 // Create a root component that provides the custom theme
-const Root: React.FC = () => {
+import Box from '@mui/material/Box';
+
+interface RootProps {
+  sx?: object;
+}
+
+const Root: React.FC<RootProps> = ({ sx }) => {
   const themeState = useThemeState();
   return (
     <ThemeProvider theme={themeState.theme}>
+      <CssBaseline enableColorScheme />
+      <GlobalStyles styles={globalScrollbarStyles} />
       <BrowserRouter>
-        <App />
+        <Box sx={sx}>
+          <App />
+        </Box>
       </BrowserRouter>
     </ThemeProvider>
   );
@@ -34,8 +47,11 @@ if (container) {
   const root = ReactDOM.createRoot(container);
   root.render(
     <React.StrictMode>
-      <Auth0ProviderWrapper>
-        <Root />
+      <Auth0ProviderWrapper >
+        <Root sx={{
+            minHeight: '100dvh',
+            maxHeight: '100dvh',
+           }} />
       </Auth0ProviderWrapper>
     </React.StrictMode>
   );

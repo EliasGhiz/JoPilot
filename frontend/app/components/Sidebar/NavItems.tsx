@@ -5,6 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PestControlRodentIcon from '@mui/icons-material/PestControlRodent';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FeedIcon from '@mui/icons-material/Feed';
+import DescriptionIcon from '@mui/icons-material/Description';
 import { NavItem } from './types';
 import { AttachFile } from '@mui/icons-material';
 
@@ -19,7 +20,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: 'Applications',
     route: '/applications',
-    icon: <FeedIcon />,
+    icon: <DescriptionIcon />,
     group: 'top'
   },
   {

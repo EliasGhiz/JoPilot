@@ -1,6 +1,6 @@
 import { Box, Typography, Card, CardContent, Button } from "@mui/material";
 import { useState } from "react";
-import jobData from "../../dataset_indeed-scraper_2025-04-01_00-47-19-716.json"; // Adjust the path if necessary
+import jobData from "../../dataset_indeed-scraper_2025-04-01_00-47-19-716.json";
 
 export default function Postings() {
   return (

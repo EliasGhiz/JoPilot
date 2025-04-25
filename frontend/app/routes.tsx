@@ -58,11 +58,13 @@ const routes: ExtendedRouteObject[] = [
     children: [
       { path: '/dashboard', element: <Dashboard />, file: "pages/Dashboard.tsx" },
       { path: '/applications', element: <Applications />, file: "pages/Applications.tsx" },
+      { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" },
       { path: '/settings', element: <Settings />, file: "pages/Settings.tsx" },
       { path: '/test', element: <Test />, file: "pages/Test.tsx" },
       { path: '/logout', element: <Logout />, file: "pages/Logout.tsx" },
       { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" },
       { path: '/analyze', element: < AnalyzePage/>, file: "pages/AnalyzePage.tsx" }
+
     ]
   }
 ];
