@@ -7,6 +7,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
+from app.database import db
 
 # Set up Selenium Chrome driver
 service = Service(ChromeDriverManager().install())
@@ -215,3 +219,31 @@ except KeyboardInterrupt:
 print(f"\nAll finished! {len(recorded_labels)} new/updated prompts saved into {memory_file}. Closing browser shortly.")
 time.sleep(5)
 driver.quit()
+
+
+def get_autofill_data(user_id):
+    autofill_data = {}
+    
+    # Query the ProfileAutofillAnswer table for the given user
+    answers = ProfileAutofillAnswer.query.join(Profile).filter(Profile.UserID == user_id, ProfileAutofillAnswer.Enabled == True).all()
+    
+    # Populate the autofill data dictionary
+    for answer in answers:
+        autofill_data[answer.Question] = answer.Answer
+
+    return autofill_data
+
+def save_updates(user_id, autofill_data):
+    for question, answer in autofill_data.items():
+        # Check if the answer already exists in the database for this user
+        existing_answer = ProfileAutofillAnswer.query.join(Profile).filter(Profile.UserID == user_id, ProfileAutofillAnswer.Question == question).first()
+
+        if existing_answer:
+            # Update the existing record
+            existing_answer.Answer = answer
+        else:
+            # Create a new record if it doesn't exist
+            new_answer = ProfileAutofillAnswer(Question=question, Answer=answer, ProfileID=user_id)
+            db.session.add(new_answer)  # Add the new answer to the session
+
+    db.session.commit()  # Commit to the database
