@@ -10,7 +10,7 @@ def create_app(test_config=None):
     if test_config:
         app.config.update(test_config)
     else:
-        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+        app.config["SQLALCHEMY_DATABASE_URI"] = ""
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
