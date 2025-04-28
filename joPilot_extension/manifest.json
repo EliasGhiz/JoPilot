@@ -3,7 +3,7 @@
     "name": "JoPilot",
     "version": "1.0",
     "description": "Companion for Job Applications",
-    "permissions": ["storage", "scripting", "activeTab"],
+    "permissions": ["storage", "scripting", "activeTab", "tabs"],
     "host_permissions": ["<all_urls>"],
     "background": {
       "service_worker": "background.js"

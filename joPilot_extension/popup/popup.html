@@ -4,12 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    html, body {
+      border: none;
+      outline: none;
+    }
     body {
       margin: 0;
       padding: 1px;
       background: lightgray;
       box-sizing: border-box;
       border-radius: 16px;
+      border: none; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+      outline: none; 
     }
     header {
       position: relative;
@@ -57,25 +64,24 @@
       border-radius: 8px;
       background-color: #403f3e;
       color: white;
-      outline: 1px solid white;
     }
     button:hover {
       background-color: #d6d4d4;
     }
     #loginButton {
-      position: absolute; /* Position the button absolutely */
-      top: -6px; /* Add some space from the top */
-      right: 6px; /* Add some space from the right */
+      position: absolute; 
+      top: -6px; 
+      right: 6px; 
       width: auto;
       padding: 6px;
       font-size: 12px;
-      background-color: #38A169;
+      background-color: #E53E3E; 
       color: white;
       border-radius: 8px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     #loginButton:hover {
-      background-color: #237047;
+      background-color: #C53030; 
     }
     img {
       height: 20px;

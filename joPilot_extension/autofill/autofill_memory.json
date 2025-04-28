@@ -9,7 +9,7 @@
     "date of birth": "1990-01-01",
     "address": "1234 Street Name",
     "city": "Mothatown",
-    "state": "Islandstate",
+    "state": "PA",
     "zipcode": "98101",
     "country": "United States",
     "linkedin profile": "https://linkedin.com/in/eliasghiz",
@@ -27,6 +27,7 @@
     "previous employer name": "Google",
     "job title": "Software Engineer",
     "employment dates": "June 2022 - April 2024",
+    "skills": "JavaScript, Python, React, Node.js",
     "salary expectations": "$100,000",
     "authorized to work": "Yes",
     "willing to relocate": "Yes",
@@ -36,6 +37,7 @@
     "security clearance": "None",
     "referencename": "John Doe",
     "reference contact": "john.doe@example.com",
+    "why do you want to work here": "I am passionate about technology and innovation, and I believe this company is at the forefront of both.",
     "cover letter": "I am excited to apply for this position because...",
     "additional comments": "Looking forward to contributing to your team."
   }

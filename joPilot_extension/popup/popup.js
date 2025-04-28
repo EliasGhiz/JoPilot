@@ -25,17 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add event listener for autofill button
 autofillButton.addEventListener('click', () => {
-  chrome.runtime.sendMessage({ type: 'autofilledData' }, (response) => {
-    if (response.success) {
-      displayOutput('Information filled successfully!');
-    } else {
-      displayOutput(`Error: ${response.error}`);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs[0]?.id) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'autofill' });
     }
   });
 });
 
 clearButton.addEventListener('click', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, { action: 'clear' });
+    if (tabs[0]?.id) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'clear' });
+    }
   });
 });

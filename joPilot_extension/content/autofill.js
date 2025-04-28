@@ -34,16 +34,18 @@ const simplifyLabel = (text) => {
     "job title": ["jobtitle", "position", "role", "designation", "job_title", "title"],
     "employment dates": ["employmentdates", "workdates", "jobdates", "datesofemployment", "employment_period", "workhistorydates"],
     "salary expectations": ["salaryexpectations", "desiredsalary", "expectedpay", "compensation", "salaryrange"],
-    "authorized to work": ["areyouauthorizedtoworkintheus", "workauthorization", "authorizedtowork", "work_auth", "workeligibility"],
-    "willing to relocate": ["areyouwillingtorelocate", "relocation", "willingtorelocate", "relocate", "relocationwillingness"],
+    "authorized to work": ["areyouauthorizedtoworkintheus", "workauthorization", "authorizedtowork", "work_auth", "workeligibility", "are you authorized to work in the u.s.", "areyouauthorizedtoworkintheu.s."],
+    "willing to relocate": ["areyouwillingtorelocate", "relocation", "willingtorelocate", "relocate", "relocationwillingness", "are you willing to relocate"],
     "willing to travel": ["willingtotravel", "travel", "travelavailability", "travelwillingness"],
-    "certifications": ["certifications", "licenses", "credentials", "accreditations", "certificates", "relevantcertifications"],
+    "certifications": ["certifications", "licenses", "credentials", "accreditations", "certificates", "relevantcertifications", "list any relevant certifications", "listanyrelevantcertifications"],
     "veteran status": ["veteranstatus", "veteran", "militarystatus", "veteran_or_service_member"],
     "security clearance": ["securityclearance", "clearancelevel", "clearance"],
     "cover letter": ["coverletter", "applicationletter", "motivationletter", "coveringletter"],
     "referencename": ["referencename", "reference", "nameofreference", "reference_name", "referee"],
     "reference contact": ["referencecontact", "referencecontactinfo", "contactinfoofreference", "reference_contact"],
-    "additional comments": ["additionalcomments", "extracomments", "notes", "remarks", "anythingelse", "additionalinfo"]
+    "additional comments": ["additionalcomments", "extracomments", "notes", "remarks", "anythingelse", "additionalinfo", "is there anything else you’d like us to know", "is there anythign else youd like us to know", "isthereanythingelseyou’dlikeustoknow"],
+    "why do you want to work here": ["why do you want to work here", "motivation", "reason for applying", "why join", "why do you want this job", "whydoyouwanttoworkhere","why are you interested in this position","what interests you about this role","why this company","why us"],
+    "skills": ["skills", "relevant skills", "key skills", "technical skills", "soft skills", "list your skills", "relevantskills"]
   };
   
   // Clear all form fields
@@ -142,7 +144,6 @@ const simplifyLabel = (text) => {
   // Enhanced autofill logic
   const autofillForm = (autofillMemory) => {
     const fields = document.querySelectorAll('input, textarea, select');
-  
     fields.forEach((field) => {
       const labelText = extractLabelText(field);
       const simplifiedLabel = simplifyLabel(labelText);
@@ -150,8 +151,24 @@ const simplifyLabel = (text) => {
       const matchedKey = matchKey(simplifiedLabel) || simplifiedLabel;
   
       if (autofillMemory[matchedKey]) {
-        field.value = autofillMemory[matchedKey];
-        console.log(`Autofilled "${labelText}" with "${autofillMemory[matchedKey]}"`);
+        if (field.tagName === 'SELECT') {
+          // Handle dropdowns by matching the option value or text
+          const options = Array.from(field.options);
+          const autofillValue = autofillMemory[matchedKey].toLowerCase();
+          const matchingOption = options.find(option =>
+            option.value.toLowerCase() === autofillValue || option.text.toLowerCase() === autofillValue
+          );
+          if (matchingOption) {
+            field.value = matchingOption.value;
+            console.log(`Autofilled dropdown "${labelText}" with "${matchingOption.text}"`);
+          } else {
+            console.warn(`No matching option found for dropdown "${labelText}" with value "${autofillValue}"`);
+          }
+        } else {
+          // Handle input and textarea fields
+          field.value = autofillMemory[matchedKey];
+          console.log(`Autofilled "${labelText}" with "${autofillMemory[matchedKey]}"`);
+        }
       } else {
         console.warn(`No match found for field with label: "${labelText}" (Simplified: "${simplifiedLabel}")`);
         attachInputListeners(field, simplifiedLabel); // Attach listener for new inputs
