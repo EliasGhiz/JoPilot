@@ -150,6 +150,14 @@
         <label for="employment_dates">Employment Dates:</label>
         <input type="text" id="employment_dates" name="employment_dates">
     </div>
+    <div class="form-group">
+        <label for="responsibilities">Key Responsibilities:</label>
+        <textarea id="responsibilities" name="responsibilities" rows="4"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="reason_for_leaving">Reason for Leaving:</label>
+        <textarea id="reason_for_leaving" name="reason_for_leaving" rows="3"></textarea>
+    </div>
 
     <!-- Additional Questions -->
     <div class="section-title">Additional Questions</div>
@@ -193,6 +201,46 @@
         <textarea id="certifications" name="certifications" rows="3"></textarea>
     </div>
 
+    <!-- Availability -->
+    <div class="section-title">Availability</div>
+    <div class="form-group">
+        <label for="availability">When can you start?</label>
+        <input type="date" id="availability" name="availability">
+    </div>
+    <div class="form-group">
+        <label for="notice_period">Notice Period (if applicable):</label>
+        <input type="text" id="notice_period" name="notice_period">
+    </div>
+
+    <!-- Languages -->
+    <div class="section-title">Languages</div>
+    <div class="form-group">
+        <label for="languages">Languages Spoken:</label>
+        <textarea id="languages" name="languages" rows="3"></textarea>
+    </div>
+
+    <!-- Veteran Status -->
+    <div class="section-title">Veteran Status</div>
+    <div class="form-group">
+        <label for="veteran_status">Are you a veteran?</label>
+        <select id="veteran_status" name="veteran_status">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+    </div>
+
+    <!-- Security Clearance -->
+    <div class="section-title">Security Clearance</div>
+    <div class="form-group">
+        <label for="security_clearance">Do you have a security clearance?</label>
+        <select id="security_clearance" name="security_clearance">
+            <option value="none">None</option>
+            <option value="confidential">Confidential</option>
+            <option value="secret">Secret</option>
+            <option value="top_secret">Top Secret</option>
+        </select>
+    </div>
+
     <!-- References -->
     <div class="section-title">References</div>
     <div class="form-group">
@@ -209,6 +257,49 @@
     <div class="form-group">
         <label for="additional_comments">Is there anything else you’d like us to know?</label>
         <textarea id="additional_comments" name="additional_comments" rows="4"></textarea>
+    </div>
+
+    <!-- Leadership Experience -->
+    <div class="section-title">Leadership Experience</div>
+    <div class="form-group">
+        <label for="leadership_experience">Describe any leadership roles you have held:</label>
+        <textarea id="leadership_experience" name="leadership_experience" rows="4"></textarea>
+    </div>
+
+    <!-- Preferred Work Environment -->
+    <div class="section-title">Preferred Work Environment</div>
+    <div class="form-group">
+        <label for="work_environment">What type of work environment do you thrive in?</label>
+        <textarea id="work_environment" name="work_environment" rows="4"></textarea>
+    </div>
+
+    <!-- Hobbies and Interests -->
+    <div class="section-title">Hobbies and Interests</div>
+    <div class="form-group">
+        <label for="hobbies">List your hobbies and interests:</label>
+        <textarea id="hobbies" name="hobbies" rows="3"></textarea>
+    </div>
+
+    <!-- Emergency Contact -->
+    <div class="section-title">Emergency Contact</div>
+    <div class="form-group">
+        <label for="emergency_contact_name">Emergency Contact Name:</label>
+        <input type="text" id="emergency_contact_name" name="emergency_contact_name" required>
+    </div>
+    <div class="form-group">
+        <label for="emergency_contact_relationship">Relationship to Emergency Contact:</label>
+        <input type="text" id="emergency_contact_relationship" name="emergency_contact_relationship" required>
+    </div>
+    <div class="form-group">
+        <label for="emergency_contact_phone">Emergency Contact Phone Number:</label>
+        <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" required>
+    </div>
+
+    <!-- Diversity and Inclusion -->
+    <div class="section-title">Diversity and Inclusion</div>
+    <div class="form-group">
+        <label for="diversity_statement">Do you have any comments on diversity and inclusion in the workplace?</label>
+        <textarea id="diversity_statement" name="diversity_statement" rows="4"></textarea>
     </div>
 
     <!-- Submit Button -->

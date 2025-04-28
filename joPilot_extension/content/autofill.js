@@ -45,7 +45,26 @@ const simplifyLabel = (text) => {
     "reference contact": ["referencecontact", "referencecontactinfo", "contactinfoofreference", "reference_contact"],
     "additional comments": ["additionalcomments", "extracomments", "notes", "remarks", "anythingelse", "additionalinfo", "is there anything else you’d like us to know", "is there anythign else youd like us to know", "isthereanythingelseyou’dlikeustoknow"],
     "why do you want to work here": ["why do you want to work here", "motivation", "reason for applying", "why join", "why do you want this job", "whydoyouwanttoworkhere","why are you interested in this position","what interests you about this role","why this company","why us"],
-    "skills": ["skills", "relevant skills", "key skills", "technical skills", "soft skills", "list your skills", "relevantskills"]
+    "skills": ["skills", "relevant skills", "key skills", "technical skills", "soft skills", "list your skills", "relevantskills"],
+    "key responsibilities": ["keyresponsibilities", "responsibilities", "jobresponsibilities", "workresponsibilities"],
+    "reason for leaving": ["reasonforleaving", "leavingreason", "why you left", "reason for departure"],
+    "when can you start": ["whencanyoustart", "availability", "startdate", "earlieststartdate"],
+    "notice period": ["noticeperiod", "noticeperiod(ifapplicable)", "currentnoticeperiod", "notice"],
+    "languages spoken": ["languagesspoken", "languages", "spokenlanguages", "language proficiency"],
+    "are you a veteran": ["areyouaveteran", "veteranstatus", "militarystatus", "veteran"],
+    "do you have a security clearance": ["doyouhaveasecurityclearance", "securityclearance", "clearancelevel", "clearance"],
+    "describe any leadership roles you have held": ["describeanyleadershiprolesyouhaveheld", "leadershiproles", "leadership experience"],
+    "what type of work environment do you thrive in": ["whattypeofworkenvironmentdoyouthrivein", "workenvironment", "preferredworkenvironment"],
+    "list your hobbies and interests": ["listyourhobbiesandinterests", "hobbies", "interests", "hobbiesandinterests"],
+    "emergency contact name": ["emergencycontactname", "emergencycontact", "contactname"],
+    "relationship to emergency contact": ["relationshiptoemergencycontact", "emergencycontactrelationship", "relationship"],
+    "emergency contact phone number": ["emergencycontactphonenumber", "emergencycontactphone", "contactphonenumber"],
+    "do you have any comments on diversity and inclusion in the workplace": [
+      "doyouhaveanycommentsondiversityandinclusionintheworkplace",
+      "diversityandinclusioncomments",
+      "diversitycomments",
+      "inclusioncomments"
+    ]
   };
   
   // Clear all form fields
