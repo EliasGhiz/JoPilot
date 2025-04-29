@@ -1,4 +1,4 @@
-import { Box, Typography, Card, CardContent, Button, TextField, Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Box, Typography, Card, CardContent, Button, TextField, Grid } from "@mui/material";
 import { useState } from "react";
 import jobData from "../../dataset_indeed-scraper_2025-04-29_18-38-42-368.json";
 
@@ -42,21 +42,25 @@ export default function Postings() {
       </Box>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <List sx={{ maxHeight: "80vh", overflow: "auto", border: "1px solid #ccc", borderRadius: 1 }}>
+          <Box sx={{ maxHeight: "80vh", overflow: "auto", border: "1px solid #ccc", borderRadius: 1 }}>
             {filteredJobs.map((job) => (
-              <ListItem
+              <Box
                 key={job.id}
-                button
                 onClick={() => setSelectedJob(job)}
-                sx={{ borderBottom: "1px solid #eee" }}
+                sx={{
+                  padding: 2,
+                  borderBottom: "1px solid #eee",
+                  cursor: "pointer",
+                  "&:hover": { backgroundColor: "#f5f5f5" },
+                }}
               >
-                <ListItemText
-                  primary={job.positionName}
-                  secondary={`${job.location} | ${job.salary || "Not specified"}`}
-                />
-              </ListItem>
+                <Typography variant="subtitle1">{job.positionName}</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {`${job.location} | ${job.salary || "Not specified"}`}
+                </Typography>
+              </Box>
             ))}
-          </List>
+          </Box>
         </Grid>
         <Grid item xs={8}>
           {selectedJob ? (
@@ -117,7 +121,7 @@ function JobDetails({ job }: { job: any }) {
         <Button
           size="small"
           onClick={toggleDescription}
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 1, color: "text.secondary" }} // Set text color to textSecondary
         >
           {showFullDescription ? "Show Less" : "Read More"}
         </Button>
