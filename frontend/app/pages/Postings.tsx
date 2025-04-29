@@ -121,7 +121,7 @@ function JobDetails({ job }: { job: any }) {
         <Button
           size="small"
           onClick={toggleDescription}
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 1, color: "text.secondary" }} // Set text color to textSecondary
         >
           {showFullDescription ? "Show Less" : "Read More"}
         </Button>
