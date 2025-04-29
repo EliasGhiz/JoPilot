@@ -3,6 +3,9 @@
     "name": "JoPilot",
     "version": "1.0",
     "description": "Companion for Job Applications",
+    "icons":{
+      "16": "public/favicon.png"
+    },
     "permissions": ["storage", "scripting", "activeTab", "tabs"],
     "host_permissions": ["<all_urls>"],
     "background": {
