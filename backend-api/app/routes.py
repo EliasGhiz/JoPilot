@@ -1,6 +1,10 @@
 #API endpoints
 
-from flask import request, jsonify, render_template, Blueprint, g
+from flask import request, jsonify, render_template, Blueprint
+from werkzeug.utils import secure_filename
+from .database import db, User, Profile, Job, AppliedTo, Bookmark
+from .API_Analysis import extract_text, optimize_resume
+import os
 from .database import db, User, Profile, Job, AppliedTo, Bookmark
 from jose import jwt 
 from urllib.request import urlopen
@@ -402,6 +406,47 @@ def initialize_app_endpoints(app):
         return test_endpoint()
 
 
+#Resume analysis endpoint
+
+ALLOWED_EXTENSIONS = {'pdf', 'docx'}
+
+#helps determine allowed file extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@bp.route('/analyze-resume', methods=['POST'])
+def analyze_resume():
+    #check for file
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part in the request'}), 400
+
+    file = request.files['file']
+
+    #check extension type
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if not allowed_file(file.filename):
+        return jsonify({'error': 'Unsupported file type. Please upload a PDF or DOCX file.'}), 400
+
+    try:
+        #save temp
+        filename = secure_filename(file.filename)
+        temp_path = os.path.join('/tmp', filename)
+        file.save(temp_path)
+
+        resume_text = extract_text(temp_path)
+
+        #call to deepseek api
+        feedback = optimize_resume(resume_text)
+
+        os.remove(temp_path)
+
+        #return suggestions
+        return jsonify({'suggestions': feedback}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+      
 #obtain access token 
 def get_token_auth_header():
     auth = request.headers.get("Authorization", None)

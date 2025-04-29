@@ -7,6 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import FeedIcon from '@mui/icons-material/Feed';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { NavItem } from './types';
+import { AttachFile } from '@mui/icons-material';
 
 // Sidebar Navigation items
 export const NAV_ITEMS: NavItem[] = [
@@ -26,6 +27,12 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Job Postings',
     route: '/postings',
     icon: <FeedIcon />,
+    group: 'top'
+  },
+  {
+    label: 'Analyze Resume',
+    route: '/analyze',
+    icon: <AttachFile />, // Replace with a relevant icon
     group: 'top'
   },
   {
