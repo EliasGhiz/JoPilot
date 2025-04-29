@@ -121,11 +121,16 @@ function JobDetails({ job }: { job: any }) {
         >
           {showFullDescription ? "Show Less" : "Read More"}
         </Button>
-        <Typography variant="body2" color="primary" sx={{ marginTop: 1 }}>
-          <a href={job.url} target="_blank" rel="noopener noreferrer">
+        <Box sx={{ marginTop: 1 }}>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={() => window.open(job.url, '_blank', 'noopener noreferrer')}
+          >
             View Job Posting
-          </a>
-        </Typography>
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );
