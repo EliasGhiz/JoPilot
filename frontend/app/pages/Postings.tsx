@@ -1,12 +1,11 @@
 import { Box, Typography, Card, CardContent, Button, TextField, Grid, List, ListItem, ListItemText } from "@mui/material";
 import { useState } from "react";
-import jobData from "../../dataset_indeed-scraper_2025-04-01_00-47-19-716.json";
+import jobData from "../../dataset_indeed-scraper_2025-04-29_18-38-42-368.json";
 
 export default function Postings() {
   const [filters, setFilters] = useState({
     location: "",
     jobTitle: "",
-    salary: "",
   });
   const [selectedJob, setSelectedJob] = useState<any>(null);
 
@@ -16,9 +15,8 @@ export default function Postings() {
 
   const filteredJobs = jobData.filter((job) => {
     return (
-      (!filters.location || job.location.includes(filters.location)) &&
-      (!filters.jobTitle || job.positionName.includes(filters.jobTitle)) &&
-      (!filters.salary || (job.salary && job.salary.includes(filters.salary)))
+      (!filters.location || job.location.toLowerCase().includes(filters.location.toLowerCase())) &&
+      (!filters.jobTitle || job.positionName.toLowerCase().includes(filters.jobTitle.toLowerCase()))
     );
   });
 
@@ -37,14 +35,6 @@ export default function Postings() {
           label="Job Title"
           name="jobTitle"
           value={filters.jobTitle}
-          onChange={handleFilterChange}
-          variant="outlined"
-          size="small"
-        />
-        <TextField
-          label="Salary"
-          name="salary"
-          value={filters.salary}
           onChange={handleFilterChange}
           variant="outlined"
           size="small"
@@ -102,18 +92,28 @@ function JobDetails({ job }: { job: any }) {
         <Typography variant="body2" color="textSecondary">
           Posted At: {job.postedAt}
         </Typography>
-        <Typography
-          variant="body2"
+        <Box
           sx={{
             marginTop: 1,
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: showFullDescription ? "none" : 3,
-            overflow: "hidden",
+            maxHeight: "50vh",
+            overflowY: "auto",
+            border: "1px solid #ccc",
+            padding: 1,
+            borderRadius: 1,
           }}
         >
-          {job.description}
-        </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: showFullDescription ? "none" : 3,
+              overflow: "hidden",
+            }}
+          >
+            {job.description}
+          </Typography>
+        </Box>
         <Button
           size="small"
           onClick={toggleDescription}
@@ -128,7 +128,7 @@ function JobDetails({ job }: { job: any }) {
             color="primary"
             onClick={() => window.open(job.url, '_blank', 'noopener noreferrer')}
           >
-            View Job Posting
+            Apply Here
           </Button>
         </Box>
       </CardContent>
