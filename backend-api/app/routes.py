@@ -10,20 +10,67 @@ from functools import wraps
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 
+#wraps route to require authenication before letting it run
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        
+        token = get_token_auth_header()
+        #fetch JWKS to sign JWT 
+        jsonurl = urlopen(f"https://{AUTH0_DOMAIN}/.well-known/jwks.json")
+        jwks = json.loads(jsonurl.read())
+        unverified_header = jwt.get_unverified_header(token)
+
+        #build RSA pulic key to verfiy tokens 
+        rsa_key = {}
+        for key in jwks["keys"]:
+            if key["kid"] == unverified_header["kid"]:
+                rsa_key = {
+                    "kty": key["kty"],
+                    "kid": key["kid"],
+                    "use": key["use"],
+                    "n": key["n"],
+                    "e": key["e"]
+                }
+
+        #decode and verify token 
+        if rsa_key:
+            try:
+                payload = jwt.decode(
+                    token,
+                    rsa_key,
+                    algorithms="RS256",
+                    audience="https://jopilot-api",
+                    issuer=f"https://{AUTH0_DOMAIN}/"
+                )
+                
+                g.current_user = payload
+            except jwt.ExpiredSignatureError:
+                return jsonify({"message": "token expired"}), 401
+            except jwt.JWTClaimsError:
+                return jsonify({"message": "invalid claims"}), 401
+            except Exception:
+                return jsonify({"message": "invalid token"}), 400
+
+            return f(*args, **kwargs)
+
+        return jsonify({"message": "Unable to find appropriate key"}), 400
+
+    return decorated
+
 
 # User Routes
 
 @bp.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
-    if not data or not data.get('Name') or not data.get('Email') or not data.get('Password'):
+    if not data or not data.get('Name') or not data.get('Email'):
         return jsonify({"message": "Missing required fields"}), 400
 
     user = User(
         Name=data['Name'],
-        Password=data['Password'],
         Email=data['Email'],
-        ContactInfo=data.get('ContactInfo')
+        Auth0ID=data.get('Auth0ID')
     )
     db.session.add(user)
     db.session.commit()
@@ -41,7 +88,6 @@ def get_user(user_id):
         'UserID': user.UserID,
         'Name': user.Name,
         'Email': user.Email,
-        'ContactInfo': user.ContactInfo
     })
 
 @bp.route('/users/<int:user_id>', methods=['PUT'])
@@ -50,9 +96,7 @@ def update_user(user_id):
     user = User.query.get_or_404(user_id)
 
     user.Name = data.get('Name', user.Name)
-    user.Password = data.get('Password', user.Password)
     user.Email = data.get('Email', user.Email)
-    user.ContactInfo = data.get('ContactInfo', user.ContactInfo)
 
     db.session.commit()
 
@@ -251,6 +295,41 @@ def delete_application(application_id):
     db.session.commit()
     return '', 204
 
+# Get authenticated user applications
+@bp.route('/applications', methods=['GET'])
+@requires_auth
+def get_applications():
+    user_auth0_id = g.current_user['sub']
+    user_email = g.current_user.get('email', '')
+    user_name = g.current_user.get('name', '')
+    # Try to find user by Auth0ID
+    user = User.query.filter_by(Auth0ID=user_auth0_id).first()
+    if not user:
+        # Auto-create user if not found
+        user = User(
+            Name=user_name or "Unknown",
+            Email=user_email or "",
+            Auth0ID=user_auth0_id
+        )
+        db.session.add(user)
+        db.session.commit()
+    # Now fetch applications for this user
+    applications = AppliedTo.query.filter_by(UserID=user.UserID).all()
+    result = []
+    for app in applications:
+        job = Job.query.get(app.JobID)
+        result.append({
+            'applicationID': app.ApplicationID,
+            'companyName': job.CompanyName if job else "",
+            'positionTitle': job.Description if job else "",
+            'applicationLink': "",
+            'note': app.Note,
+            'applicationDate': "",
+            'status': app.Status,
+            'followUpDate': app.FollowUpDeadline
+        })
+    return jsonify(result)
+
 # Bookmark Routes 
 
 @bp.route('/bookmarks', methods=['POST'])
@@ -333,52 +412,3 @@ def get_token_auth_header():
     if parts[0].lower() != "bearer" or len(parts) != 2:
         raise Exception("Authorization header must be 'Bearer <token>'")
     return parts[1]
-
-
-#wraps route to require authenication before letting it run
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        
-        token = get_token_auth_header()
-        #fetch JWKS to sign JWT 
-        jsonurl = urlopen(f"https://{AUTH0_DOMAIN}/.well-known/jwks.json")
-        jwks = json.loads(jsonurl.read())
-        unverified_header = jwt.get_unverified_header(token)
-
-        #build RSA pulic key to verfiy tokens 
-        rsa_key = {}
-        for key in jwks["keys"]:
-            if key["kid"] == unverified_header["kid"]:
-                rsa_key = {
-                    "kty": key["kty"],
-                    "kid": key["kid"],
-                    "use": key["use"],
-                    "n": key["n"],
-                    "e": key["e"]
-                }
-
-        #decode and verify token 
-        if rsa_key:
-            try:
-                payload = jwt.decode(
-                    token,
-                    rsa_key,
-                    algorithms="RS256",
-                    audience="https://jopilot-api",
-                    issuer=f"https://{AUTH0_DOMAIN}/"
-                )
-                
-                g.current_user = payload
-            except jwt.ExpiredSignatureError:
-                return jsonify({"message": "token expired"}), 401
-            except jwt.JWTClaimsError:
-                return jsonify({"message": "invalid claims"}), 401
-            except Exception:
-                return jsonify({"message": "invalid token"}), 400
-
-            return f(*args, **kwargs)
-
-        return jsonify({"message": "Unable to find appropriate key"}), 400
-
-    return decorated

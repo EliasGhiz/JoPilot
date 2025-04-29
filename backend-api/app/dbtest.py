@@ -54,9 +54,7 @@ def test_create_profile(app, client):
 def test_create_user_and_get_data(client):
     user_data = {
         "Name": "John Doe",
-        "Password": "password123",
         "Email": "john@example.com",
-        "ContactInfo": "123-456-7890"
     }
 
     # POST request to create the user

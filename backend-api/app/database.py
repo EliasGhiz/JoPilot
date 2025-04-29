@@ -10,9 +10,8 @@ class User(db.Model):
     __tablename__ = 'Users'
     UserID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Name = db.Column(db.String(50))
-    Password = db.Column(db.String(50), nullable=False)
     Email = db.Column(db.String(50), unique=True, nullable=False)
-    ContactInfo = db.Column(db.Text)
+    Auth0ID = db.Column(db.String(128), unique=True)
     profiles = relationship('Profile', backref='user', cascade="all, delete")
     jobs = relationship('Job', backref='user', cascade="all, delete")
     applications = relationship('AppliedTo', backref='user', cascade="all, delete")
@@ -72,3 +71,7 @@ class Bookmark(db.Model):
     UserID = db.Column(db.Integer, ForeignKey('Users.UserID', ondelete='CASCADE'), primary_key=True)
     JobID = db.Column(db.Integer, ForeignKey('Job.JobID', ondelete='CASCADE'), primary_key=True)
     Note = db.Column(db.Text)
+
+def init_db(app):
+    with app.app_context():
+        db.create_all()
