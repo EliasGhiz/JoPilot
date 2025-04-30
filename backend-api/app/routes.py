@@ -10,6 +10,9 @@ from jose import jwt
 from urllib.request import urlopen
 import json
 from functools import wraps
+import io
+import zipfile
+from flask import send_file, g
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -489,3 +492,74 @@ def get_applied_to_by_user(user_id):
             'Note': app.Note
         })
     return jsonify(result)
+
+@bp.route('/export-data', methods=['GET'])
+@requires_auth
+def export_user_data():
+    user_auth0_id = g.current_user['sub']
+    # Find user by Auth0ID
+    user = User.query.filter_by(Auth0ID=user_auth0_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Gather all related data
+    user_data = {
+        "user": {
+            "UserID": user.UserID,
+            "Name": user.Name,
+            "Email": user.Email,
+            "Auth0ID": user.Auth0ID,
+        },
+        "profiles": [
+            {
+                "ProfileID": p.ProfileID,
+                "Resume": p.Resume,
+                "CoverLetter": p.CoverLetter,
+                "Summary": p.Summary,
+            }
+            for p in Profile.query.filter_by(UserID=user.UserID).all()
+        ],
+        "jobs": [
+            {
+                "JobID": j.JobID,
+                "Salary": j.Salary,
+                "Type": j.Type,
+                "Keywords": j.Keywords,
+                "Description": j.Description,
+                "CompanyName": j.CompanyName,
+            }
+            for j in Job.query.filter_by(UserID=user.UserID).all()
+        ],
+        "applications": [
+            {
+                "ApplicationID": a.ApplicationID,
+                "Status": a.Status,
+                "FollowUpDeadline": a.FollowUpDeadline,
+                "Note": a.Note,
+                "JobID": a.JobID,
+            }
+            for a in AppliedTo.query.filter_by(UserID=user.UserID).all()
+        ],
+        "bookmarks": [
+            {
+                "UserID": b.UserID,
+                "JobID": b.JobID,
+                "Note": b.Note,
+            }
+            for b in Bookmark.query.filter_by(UserID=user.UserID).all()
+        ]
+    }
+
+    # Serialize to JSON and compress to zip
+    json_bytes = json.dumps(user_data, indent=2).encode('utf-8')
+    mem_zip = io.BytesIO()
+    with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("user_data.json", json_bytes)
+    mem_zip.seek(0)
+
+    return send_file(
+        mem_zip,
+        mimetype='application/zip',
+        as_attachment=True,
+        download_name='user_data_export.zip'
+    )
