@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
@@ -55,6 +55,63 @@ const columns: GridColDef[] = [
     },
 ];
 
+// Random data generation helpers
+function randomFrom<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function randomDate(start: Date, end: Date) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+        .toISOString().split('T')[0];
+}
+
+function randomCompanyName() {
+    const companies = ["Google", "Amazon", "Netflix", "Meta", "Apple", "Microsoft", "Tesla", "OpenAI", "Stripe", "Airbnb"];
+    return randomFrom(companies);
+}
+
+function randomPositionTitle() {
+    const titles = ["Software Engineer", "Data Scientist", "Product Manager", "UX Designer", "DevOps Engineer", "QA Analyst"];
+    return randomFrom(titles);
+}
+
+function randomStatus() {
+    return randomFrom(["Pending", "Interview", "Rejected", "Offer", "Assessment", "Phone Screen"]);
+}
+
+function randomNote() {
+    const notes = [
+        "Follow up next week.",
+        "Sent coding challenge.",
+        "Waiting for recruiter response.",
+        "Prepare for interview.",
+        "No response yet.",
+        "Check application portal."
+    ];
+    return randomFrom(notes);
+}
+
+function randomUrl() {
+    const domains = ["google.com", "amazon.jobs", "netflix.com", "meta.com", "apple.com", "microsoft.com"];
+    return `https://careers.${randomFrom(domains)}/apply/${Math.floor(Math.random() * 10000)}`;
+}
+
+function generateTestApplications(count: number = 10) {
+    const today = new Date();
+    const lastMonth = new Date(today);
+    lastMonth.setDate(today.getDate() - 30);
+    return Array.from({ length: count }, (_, i) => ({
+        applicationID: 1000 + i,
+        companyName: randomCompanyName(),
+        positionTitle: randomPositionTitle(),
+        applicationDate: randomDate(lastMonth, today),
+        status: randomStatus(),
+        followUpDate: randomDate(today, new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000)),
+        applicationLink: randomUrl(),
+        note: randomNote(),
+    }));
+}
+
 export default function Applications() {
     const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
     const [applications, setApplications] = useState<ApplicationData[]>([]);
@@ -82,6 +139,11 @@ export default function Applications() {
         }
     }, [getAccessTokenSilently, isAuthenticated, isLoading]);
 
+    const handleTestData = () => {
+        setApplications(generateTestApplications(12));
+        setLoading(false);
+    };
+
     return (
         <div style={{
             width: '100%',
@@ -92,9 +154,19 @@ export default function Applications() {
             padding: 0,
             margin: 0,
         }}>
-            <Typography variant="h5">
-                Applications
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                <Typography variant="h5" sx={{ mr: 2 }}>
+                    Applications
+                </Typography>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    onClick={handleTestData}
+                >
+                    Test View
+                </Button>
+            </Box>
             <DataGrid
                 rows={applications}
                 columns={columns}
