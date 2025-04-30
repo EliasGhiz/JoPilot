@@ -464,3 +464,13 @@ def get_token_auth_header():
     if parts[0].lower() != "bearer" or len(parts) != 2:
         raise Exception("Authorization header must be 'Bearer <token>'")
     return parts[1]
+
+@bp.route('/applied_to/<int:application_id>', methods=['GET'])
+def get_applied_to(application_id):
+    application = AppliedTo.query.get_or_404(application_id)
+    return jsonify({
+        'ApplicationID': application.ApplicationID,
+        'Status': application.Status,
+        'FollowUpDeadline': application.FollowUpDeadline,
+        'Note': application.Note
+    })
