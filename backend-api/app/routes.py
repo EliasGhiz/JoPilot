@@ -12,7 +12,7 @@ import json
 from functools import wraps
 import io
 import zipfile
-from flask import send_file, g
+from flask import send_file, g, current_app
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -569,3 +569,11 @@ def export_user_data():
 @bp.app_errorhandler(404)
 def not_found(error):
     return jsonify({"error": "Not found", "url": request.url}), 404
+
+# Add this at the very end of your file to help debug route registration and prefix issues
+@bp.route('/debug/routes', methods=['GET'])
+def debug_routes():
+    """Return all registered routes for the entire Flask app (for debugging)."""
+    return jsonify({
+        "routes": [str(rule) for rule in current_app.url_map.iter_rules()]
+    })
