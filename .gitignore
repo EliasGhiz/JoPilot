@@ -8,3 +8,6 @@ __pycache__
 
 node_modules
 frontend/.env.no-auth
+.vscode/settings.json
+JoPilot.session.sql
+backend-api/app/.env
