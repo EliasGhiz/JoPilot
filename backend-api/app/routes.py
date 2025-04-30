@@ -10,9 +10,13 @@ from jose import jwt
 from urllib.request import urlopen
 import json
 from functools import wraps
+import io
+import zipfile
+from flask import send_file, g, current_app
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
+AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
 
 #wraps route to require authenication before letting it run
 def requires_auth(f):
@@ -24,7 +28,8 @@ def requires_auth(f):
         jsonurl = urlopen(f"https://{AUTH0_DOMAIN}/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
         unverified_header = jwt.get_unverified_header(token)
-
+        if "kid" not in unverified_header:
+            return jsonify({"message": "Invalid token: missing 'kid' in header"}), 401
         #build RSA pulic key to verfiy tokens 
         rsa_key = {}
         for key in jwks["keys"]:
@@ -464,3 +469,111 @@ def get_token_auth_header():
     if parts[0].lower() != "bearer" or len(parts) != 2:
         raise Exception("Authorization header must be 'Bearer <token>'")
     return parts[1]
+
+@bp.route('/applied_to/<int:application_id>', methods=['GET'])
+def get_applied_to(application_id):
+    application = AppliedTo.query.get_or_404(application_id)
+    return jsonify({
+        'ApplicationID': application.ApplicationID,
+        'Status': application.Status,
+        'FollowUpDeadline': application.FollowUpDeadline,
+        'Note': application.Note
+    })
+
+@bp.route('/applied_to/<int:user_id>', methods=['GET'])
+def get_applied_to_by_user(user_id):
+    applications = AppliedTo.query.filter_by(UserID=user_id).all()
+    result = []
+    for app in applications:
+        job = Job.query.get(app.JobID)
+        result.append({
+            'ApplicationID': app.ApplicationID,
+            'CompanyName': job.CompanyName if job else "",
+            'Status': app.Status,
+            'FollowUpDeadline': app.FollowUpDeadline,
+            'Note': app.Note
+        })
+    return jsonify(result)
+
+@bp.route('/export-data', methods=['GET'])
+@requires_auth
+def export_user_data():
+    user_auth0_id = g.current_user['sub']
+    # Find user by Auth0ID
+    user = User.query.filter_by(Auth0ID=user_auth0_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Gather all related data
+    user_data = {
+        "user": {
+            "UserID": user.UserID,
+            "Name": user.Name,
+            "Email": user.Email,
+            "Auth0ID": user.Auth0ID,
+        },
+        "profiles": [
+            {
+                "ProfileID": p.ProfileID,
+                "Resume": p.Resume,
+                "CoverLetter": p.CoverLetter,
+                "Summary": p.Summary,
+            }
+            for p in Profile.query.filter_by(UserID=user.UserID).all()
+        ],
+        "jobs": [
+            {
+                "JobID": j.JobID,
+                "Salary": j.Salary,
+                "Type": j.Type,
+                "Keywords": j.Keywords,
+                "Description": j.Description,
+                "CompanyName": j.CompanyName,
+            }
+            for j in Job.query.filter_by(UserID=user.UserID).all()
+        ],
+        "applications": [
+            {
+                "ApplicationID": a.ApplicationID,
+                "Status": a.Status,
+                "FollowUpDeadline": a.FollowUpDeadline,
+                "Note": a.Note,
+                "JobID": a.JobID,
+            }
+            for a in AppliedTo.query.filter_by(UserID=user.UserID).all()
+        ],
+        "bookmarks": [
+            {
+                "UserID": b.UserID,
+                "JobID": b.JobID,
+                "Note": b.Note,
+            }
+            for b in Bookmark.query.filter_by(UserID=user.UserID).all()
+        ]
+    }
+
+    # Serialize to JSON and compress to zip
+    json_bytes = json.dumps(user_data, indent=2).encode('utf-8')
+    mem_zip = io.BytesIO()
+    with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("user_data.json", json_bytes)
+    mem_zip.seek(0)
+
+    return send_file(
+        mem_zip,
+        mimetype='application/zip',
+        as_attachment=True,
+        download_name='user_data_export.zip'
+    )
+
+@bp.app_errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Not found", "url": request.url}), 404
+
+# Add this at the very end of your file to help debug route registration and prefix issues
+@bp.route('/debug/routes', methods=['GET'])
+def debug_routes():
+    """Return all registered routes for the entire Flask app (for debugging)."""
+    return jsonify({
+        "routes": [str(rule) for rule in current_app.url_map.iter_rules()]
+    })

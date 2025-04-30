@@ -2,7 +2,6 @@
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
-import PestControlRodentIcon from '@mui/icons-material/PestControlRodent';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FeedIcon from '@mui/icons-material/Feed';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -39,12 +38,6 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Settings',
     route: '/settings',
     icon: <SettingsIcon />,
-    group: 'bottom'
-  },
-  {
-    label: 'Test',
-    route: '/test',
-    icon: <PestControlRodentIcon />,
     group: 'bottom'
   },
   {
