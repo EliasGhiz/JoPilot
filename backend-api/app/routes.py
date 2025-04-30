@@ -474,3 +474,18 @@ def get_applied_to(application_id):
         'FollowUpDeadline': application.FollowUpDeadline,
         'Note': application.Note
     })
+
+@bp.route('/applied_to/<int:user_id>', methods=['GET'])
+def get_applied_to_by_user(user_id):
+    applications = AppliedTo.query.filter_by(UserID=user_id).all()
+    result = []
+    for app in applications:
+        job = Job.query.get(app.JobID)
+        result.append({
+            'ApplicationID': app.ApplicationID,
+            'CompanyName': job.CompanyName if job else "",
+            'Status': app.Status,
+            'FollowUpDeadline': app.FollowUpDeadline,
+            'Note': app.Note
+        })
+    return jsonify(result)
