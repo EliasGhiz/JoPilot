@@ -1,6 +1,7 @@
 import { Box, Typography, Card, CardContent, Button, TextField, Grid } from "@mui/material";
 import { useState } from "react";
-import jobData from "../../dataset_indeed-scraper_2025-04-29_18-38-42-368.json";
+import axios from "axios";
+import jobData from "../../dataset_indeed-scraper_2025-04-29_18-38-42-368.json"; // Mock job data
 
 export default function Postings() {
   const [filters, setFilters] = useState({
@@ -83,6 +84,44 @@ function JobDetails({ job }: { job: any }) {
     setShowFullDescription(!showFullDescription);
   };
 
+  const handleBookmark = () => {
+    // Step 1: Create the job
+    axios
+      .post("http://localhost:5000/api/jobs", {
+        Salary: job.salary || "Not specified",
+        Type: job.positionName,
+        Keywords: job.keywords || "",
+        Description: job.description,
+        CompanyName: job.company,
+        UserID: 1, // Replace with actual user ID
+      })
+      .then((createdJobResponse) => {
+        console.log("Job created successfully:", createdJobResponse.data);
+        createBookmark(createdJobResponse.data);
+      })
+      .catch((err) => {
+        console.error("Failed to create job:", err);
+        alert("Failed to create job and bookmark.");
+      });
+  
+    function createBookmark(jobData: any) {
+      console.log("Creating bookmark for job:", jobData);
+      axios
+        .post("http://localhost:5000/api/bookmarks", {
+          UserID: 1, // Replace with real user ID
+          JobID: jobData.JobID, // This is the actual JobID from the DB
+          Note: "Bookmarked from UI",
+        })
+        .then(() => {
+          alert("Job bookmarked!");
+        })
+        .catch((err) => {
+          console.error("Failed to bookmark:", err);
+          alert("Failed to bookmark job.");
+        });
+    }
+  };
+
   return (
     <Card>
       <CardContent>
@@ -133,6 +172,16 @@ function JobDetails({ job }: { job: any }) {
             onClick={() => window.open(job.url, '_blank', 'noopener noreferrer')}
           >
             Apply Here
+          </Button>
+        </Box>
+        <Box sx={{ marginTop: 1 }}>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleBookmark}
+          >
+            Bookmark Job
           </Button>
         </Box>
       </CardContent>

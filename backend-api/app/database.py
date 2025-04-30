@@ -44,12 +44,12 @@ class ProfileAutofillAnswer(db.Model):
 class Job(db.Model):
     __tablename__ = 'Job'
     JobID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    Salary = db.Column(db.Numeric(10,2))
+    Salary = db.Column(db.String(50))
     Type = db.Column(db.String(50))
     Keywords = db.Column(db.Text)
     Description = db.Column(db.Text)
     Date = db.Column(db.Date, server_default=db.func.current_date())
-    CompanyName = db.Column(db.String(50))
+    CompanyName = db.Column(db.String(100))
     UserID = db.Column(db.Integer, ForeignKey('Users.UserID', ondelete='SET NULL'))
     applications = relationship('AppliedTo', backref='job', cascade="all, delete")
     bookmarks = relationship('Bookmark', backref='job', cascade="all, delete")
