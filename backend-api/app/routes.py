@@ -358,14 +358,21 @@ def create_bookmark():
         'Note': bookmark.Note
     }), 201
 
-@bp.route('/bookmarks/<int:user_id>/<int:job_id>', methods=['GET'])
-def get_bookmark(user_id, job_id):
-    bookmark = Bookmark.query.filter_by(UserID=user_id, JobID=job_id).first_or_404()
-    return jsonify({
-        'UserID': bookmark.UserID,
-        'JobID': bookmark.JobID,
-        'Note': bookmark.Note
-    })
+@bp.route('/bookmarks/<int:user_id>', methods=['GET'])
+def get_bookmarks(user_id):
+    bookmarks = db.session.query(Bookmark, Job).join(Job).filter(Bookmark.UserID == user_id).all()
+
+    bookmark_list = []
+    for bookmark, job in bookmarks:
+        bookmark_list.append({
+            'UserID': bookmark.UserID,
+            'JobID': bookmark.JobID,
+            'Note': bookmark.Note if bookmark.Note else "No note",
+            'CompanyName': job.CompanyName,
+            'Type': job.Type
+        })
+
+    return jsonify(bookmark_list)
 
 @bp.route('/bookmarks/<int:user_id>/<int:job_id>', methods=['PUT'])
 def update_bookmark(user_id, job_id):
