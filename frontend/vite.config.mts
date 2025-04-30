@@ -14,6 +14,9 @@ export default defineConfig({
   server: {
     port: 3000,
     host: '0.0.0.0', // Allow connections from all network interfaces
-    open: true       // Automatically open browser
+    open: true,       // Automatically open browser
+    proxy: {
+      '/api': 'http://localhost:5000'
+    }
   }
 });

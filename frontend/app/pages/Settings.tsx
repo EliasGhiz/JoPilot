@@ -8,24 +8,40 @@ const Settings: React.FC = () => {
   const theme = useTheme();
   const { getAccessTokenSilently } = useAuth0();
 
-  if (!open) return null;
-
-  // Swap error.main and error.dark for Delete Account depending on mode
+  // Fix: define deleteBg and deleteHover after theme is available
   const isDark = theme.palette.mode === "dark";
   const deleteBg = isDark ? theme.palette.error.main : theme.palette.error.dark;
   const deleteHover = isDark ? theme.palette.error.dark : theme.palette.error.main;
 
-  const handleExport = async () => {
+  const handleExport = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    console.log("Export clicked"); // Debug: ensure function is called
     try {
+      // Add more debug logs to trace execution
       const token = await getAccessTokenSilently();
+      console.log("Token acquired", token); // Debug
+      if (!token) {
+        alert("No Auth0 token acquired.");
+        return;
+      }
+      // Check fetch availability
+      if (!window.fetch) {
+        alert("Fetch API not available.");
+        return;
+      }
+      // Actually send the request
       const response = await fetch("/api/export-data", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
+          Accept: "application/zip",
         },
       });
+      console.log("Fetch sent, status:", response.status); // Debug
       if (!response.ok) {
-        throw new Error("Failed to export data");
+        const text = await response.text();
+        alert("Failed to export data.\n" + text);
+        return;
       }
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -37,9 +53,21 @@ const Settings: React.FC = () => {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      alert("Failed to export data.");
+      console.error("Export error:", err); // Debug
+      if (
+        err instanceof Error &&
+        err.message.includes("You forgot to wrap your component in <Auth0Provider>")
+      ) {
+        alert(
+          "Auth0Provider is missing.\n\nPlease ensure your app is wrapped in <Auth0Provider> in your main entry file (e.g., index.tsx).\n\nSee: https://auth0.com/docs/quickstart/spa/react/01-login"
+        );
+      } else {
+        alert("Failed to export data.");
+      }
     }
   };
+
+  if (!open) return null;
 
   return (
     <Box
@@ -83,7 +111,14 @@ const Settings: React.FC = () => {
           Settings
         </Typography>
         <Stack spacing={2} sx={{ width: "100%" }}>
-          <Button variant="contained" color="primary" fullWidth onClick={handleExport}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleExport}
+            type="button"
+            id="data-export-btn"
+          >
             Data Export
           </Button>
           <Button

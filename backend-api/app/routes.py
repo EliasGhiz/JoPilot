@@ -16,6 +16,7 @@ from flask import send_file, g
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
+AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
 
 #wraps route to require authenication before letting it run
 def requires_auth(f):
@@ -27,7 +28,8 @@ def requires_auth(f):
         jsonurl = urlopen(f"https://{AUTH0_DOMAIN}/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
         unverified_header = jwt.get_unverified_header(token)
-
+        if "kid" not in unverified_header:
+            return jsonify({"message": "Invalid token: missing 'kid' in header"}), 401
         #build RSA pulic key to verfiy tokens 
         rsa_key = {}
         for key in jwks["keys"]:
