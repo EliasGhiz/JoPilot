@@ -38,11 +38,13 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchNotifications = axios.get(`/api/applied_to/${userId}`);
-    const fetchBookmarks = axios.get(`/api/bookmarks/${userId}`);
-
+    const fetchNotifications = axios.get(`http://localhost:5000/api/applications/user/${userId}`);
+    const fetchBookmarks = axios.get(`http://localhost:5000/api/bookmarks/${userId}`);
+  
     Promise.all([fetchNotifications, fetchBookmarks])
       .then(([notificationsRes, bookmarksRes]) => {
+        console.log("Fetched applications from API:", notificationsRes.data);  // Debugging log
+        console.log("Fetched bookmarks from API:", bookmarksRes.data);  // Debugging log
         setNotifications(Array.isArray(notificationsRes.data) ? notificationsRes.data : []);
         setBookmarks(Array.isArray(bookmarksRes.data) ? bookmarksRes.data : []);
       })

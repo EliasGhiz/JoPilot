@@ -132,6 +132,7 @@ def delete_profile(profile_id):
 
 @bp.route('/jobs', methods=['POST'])
 def create_job():
+    print("Job creation route hit")
     data = request.get_json()
     user_id = data.get('UserID')
     user = User.query.get_or_404(user_id)
@@ -217,15 +218,18 @@ def create_application():
         'FollowUpDeadline': application.FollowUpDeadline
     }), 201
 
-@bp.route('/applications/<int:application_id>', methods=['GET'])
-def get_application(application_id):
-    application = AppliedTo.query.get_or_404(application_id)
-    return jsonify({
-        'ApplicationID': application.ApplicationID,
-        'Status': application.Status,
-        'FollowUpDeadline': application.FollowUpDeadline,
-        'Note': application.Note
-    })
+@bp.route('/applications/user/<int:user_id>', methods=['GET'])
+def get_applications_for_user(user_id):
+    applications = db.session.query(AppliedTo).filter(AppliedTo.UserID == user_id).all()
+    return jsonify([
+        {
+            'ApplicationID': application.ApplicationID,
+            'Status': application.Status,
+            'FollowUpDeadline': application.FollowUpDeadline,
+            'Note': application.Note
+        }
+        for application in applications
+    ])
 
 @bp.route('/applications/<int:application_id>', methods=['PUT'])
 def update_application(application_id):
@@ -261,6 +265,11 @@ def create_bookmark():
     user = User.query.get_or_404(user_id)
     job = Job.query.get_or_404(job_id)
 
+    # Check if the bookmark already exists
+    existing_bookmark = Bookmark.query.filter_by(UserID=user.UserID, JobID=job.JobID).first()
+    if existing_bookmark:
+        return jsonify({"message": "Bookmark already exists"}), 200
+
     bookmark = Bookmark(
         UserID=user.UserID,
         JobID=job.JobID,
@@ -282,9 +291,8 @@ def get_bookmarks(user_id):
     bookmark_list = []
     for bookmark, job in bookmarks:
         bookmark_list.append({
-            'UserID': bookmark.UserID,
             'JobID': bookmark.JobID,
-            'Note': bookmark.Note if bookmark.Note else "No note",
+            'Note': bookmark.Note or "No note",
             'CompanyName': job.CompanyName,
             'Type': job.Type
         })
