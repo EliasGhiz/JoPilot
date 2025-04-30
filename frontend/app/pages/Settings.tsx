@@ -1,70 +1,93 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, Button, Stack, IconButton, useTheme } from "@mui/material";
+import { Paper, Box, Typography, Button, Stack, IconButton, useTheme, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useAuth0 } from "@auth0/auth0-react";
+import JSZip from "jszip";
 
 const Settings: React.FC = () => {
   const [open, setOpen] = useState(true);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const theme = useTheme();
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, logout } = useAuth0();
 
-  // Fix: define deleteBg and deleteHover after theme is available
   const isDark = theme.palette.mode === "dark";
   const deleteBg = isDark ? theme.palette.error.main : theme.palette.error.dark;
   const deleteHover = isDark ? theme.palette.error.dark : theme.palette.error.main;
 
   const handleExport = async (e?: React.MouseEvent) => {
     e?.preventDefault();
-    console.log("Export clicked"); // Debug: ensure function is called
-    try {
-      // Add more debug logs to trace execution
-      const token = await getAccessTokenSilently();
-      console.log("Token acquired", token); // Debug
-      if (!token) {
-        alert("No Auth0 token acquired.");
-        return;
-      }
-      // Check fetch availability
-      if (!window.fetch) {
-        alert("Fetch API not available.");
-        return;
-      }
-      // Actually send the request
-      const response = await fetch("/api/export-data", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/zip",
-        },
-      });
-      console.log("Fetch sent, status:", response.status); // Debug
-      if (!response.ok) {
-        const text = await response.text();
-        alert("Failed to export data.\n" + text);
-        return;
-      }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "user_data_export.zip";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Export error:", err); // Debug
-      if (
-        err instanceof Error &&
-        err.message.includes("You forgot to wrap your component in <Auth0Provider>")
-      ) {
-        alert(
-          "Auth0Provider is missing.\n\nPlease ensure your app is wrapped in <Auth0Provider> in your main entry file (e.g., index.tsx).\n\nSee: https://auth0.com/docs/quickstart/spa/react/01-login"
-        );
-      } else {
-        alert("Failed to export data.");
-      }
-    }
+    // Example user data to mimic backend export
+    const exampleData = {
+      user: {
+        UserID: 1,
+        Name: "Jane Doe",
+        Email: "jane@example.com",
+        Auth0ID: "auth0|123456789"
+      },
+      profiles: [
+        {
+          ProfileID: 1,
+          Resume: "resume.pdf",
+          CoverLetter: "coverletter.pdf",
+          Summary: "Experienced software engineer."
+        }
+      ],
+      jobs: [
+        {
+          JobID: 1,
+          Salary: 120000,
+          Type: "Full-time",
+          Keywords: "React, Python, AWS",
+          Description: "Frontend Developer",
+          CompanyName: "TechCorp"
+        }
+      ],
+      applications: [
+        {
+          ApplicationID: 1,
+          Status: "Interview",
+          FollowUpDeadline: "2024-05-15",
+          Note: "Followed up via email.",
+          JobID: 1
+        }
+      ],
+      bookmarks: [
+        {
+          UserID: 1,
+          JobID: 1,
+          Note: "Dream job"
+        }
+      ]
+    };
+
+    const zip = new JSZip();
+    zip.file("user_data.json", JSON.stringify(exampleData, null, 2));
+    // Optionally add dummy files to represent resume/coverletter
+    zip.file("resume.pdf", "This is a dummy resume PDF file.", { binary: false });
+    zip.file("coverletter.pdf", "This is a dummy cover letter PDF file.", { binary: false });
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "export.zip";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleDelete = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setConfirmOpen(false);
+    logout({ logoutParams: { returnTo: window.location.origin } });
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmOpen(false);
   };
 
   if (!open) return null;
@@ -129,11 +152,28 @@ const Settings: React.FC = () => {
               bgcolor: deleteBg,
               "&:hover": { bgcolor: deleteHover },
             }}
+            onClick={handleDelete}
           >
             Delete Account
           </Button>
         </Stack>
       </Paper>
+      <Dialog open={confirmOpen} onClose={handleCancelDelete}>
+        <DialogTitle>Confirm Account Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete your account? This is unreversable.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
