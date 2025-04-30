@@ -10,6 +10,7 @@ import {
   Divider,
   CircularProgress,
   Alert,
+  Button
 } from "@mui/material";
 
 // Define types for notifications and bookmarks
@@ -53,6 +54,40 @@ export default function Dashboard() {
         setLoading(false);
       });
   }, [userId]);
+
+  const insertMockData = () => {
+    setNotifications([
+      {
+        ApplicationID: 1001,
+        CompanyName: "Google",
+        Status: "Interview",
+        FollowUpDeadline: "2025-05-10",
+        Note: "Prepare portfolio",
+      },
+      {
+        ApplicationID: 1002,
+        CompanyName: "Netflix",
+        Status: "Pending",
+        FollowUpDeadline: "2025-05-14",
+        Note: "Sent application",
+      }
+    ]);
+
+    setBookmarks([
+      {
+        JobID: 2001,
+        CompanyName: "Google",
+        Type: "Internship",
+        Note: "Top choice",
+      },
+      {
+        JobID: 2002,
+        CompanyName: "Amazon",
+        Type: "Full-Time",
+        Note: "Apply soon",
+      }
+    ]);
+  };
 
   if (loading) {
     return (
@@ -120,6 +155,16 @@ export default function Dashboard() {
             </List>
           )}
         </Paper>
+      </Box>
+
+      <Box sx={{ mt: 4, textAlign: "center" }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={insertMockData}
+        >
+          Test Data
+        </Button>
       </Box>
     </Box>
   );
