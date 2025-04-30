@@ -42,12 +42,6 @@ export const NAV_ITEMS: NavItem[] = [
     group: 'bottom'
   },
   {
-    label: 'Test',
-    route: '/test',
-    icon: <PestControlRodentIcon />,
-    group: 'bottom'
-  },
-  {
     label: 'Logout',
     route: '/logout',
     icon: <LogoutIcon />,
