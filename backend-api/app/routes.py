@@ -565,3 +565,7 @@ def export_user_data():
         as_attachment=True,
         download_name='user_data_export.zip'
     )
+
+@bp.app_errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Not found", "url": request.url}), 404
