@@ -6,7 +6,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
-import Test from "./pages/Test";
 import Logout from "./pages/Logout";
 import Landing from "./pages/Landing";
 import RequireAuth from "./components/RequireAuth";
@@ -60,7 +59,6 @@ const routes: ExtendedRouteObject[] = [
       { path: '/applications', element: <Applications />, file: "pages/Applications.tsx" },
       { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" },
       { path: '/settings', element: <Settings />, file: "pages/Settings.tsx" },
-      { path: '/test', element: <Test />, file: "pages/Test.tsx" },
       { path: '/logout', element: <Logout />, file: "pages/Logout.tsx" },
       { path: '/postings', element: <Postings />, file: "pages/Postings.tsx" },
       { path: '/analyze', element: < AnalyzePage/>, file: "pages/AnalyzePage.tsx" }
